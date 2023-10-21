@@ -1,25 +1,23 @@
-"use client";
-
 import React from "react";
 
 import "@/styles/globals.css";
-import { ThemeProvider } from "next-themes";
-import Header from "@/components/Header";
+import Providers from "@/components/Providers";
+import Header from "@/components/header/Index";
 import Footer from "@/components/Footer";
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class">
+        <Providers>
           <Header />
           <main>{children}</main>
           <Footer />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
