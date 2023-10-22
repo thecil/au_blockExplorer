@@ -1,9 +1,12 @@
 "use client";
+import LatestBlocks from "@/components/web3/LatestBlocks";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      main
+    <main className="min-h-screen p-8">
+      <div className="">
+        <LatestBlocks />
+      </div>
     </main>
   );
 }

@@ -85,7 +85,6 @@ export const useAlchemy = () => {
 
   useEffect(() => {
     const eventHandler = (_blockNumber: any) => {
-      console.log("The latest block number is", _blockNumber);
       setSubBlockNumber(_blockNumber);
     };
 
@@ -96,8 +95,9 @@ export const useAlchemy = () => {
     };
   }, []);
 
-  const blockNumber = useMemo(() => {
-    if (_logs) console.log("blockNumber", subBlockNumber);
+    // store the latest block number
+  const latestBlockNumber = useMemo(() => {
+    if (_logs) console.log("latestBlockNumber", subBlockNumber);
     if (subBlockNumber !== 0) return subBlockNumber;
     return;
   }, [subBlockNumber]);
@@ -109,6 +109,6 @@ export const useAlchemy = () => {
     getBlock,
     getTransaction,
     // subscriptions
-    blockNumber,
+    latestBlockNumber,
   };
 };

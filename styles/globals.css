@@ -4,5 +4,5 @@
 
 html,
 body {
-    @apply text-black bg-white dark:text-white dark:bg-slate-800;
+    @apply  text-black bg-white dark:text-white dark:bg-slate-800;
 }
