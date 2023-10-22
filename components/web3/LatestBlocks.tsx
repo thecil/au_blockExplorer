@@ -27,6 +27,7 @@ const LatestBlocks = () => {
       if (blocks.length < MAX_BLOCKS_TO_SHOW) _getBlock();
     }
     return;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestBlockNumber]);
 
   return (

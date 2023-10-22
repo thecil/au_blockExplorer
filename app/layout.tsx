@@ -6,7 +6,7 @@ import Header from "@/components/header/Index";
 import Footer from "@/components/Footer";
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
