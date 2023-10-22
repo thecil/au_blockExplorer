@@ -1,11 +1,11 @@
 "use client";
-import LatestBlocks from "@/components/web3/LatestBlocks";
+import LatestBlocksController from "@/components/web3/LatestBlocksController";
 
 export default function Home() {
   return (
     <main className="min-h-screen p-8">
       <div className="">
-        <LatestBlocks />
+        <LatestBlocksController />
       </div>
     </main>
   );

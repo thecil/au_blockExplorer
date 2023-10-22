@@ -10,15 +10,10 @@ export const unixNow = () => toUnixTime(new Date());
 
 export const elapsedTime = (timestamp: number): string => {
   const now = unixNow();
-
   const secondsPassed = now - timestamp;
-
   if (secondsPassed > 60) {
     const minutesPassed = Math.floor(secondsPassed / 60);
-    console.log("elapsedTime", { now, timestamp, minutesPassed });
-
     return `${minutesPassed} min ago`;
   }
-  console.log("elapsedTime", { now, timestamp, secondsPassed });
   return `${secondsPassed} secs ago`;
 };
