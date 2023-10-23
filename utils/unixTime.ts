@@ -17,3 +17,7 @@ export const elapsedTime = (timestamp: number): string => {
   }
   return `${secondsPassed} secs ago`;
 };
+
+export const unixToDate = (timestamp: number): string => {
+  return new Date(timestamp * MS).toLocaleString();
+};
