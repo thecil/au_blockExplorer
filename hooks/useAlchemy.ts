@@ -1,5 +1,9 @@
 import { Network, Alchemy, type BigNumber } from "alchemy-sdk";
-import type { Block, TransactionResponse } from "alchemy-sdk";
+import type {
+  Block,
+  TransactionResponse,
+  BlockWithTransactions
+} from "alchemy-sdk";
 import { useMemo, useState, useEffect } from "react";
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const _logs = false; // show console.logs for debugging
@@ -13,7 +17,7 @@ export const useAlchemy = () => {
   // alchemy sdk config
   const settings = {
     apiKey: ALCHEMY_API_KEY,
-    network: Network.ETH_MAINNET,
+    network: Network.ETH_MAINNET
   };
 
   // alchemy instance
@@ -46,6 +50,25 @@ export const useAlchemy = () => {
     }
   };
 
+  /**
+   * Returns the block from the network based on the provided block number or hash.
+   * In addition to the transaction hashes included in the block, it also returns the full transaction objects.
+   */
+  const getBlockWithTransactions = async (
+    blockHashOrBlockTag: string | number
+  ): Promise<BlockWithTransactions | undefined> => {
+    try {
+      const _blockWithTxns = await alchemy.core.getBlockWithTransactions(
+        blockHashOrBlockTag
+      );
+
+      console.log("useAlchemy:getBlockWithTransactions", _blockWithTxns);
+      return _blockWithTxns;
+    } catch (error) {
+      console.log("useAlchemy:getBlockWithTransactions:error", { error });
+      return;
+    }
+  };
   // Returns the best guess of the current gas price to use in a transaction.
   const getGasPrice = async (): Promise<BigNumber | undefined> => {
     try {
@@ -93,9 +116,10 @@ export const useAlchemy = () => {
     return () => {
       alchemy.ws.off("block", eventHandler);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-    // store the latest block number
+  // store the latest block number
   const latestBlockNumber = useMemo(() => {
     if (_logs) console.log("latestBlockNumber", subBlockNumber);
     if (subBlockNumber !== 0) return subBlockNumber;
@@ -107,8 +131,9 @@ export const useAlchemy = () => {
     getBlockNumber,
     getGasPrice,
     getBlock,
+    getBlockWithTransactions,
     getTransaction,
     // subscriptions
-    latestBlockNumber,
+    latestBlockNumber
   };
 };

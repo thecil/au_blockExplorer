@@ -7,9 +7,11 @@ export const shortAddress = (address: string): string =>
     address.length
   )}`;
 
-export const blockReward = (block: Block) => {
+// calculate the block rewards
+export const blockReward = (block: Block): string | undefined => {
   if (block.baseFeePerGas) {
     const _blockReward = block.baseFeePerGas.mul(block.gasUsed);
     return formatEther(BigInt(_blockReward.toString()));
   }
+  return undefined;
 };
