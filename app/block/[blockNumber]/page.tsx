@@ -12,7 +12,7 @@ import {
   shortAddress,
   blockReward,
   formatGasToLocaleString,
-  fromHex,
+  fromHex
 } from "@/utils/web3";
 
 enum Stages {
