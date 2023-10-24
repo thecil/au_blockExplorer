@@ -8,6 +8,7 @@ export const toUnixTime = (date: Date) => {
 
 export const unixNow = () => toUnixTime(new Date());
 
+// based on given timestamp, calculate how many secs/mins has passed since actual time.
 export const elapsedTime = (timestamp: number): string => {
   const now = unixNow();
   const secondsPassed = now - timestamp;

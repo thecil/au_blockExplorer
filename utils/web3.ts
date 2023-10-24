@@ -1,5 +1,7 @@
-import type { Block } from "alchemy-sdk";
+import type { BigNumber, Block } from "alchemy-sdk";
 import { formatEther } from "viem";
+
+export * from "viem";
 
 export const shortAddress = (address: string): string =>
   `${address.slice(0, 5)}...${address.slice(
@@ -15,3 +17,6 @@ export const blockReward = (block: Block): string | undefined => {
   }
   return undefined;
 };
+
+export const formatGasToLocaleString = (amount: BigNumber) =>
+  Number(amount).toLocaleString();

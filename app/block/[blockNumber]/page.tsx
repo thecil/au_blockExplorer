@@ -8,7 +8,12 @@ import Loading from "@/components/Loading";
 import HelpIcon from "@/components/icons/HelpIcon";
 import TimeIcon from "@/components/icons/TimeIcon";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
-import { shortAddress } from "@/utils/web3";
+import {
+  shortAddress,
+  blockReward,
+  formatGasToLocaleString,
+  fromHex,
+} from "@/utils/web3";
 
 enum Stages {
   loading = "loading",
@@ -65,7 +70,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                 <p>Timestamp:</p>
               </div>
               <div className="flex space-x-1">
-                <TimeIcon />
+                <TimeIcon size="1.2em" />
                 <p>{elapsedTime(block.timestamp)}</p>
                 <p>({unixToDate(block.timestamp)})</p>
               </div>
@@ -94,6 +99,67 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                   {shortAddress(block.miner)}
                 </Link>
                 <p>in 12 secs</p>
+              </div>
+            </div>
+            {/* block reward */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Block Reward:</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{blockReward(block)} ETH</p>
+              </div>
+            </div>
+            {/* block difficulty */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Total Difficulty:</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{block._difficulty.toString()}</p>
+              </div>
+            </div>
+            {/* block gas used */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Gas Used:</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{formatGasToLocaleString(block.gasUsed)}</p>
+              </div>
+            </div>
+            {/* block gas limit */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Gas Limit:</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{formatGasToLocaleString(block.gasLimit)}</p>
+              </div>
+            </div>
+            {/* block burnt fees */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Burnt Fees:</p>
+              </div>
+              <div className="flex space-x-1">
+                <p>{blockReward(block)} ETH</p>
+              </div>
+            </div>
+            {/* block extra data */}
+            <div className="flex-col space-y-4">
+              <div className="flex space-x-4 items-center">
+                <HelpIcon />
+                <p>Extra Data:</p>
+              </div>
+              <div className="">
+                <p>{fromHex(block.extraData as `0x${string}`, "string")}</p>
+                <p className="truncate">{block.extraData}</p>
               </div>
             </div>
           </div>
