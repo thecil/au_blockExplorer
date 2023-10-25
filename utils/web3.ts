@@ -1,4 +1,4 @@
-import type { BigNumber, Block } from "alchemy-sdk";
+import type { BigNumber, BlockWithTransactions } from "alchemy-sdk";
 import { formatEther } from "viem";
 
 export * from "viem";
@@ -10,7 +10,7 @@ export const shortAddress = (address: string): string =>
   )}`;
 
 // calculate the block rewards
-export const blockReward = (block: Block): string | undefined => {
+export const blockReward = (block: BlockWithTransactions): string | undefined => {
   if (block.baseFeePerGas) {
     const _blockReward = block.baseFeePerGas.mul(block.gasUsed);
     return formatEther(BigInt(_blockReward.toString()));
