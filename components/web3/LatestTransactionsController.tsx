@@ -1,25 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import type { BlockWithTransactions } from "alchemy-sdk";
-
 import Link from "next/link";
-import Loading from "../Loading";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { IconContext } from "react-icons";
 import { IoReaderOutline } from "react-icons/io5";
-import { shortAddress } from "@/utils/web3";
+import { shortAddress, formatEther } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
-import { formatEther } from "viem";
-
-enum Stages {
-  loading = "loading",
-  showTxns = "show transactions",
-}
+import { Stages } from "@/types/components";
+import Loading from "../Loading";
 
 const LatestTransactionsController: React.FC = () => {
-  const [stage, setStage] = useState(Stages.loading);
-  const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
   const MAX_TXNS_TO_SHOW = 6;
+  const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
+  const [stage, setStage] = useState(Stages.loading);
   const [blockHashOrBlockTag, setBlock] = useState<string | number>();
   const [txns, setTxns] = useState<BlockWithTransactions>();
 
@@ -27,28 +21,26 @@ const LatestTransactionsController: React.FC = () => {
     const _blockWithTxns = await getBlockWithTransactions(
       blockHashOrBlockTag as number | string
     );
-    console.log(_blockWithTxns);
     if (_blockWithTxns) setTxns(_blockWithTxns);
     return;
   };
 
   useEffect(() => {
-    if (latestBlockNumber && !blockHashOrBlockTag) setBlock(latestBlockNumber);
-    return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latestBlockNumber]);
-
-  useEffect(() => {
-    console.log("txns", { txns, blockHashOrBlockTag });
     if (!txns) {
+      if (latestBlockNumber && !blockHashOrBlockTag) {
+        setBlock(latestBlockNumber);
+        return;
+      }
       if (blockHashOrBlockTag) _getBlockWithTransactions();
       if (stage !== Stages.loading) setStage(Stages.loading);
       return;
     }
     if (txns) {
-      if (stage !== Stages.showTxns) setStage(Stages.showTxns);
+      if (stage !== Stages.show) setStage(Stages.show);
+      return;
     }
-  }, [stage, blockHashOrBlockTag, txns]);
+    return () => { };
+  }, [stage, latestBlockNumber, blockHashOrBlockTag, txns]);
 
   return (
     <div className="rounded-lg bg-slate-50 dark:bg-slate-600">
@@ -56,13 +48,13 @@ const LatestTransactionsController: React.FC = () => {
         <h2 className=" font-bold">Latest Transactions</h2>
       </div>
       {stage === Stages.loading && <Loading size={64} />}
-      {stage === Stages.showTxns && txns && (
+      {stage === Stages.show && txns && (
         <div className="flex flex-col">
           {txns.transactions.toReversed().map((txn, idx) => (
             <>
               {idx < MAX_TXNS_TO_SHOW && (
-                <div key={idx} >
-                  <div className="p-2 border-1 border-b md:flex md:justify-between md:items-center h-28 md:h-24">
+                <div key={idx}>
+                  <div className="h-28 p-2 border-1 border-b md:flex md:justify-between md:items-center  md:h-24">
                     {/* txn blockHash */}
                     <div className="md:flex md:space-x-2 md:items-center">
                       <div className="hidden md:inline">
@@ -76,7 +68,7 @@ const LatestTransactionsController: React.FC = () => {
                         <p className="md:hidden">Transaction</p>
                         <Link
                           className="text-blue-500 w-20 truncate"
-                          href={`/txn/${txn.hash}`}
+                          href={`/tx/${txn.hash}`}
                         >
                           {txn.hash}
                         </Link>
@@ -131,7 +123,7 @@ const LatestTransactionsController: React.FC = () => {
             </>
           ))}
           <div className="text-md text-gray-400 text-center py-2">
-            <Link className="" href="/tx">
+            <Link className="" href="/txs">
               View All Transactions
             </Link>
           </div>

@@ -1,31 +1,26 @@
 "use client";
-
-import type { Block } from "alchemy-sdk";
-
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Loading from "../Loading";
+import type { BlockWithTransactions } from "alchemy-sdk";
 import { useAlchemy } from "@/hooks/useAlchemy";
-import { shortAddress, blockReward } from "@/utils/web3";
+import { shortAddress } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
 import BlockIcon from "../icons/BlockIcon";
-
-enum Stages {
-  loading = "loading",
-  showList = "show list",
-}
+import BlockReward from "./BlockReward";
+import Loading from "../Loading";
+import { Stages } from "@/types/components";
 
 const LatestBlocksController: React.FC = () => {
-  const [stage, setStage] = useState(Stages.loading);
-  const { getBlock, latestBlockNumber } = useAlchemy();
   const MAX_BLOCKS_TO_SHOW = 6;
-  const [blocks, setBlocks] = useState<Block[]>([]);
+  const [stage, setStage] = useState(Stages.loading);
+  const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
+  const [blocks, setBlocks] = useState<BlockWithTransactions[]>([]);
   const [lastBlock, setLastBlock] = useState(0);
 
   // get latests blocks data
-  const _getBlocks = async () => {
+  const _getBlockWithTransactions = async () => {
     for (let i = 0; i < MAX_BLOCKS_TO_SHOW; i++) {
-      const _block = await getBlock(lastBlock - i);
+      const _block = await getBlockWithTransactions(lastBlock - i);
       if (_block) {
         setBlocks((prevBlocks) => [...prevBlocks, _block]);
       }
@@ -42,12 +37,12 @@ const LatestBlocksController: React.FC = () => {
   useEffect(() => {
     if (lastBlock !== 0) {
       if (blocks.length === 0) {
-        _getBlocks();
+        _getBlockWithTransactions();
         if (stage !== Stages.loading) setStage(Stages.loading);
         return;
       }
       if (blocks.length > 0) {
-        if (stage !== Stages.showList) setStage(Stages.showList);
+        if (stage !== Stages.show) setStage(Stages.show);
         return;
       }
     }
@@ -61,7 +56,7 @@ const LatestBlocksController: React.FC = () => {
           <h2 className=" font-bold">Latest Blocks</h2>
         </div>
         {stage === Stages.loading && <Loading size={64} />}
-        {stage === Stages.showList && (
+        {stage === Stages.show && (
           <div className="flex flex-col">
             {blocks.map((block, idx) => (
               <div key={idx}>
@@ -92,7 +87,7 @@ const LatestBlocksController: React.FC = () => {
                         <p>Fee recipient</p>
                         <Link
                           className="text-blue-500"
-                          href={`/block/${block.number}`}
+                          href={`/address/${block.miner}`}
                         >
                           {shortAddress(block.miner)}
                         </Link>
@@ -103,9 +98,7 @@ const LatestBlocksController: React.FC = () => {
                         <p className="text-gray-400">in 12 secs</p>
                       </div>
                     </div>
-                    <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                      <p>{blockReward(block)?.slice(0, 7)} Eth</p>
-                    </div>
+                    <BlockReward block={block} miniComp={true} />
                   </div>
                 </div>
               </div>

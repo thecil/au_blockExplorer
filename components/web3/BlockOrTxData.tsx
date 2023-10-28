@@ -4,7 +4,7 @@ import React from "react";
 import HelpIcon from "@/components/icons/HelpIcon";
 import Link from "next/link";
 
-interface BlockProps {
+interface BlockOrTxProps {
   title: string;
   data: {
     value: string | number;
@@ -17,10 +17,10 @@ interface BlockProps {
       href: string;
     };
   };
-  iconDescription?: string;
+  iconDescription?: string; // @TODO add description on each help icon
 }
 
-const BlockData: React.FC<BlockProps> = ({ title, data }) => {
+const BlockOrTxData: React.FC<BlockOrTxProps> = ({ title, data }) => {
   return (
     <div className="flex flex-col space-y-2 md:flex-row">
       {/* title */}
@@ -44,4 +44,4 @@ const BlockData: React.FC<BlockProps> = ({ title, data }) => {
   );
 };
 
-export default BlockData;
+export default BlockOrTxData;

@@ -1,25 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-// import Link from "next/link";
 import type { BlockWithTransactions } from "alchemy-sdk";
 import { useAlchemy } from "@/hooks/useAlchemy";
-import Loading from "@/components/Loading";
-import HelpIcon from "@/components/icons/HelpIcon";
-import TimeIcon from "@/components/icons/TimeIcon";
+import { Stages } from "@/types/components";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import {
   shortAddress,
-  blockReward,
+  getBurnedFees,
   formatGasToLocaleString,
-  fromHex
+  fromHex,
+  formatEther,
+  formatGwei
 } from "@/utils/web3";
-import BlockData from "@/components/web3/block/BlockData";
+import Loading from "@/components/Loading";
+import HelpIcon from "@/components/icons/HelpIcon";
+import TimeIcon from "@/components/icons/TimeIcon";
+import BlockOrTxData from "@/components/web3/BlockOrTxData";
+import BlockReward from "@/components/web3/BlockReward";
 
-enum Stages {
-  loading = "loading",
-  showBlock = "show block",
-}
 const Page = ({ params }: { params: { blockNumber: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
   const [block, setBlock] = useState<BlockWithTransactions>();
@@ -39,7 +38,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
       return;
     }
     if (block) {
-      if (stage !== Stages.showBlock) setStage(Stages.showBlock);
+      if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +54,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
         </div>
       </div>
       {stage === Stages.loading && <Loading size={64} />}
-      {stage === Stages.showBlock && block && (
+      {stage === Stages.show && block && (
         <>
           <div className="rounded-lg bg-slate-50 dark:bg-slate-700 p-4 mt-2 flex flex-col space-y-2">
             {/* block heigth */}
@@ -79,14 +78,14 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               </div>
             </div>
             {/* block transactions */}
-            <BlockData
+            <BlockOrTxData
               title="Transactions"
               data={{
                 value: `${block.transactions.length} transactions in this block`
               }}
             />
             {/* block fee recipient */}
-            <BlockData
+            <BlockOrTxData
               title="Fee Recipient"
               data={{
                 value: "in 12 secs",
@@ -98,42 +97,50 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             />
 
             {/* block reward */}
-            <BlockData
-              title="Block Reward"
-              data={{
-                value: `${blockReward(block)} ETH`
-              }}
-            />
+            <BlockReward block={block} />
             {/* block difficulty */}
-            <BlockData
+            <BlockOrTxData
               title="Total Difficulty"
               data={{
                 value: block._difficulty.toString()
               }}
             />
             {/* block gas used */}
-            <BlockData
+            <BlockOrTxData
               title="Gas Used"
               data={{
                 value: formatGasToLocaleString(block.gasUsed)
               }}
             />
             {/* block gas limit */}
-            <BlockData
+            <BlockOrTxData
               title="Gas Limit"
               data={{
                 value: formatGasToLocaleString(block.gasLimit)
               }}
             />
+            {/* block base fee per gas */}
+            {block.baseFeePerGas && (
+              <BlockOrTxData
+                title="Base Fee Per Gas"
+                data={{
+                  value: `${formatEther(
+                    BigInt(block.baseFeePerGas.toString())
+                  )} ETH (${formatGwei(
+                    BigInt(block.baseFeePerGas.toString())
+                  )} Gwei)`
+                }}
+              />
+            )}
             {/* block burnt fees */}
-            <BlockData
+            <BlockOrTxData
               title="Burnt Fees"
               data={{
-                value: `${blockReward(block)} ETH`
+                value: `${getBurnedFees(block)} ETH`
               }}
             />
             {/* block extra data */}
-            <BlockData
+            <BlockOrTxData
               title="Extra Data"
               data={{
                 value: fromHex(block.extraData as `0x${string}`, "string"),

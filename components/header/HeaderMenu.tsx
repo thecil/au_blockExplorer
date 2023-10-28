@@ -31,9 +31,9 @@ const HeaderMenu = () => {
       <button
         ref={menuButtonRef}
         onClick={() => setShowMenu(!showMenu)}
-        className="p-2 border border-solid hover:border-gray-400 rounded-full"
+        className="p-2 border border-solid hover:border-gray-400 rounded-lg"
       >
-        <IoMenu />
+        <IoMenu className="text-gray-400" />
       </button>
       {showMenu && (
         <div

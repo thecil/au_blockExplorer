@@ -2,7 +2,8 @@ import { Network, Alchemy, type BigNumber } from "alchemy-sdk";
 import type {
   Block,
   TransactionResponse,
-  BlockWithTransactions
+  BlockWithTransactions,
+  TransactionReceiptsResponse
 } from "alchemy-sdk";
 import { useMemo, useState, useEffect } from "react";
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
@@ -93,12 +94,29 @@ export const useAlchemy = () => {
     hash: string
   ): Promise<TransactionResponse | null> => {
     try {
-      const _tx = await alchemy.transact.getTransaction(hash);
+      const _tx = await alchemy.core.getTransaction(hash);
       if (_logs) console.log("useAlchemy:getTransaction", _tx);
 
       return _tx;
     } catch (error) {
       console.log("useAlchemy:getTransaction:error", { error });
+      return null;
+    }
+  };
+
+  // Gets all transaction receipts for a given block by number or block hash.
+  const getTransactionReceipts = async (
+    blockHash: string
+  ): Promise<TransactionReceiptsResponse | null> => {
+    try {
+      const _tx = await alchemy.core.getTransactionReceipts({
+        blockHash
+      });
+      if (_logs) console.log("useAlchemy:getTransactionReceipts ", _tx);
+
+      return _tx;
+    } catch (error) {
+      console.log("useAlchemy:getTransactionReceipts :error", { error });
       return null;
     }
   };
@@ -119,7 +137,7 @@ export const useAlchemy = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // store the latest block number
+  // store the latest block number fetched from subscription "block"
   const latestBlockNumber = useMemo(() => {
     if (_logs) console.log("latestBlockNumber", subBlockNumber);
     if (subBlockNumber !== 0) return subBlockNumber;
@@ -133,6 +151,7 @@ export const useAlchemy = () => {
     getBlock,
     getBlockWithTransactions,
     getTransaction,
+    getTransactionReceipts,
     // subscriptions
     latestBlockNumber
   };
