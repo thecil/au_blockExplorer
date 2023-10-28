@@ -5,17 +5,19 @@ import type { BlockWithTransactions } from "alchemy-sdk";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { shortAddress } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
+import { Stages } from "@/types/components";
 import BlockIcon from "../icons/BlockIcon";
 import BlockReward from "./BlockReward";
 import Loading from "../Loading";
-import { Stages } from "@/types/components";
+
 
 const LatestBlocksController: React.FC = () => {
   const MAX_BLOCKS_TO_SHOW = 6;
-  const [stage, setStage] = useState(Stages.loading);
   const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
-  const [blocks, setBlocks] = useState<BlockWithTransactions[]>([]);
+  const [stage, setStage] = useState(Stages.loading);
   const [lastBlock, setLastBlock] = useState(0);
+  const [blocks, setBlocks] = useState<BlockWithTransactions[]>([]);
+
 
   // get latests blocks data
   const _getBlockWithTransactions = async () => {
@@ -29,16 +31,14 @@ const LatestBlocksController: React.FC = () => {
   };
 
   useEffect(() => {
-    if (latestBlockNumber && lastBlock === 0) setLastBlock(latestBlockNumber);
-    return;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latestBlockNumber]);
-
-  useEffect(() => {
+    if (latestBlockNumber && lastBlock === 0) {
+      setLastBlock(latestBlockNumber);
+      return;
+    }
     if (lastBlock !== 0) {
       if (blocks.length === 0) {
-        _getBlockWithTransactions();
         if (stage !== Stages.loading) setStage(Stages.loading);
+        _getBlockWithTransactions();
         return;
       }
       if (blocks.length > 0) {
@@ -46,8 +46,9 @@ const LatestBlocksController: React.FC = () => {
         return;
       }
     }
+    return () => { };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, lastBlock, blocks]);
+  }, [stage, latestBlockNumber, lastBlock, blocks]);
 
   return (
     <>
