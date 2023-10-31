@@ -5,7 +5,7 @@ import type {
   BlockWithTransactions,
   TransactionReceiptsResponse
 } from "alchemy-sdk";
-import { useMemo, useState, useEffect } from "react";
+// import { useMemo, useState, useEffect } from "react";
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const _logs = false; // show console.logs for debugging
 
@@ -122,27 +122,31 @@ export const useAlchemy = () => {
   };
 
   // Subscription for new blocks on Eth Mainnet.
-  const [subBlockNumber, setSubBlockNumber] = useState(0);
+  // const [subBlockNumber, setSubBlockNumber] = useState(0);
 
-  useEffect(() => {
-    const eventHandler = (_blockNumber: any) => {
-      setSubBlockNumber(_blockNumber);
-    };
+  // useEffect(() => {
+  //   const eventHandler = (_blockNumber: any) => {
+  //     console.log("latest block", _blockNumber);
 
-    alchemy.ws.on("block", eventHandler);
+  //     setSubBlockNumber(_blockNumber);
+  //   };
 
-    return () => {
-      alchemy.ws.off("block", eventHandler);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   alchemy.ws.on("block", eventHandler);
 
-  // store the latest block number fetched from subscription "block"
-  const latestBlockNumber = useMemo(() => {
-    if (_logs) console.log("latestBlockNumber", subBlockNumber);
-    if (subBlockNumber !== 0) return subBlockNumber;
-    return;
-  }, [subBlockNumber]);
+  //   return () => {
+  //     console.log("subs off");
+
+  //     alchemy.ws.off("block", eventHandler);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  // // store the latest block number fetched from subscription "block"
+  // const latestBlockNumber = useMemo(() => {
+  //   if (_logs) console.log("latestBlockNumber", subBlockNumber);
+  //   if (subBlockNumber !== 0) return subBlockNumber;
+  //   return;
+  // }, [subBlockNumber]);
 
   return {
     // methods
@@ -151,8 +155,8 @@ export const useAlchemy = () => {
     getBlock,
     getBlockWithTransactions,
     getTransaction,
-    getTransactionReceipts,
+    getTransactionReceipts
     // subscriptions
-    latestBlockNumber
+    // latestBlockNumber
   };
 };

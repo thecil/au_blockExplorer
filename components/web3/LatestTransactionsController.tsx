@@ -10,9 +10,15 @@ import { elapsedTime } from "@/utils/unixTime";
 import { Stages } from "@/types/components";
 import Loading from "../Loading";
 
-const LatestTransactionsController: React.FC = () => {
+interface LatestTransactionsControllerProps {
+  latestBlockNumber: number;
+}
+
+const LatestTransactionsController: React.FC<
+  LatestTransactionsControllerProps
+> = ({ latestBlockNumber }) => {
   const MAX_TXNS_TO_SHOW = 6;
-  const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
+  const { getBlockWithTransactions } = useAlchemy();
   const [stage, setStage] = useState(Stages.loading);
   const [blockHashOrBlockTag, setBlock] = useState<string | number>();
   const [txns, setTxns] = useState<BlockWithTransactions>();
@@ -39,7 +45,7 @@ const LatestTransactionsController: React.FC = () => {
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
-    return () => { };
+    return () => {};
   }, [stage, latestBlockNumber, blockHashOrBlockTag, txns]);
 
   return (

@@ -10,14 +10,18 @@ import BlockIcon from "../icons/BlockIcon";
 import BlockReward from "./BlockReward";
 import Loading from "../Loading";
 
+interface LatestBlocksControllerProps {
+  latestBlockNumber: number;
+}
 
-const LatestBlocksController: React.FC = () => {
+const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
+  latestBlockNumber
+}) => {
   const MAX_BLOCKS_TO_SHOW = 6;
-  const { getBlockWithTransactions, latestBlockNumber } = useAlchemy();
+  const { getBlockWithTransactions } = useAlchemy();
   const [stage, setStage] = useState(Stages.loading);
   const [lastBlock, setLastBlock] = useState(0);
   const [blocks, setBlocks] = useState<BlockWithTransactions[]>([]);
-
 
   // get latests blocks data
   const _getBlockWithTransactions = async () => {
@@ -46,7 +50,7 @@ const LatestBlocksController: React.FC = () => {
         return;
       }
     }
-    return () => { };
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, latestBlockNumber, lastBlock, blocks]);
 

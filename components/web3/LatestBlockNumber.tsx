@@ -1,11 +1,15 @@
 "use client";
 
-import { useAlchemy } from "@/hooks/useAlchemy";
+import React from "react";
 import Link from "next/link";
 
-const LatestBlockNumber = () => {
-  const { latestBlockNumber } = useAlchemy();
+interface LastBlockNumberProps {
+  latestBlockNumber: number;
+}
 
+const LatestBlockNumber: React.FC<LastBlockNumberProps> = ({
+  latestBlockNumber
+}) => {
   return (
     <>
       {latestBlockNumber && latestBlockNumber !== 0 && (
