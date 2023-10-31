@@ -1,5 +1,7 @@
 const MS = 1000;
 
+export const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 // convert a date to timestamp (unix)
 export const toUnixTime = (date: Date) => {
   if (!date) return 0;

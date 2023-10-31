@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { BlockWithTransactions } from "alchemy-sdk";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { shortAddress } from "@/utils/web3";
-import { elapsedTime } from "@/utils/unixTime";
+import { elapsedTime, sleep } from "@/utils/unixTime";
 import { Stages } from "@/types/components";
 import BlockIcon from "../icons/BlockIcon";
 import BlockReward from "./BlockReward";
@@ -26,6 +26,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
   // get latests blocks data
   const _getBlockWithTransactions = async () => {
     for (let i = 0; i < MAX_BLOCKS_TO_SHOW; i++) {
+      await sleep(1000);
       const _block = await getBlockWithTransactions(lastBlock - i);
       if (_block) {
         setBlocks((prevBlocks) => [...prevBlocks, _block]);
