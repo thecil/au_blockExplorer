@@ -2,20 +2,22 @@
 
 import { useState, useEffect } from "react";
 import type { TransactionResponse } from "alchemy-sdk";
+import iconDesciptions from "@/data/iconDescriptions.json";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { Stages } from "@/types/components";
 import { shortAddress, getTransactionFee, formatEther } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
+import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
 import HelpIcon from "@/components/icons/HelpIcon";
 import TimeIcon from "@/components/icons/TimeIcon";
 import BlockOrTxData from "@/components/web3/BlockOrTxData";
 
-
 const Page = ({ params }: { params: { txHash: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
   const [tx, setTx] = useState<TransactionResponse>();
   const { getTransaction } = useAlchemy();
+  const { transaction: iconDescription } = iconDesciptions;
 
   const _getTx = async () => {
     const _tx = await getTransaction(params.txHash);
@@ -52,6 +54,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             data={{
               value: tx.hash
             }}
+            iconDescription={iconDescription.txHash}
           />
           {/* tx block hash */}
           <BlockOrTxData
@@ -63,12 +66,15 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 href: `/block/${tx.blockNumber as number}`
               }
             }}
+            iconDescription={iconDescription.block}
           />
           {/* tx timestamp */}
           {tx.timestamp && (
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <HelpIcon />
+                <Tooltip message={iconDescription.timestamp}>
+                  <HelpIcon />
+                </Tooltip>
                 <p>Timestamp:</p>
               </div>
               <div className="flex space-x-1 items-center">
@@ -88,6 +94,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 href: `/address/${tx.from}`
               }
             }}
+            iconDescription={iconDescription.from}
           />
           {/* tx to */}
           {tx.to && (
@@ -100,6 +107,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                   href: `/address/${tx.to}`
                 }
               }}
+              iconDescription={iconDescription.to}
             />
           )}
           {/* tx value */}
@@ -108,6 +116,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             data={{
               value: `${formatEther(BigInt(tx.value.toString()))} ETH`
             }}
+            iconDescription={iconDescription.value}
           />
           {/* tx fee */}
           <BlockOrTxData
@@ -115,6 +124,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             data={{
               value: `${getTransactionFee(tx)} ETH`
             }}
+            iconDescription={iconDescription.txFee}
           />
         </div>
       )}

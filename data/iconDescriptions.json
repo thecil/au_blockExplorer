@@ -12,5 +12,13 @@
         "burntFees": "Post-London Upgrade, this represents the part of the tx fee that is burnt: baseFeePerGas * gasUsed.",
         "extraData": "Any data that can be included by the block producer in the block."
     },
-    "transaction": {}
+    "transaction": {
+        "txHash": "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
+        "block": "Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.",
+        "timestamp": "The date and time at which a transaction is produced.",
+        "from": "The sending party of the transaction.",
+        "to": "The receiving party of the transaction (could be a contract address).",
+        "value": "The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.",
+        "txFee": "Amount paid to process the transaction in Ether and fiat value."
+    }
 }
