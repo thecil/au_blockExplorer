@@ -128,7 +128,7 @@ const LatestTransactionsController: React.FC<
               )}
             </>
           ))}
-          <div className="text-md text-gray-400 text-center py-2">
+          <div className="text-md text-gray-500 text-center py-2">
             <Link className="" href="/txs">
               View All Transactions
             </Link>

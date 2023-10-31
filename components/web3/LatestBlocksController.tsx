@@ -80,7 +80,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                       >
                         {block.number}
                       </Link>
-                      <p className="text-gray-400">
+                      <p className="text-gray-500">
                         {elapsedTime(block.timestamp)}
                       </p>
                     </div>
@@ -101,7 +101,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                       {/* total transactions on block */}
                       <div className="flex space-x-1">
                         <p>{block.transactions.length} txns</p>
-                        <p className="text-gray-400">in 12 secs</p>
+                        <p className="text-gray-500">in 12 secs</p>
                       </div>
                     </div>
                     <BlockReward block={block} miniComp={true} />
@@ -109,7 +109,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                 </div>
               </div>
             ))}
-            <div className="text-md text-gray-400 text-center py-2">
+            <div className="text-md text-gray-500 text-center py-2">
               <Link className="" href="/blocks">
                 View All Blocks
               </Link>
