@@ -1,0 +1,16 @@
+{
+    "block": {
+        "blockHeight": "Also known as Block Number. The block height, which indicates the length of the blockchain, increases after the addition of the new block.",
+        "timestamp": "The date and time at which a block is produced.",
+        "transactions": "The number of transactions in the block. Internal transaction is transactions as a result of contract execution that involves Ether value.",
+        "feeRecipient": "Address receiving fees from transactions in this block.",
+        "blockReward": "For each block, the block producer is rewarded with a finite amount of Ether on top of the fees paid for all transactions in the block.",
+        "totalDifficulty": "Total difficulty of the chain until this block.",
+        "gasUsed": "The total gas used in the block and its percentage of gas filled in the block.",
+        "gasLimit": "Total gas limit provided by all transactions in the block.",
+        "baseFeePerGas": "Post-London Upgrade, this represents the minimum gasUsed multiplier required for a tx to be included in a block.",
+        "burntFees": "Post-London Upgrade, this represents the part of the tx fee that is burnt: baseFeePerGas * gasUsed.",
+        "extraData": "Any data that can be included by the block producer in the block."
+    },
+    "transaction": {}
+}

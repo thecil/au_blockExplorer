@@ -3,6 +3,7 @@
 import React from "react";
 import HelpIcon from "@/components/icons/HelpIcon";
 import Link from "next/link";
+import Tooltip from "../ToolTip";
 
 interface BlockOrTxProps {
   title: string;
@@ -17,15 +18,17 @@ interface BlockOrTxProps {
       href: string;
     };
   };
-  iconDescription?: string; // @TODO add description on each help icon
+  iconDescription: string; // @TODO add description on each help icon
 }
 
-const BlockOrTxData: React.FC<BlockOrTxProps> = ({ title, data }) => {
+const BlockOrTxData: React.FC<BlockOrTxProps> = ({ title, data, iconDescription }) => {
   return (
     <div className="flex flex-col space-y-2 md:flex-row">
       {/* title */}
       <div className=" md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-        <HelpIcon />
+        <Tooltip message={iconDescription}>
+          <HelpIcon />
+        </Tooltip>
         <p>{title}:</p>
       </div>
       {/* data */}

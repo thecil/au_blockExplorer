@@ -7,10 +7,11 @@ import type {
   TransactionReceipt
 } from "alchemy-sdk";
 import { Stages, BlockFees } from "@/types/components";
-import Loading from "../Loading";
-import { getBlockReward } from "@/utils/web3";
-import BlockOrTxData from "./BlockOrTxData";
 import { useAlchemy } from "@/hooks/useAlchemy";
+import { getBlockReward } from "@/utils/web3";
+import iconDesciptions from "@/data/iconDescriptions.json";
+import Loading from "../Loading";
+import BlockOrTxData from "./BlockOrTxData";
 
 interface BlockRewardProps {
   block: BlockWithTransactions;
@@ -24,6 +25,7 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
     TransactionReceipt[] | undefined
   >(undefined);
   const { getTransactionReceipts } = useAlchemy();
+  const { block: iconDescription } = iconDesciptions;
 
   const _getTransactionReceipts = async () => {
     const _txnsReceipts: TransactionReceiptsResponse | null =
@@ -69,6 +71,7 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
               data={{
                 value: `${blockFees.blockReward} ETH ( 0 + ${blockFees.totalTxFees} - ${blockFees.burntFees})`
               }}
+              iconDescription={iconDescription.blockReward}
             />
           )}
         </>

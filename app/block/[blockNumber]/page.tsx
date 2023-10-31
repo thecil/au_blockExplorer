@@ -13,6 +13,8 @@ import {
   formatEther,
   formatGwei
 } from "@/utils/web3";
+import iconDesciptions from "@/data/iconDescriptions.json";
+import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
 import HelpIcon from "@/components/icons/HelpIcon";
 import TimeIcon from "@/components/icons/TimeIcon";
@@ -23,6 +25,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
   const [block, setBlock] = useState<BlockWithTransactions>();
   const { getBlockWithTransactions } = useAlchemy();
+  const { block: iconDescription } = iconDesciptions;
 
   const _getBlock = async () => {
     const _block = await getBlockWithTransactions(parseInt(params.blockNumber));
@@ -60,7 +63,9 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             {/* block heigth */}
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <HelpIcon />
+                <Tooltip message={iconDescription.blockHeight}>
+                  <HelpIcon />
+                </Tooltip>
                 <p>Block Height:</p>
               </div>
               <p>{block.number}</p>
@@ -68,7 +73,9 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             {/* block timestamp */}
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <HelpIcon />
+                <Tooltip message={iconDescription.timestamp}>
+                  <HelpIcon />
+                </Tooltip>
                 <p>Timestamp:</p>
               </div>
               <div className="flex space-x-1 items-center">
@@ -83,6 +90,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               data={{
                 value: `${block.transactions.length} transactions in this block`
               }}
+              iconDescription={iconDescription.transactions}
             />
             {/* block fee recipient */}
             <BlockOrTxData
@@ -94,6 +102,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                   href: `/address/${block.miner}`
                 }
               }}
+              iconDescription={iconDescription.feeRecipient}
             />
 
             {/* block reward */}
@@ -104,6 +113,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               data={{
                 value: block._difficulty.toString()
               }}
+              iconDescription={iconDescription.totalDifficulty}
             />
             {/* block gas used */}
             <BlockOrTxData
@@ -111,6 +121,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               data={{
                 value: formatGasToLocaleString(block.gasUsed)
               }}
+              iconDescription={iconDescription.gasUsed}
             />
             {/* block gas limit */}
             <BlockOrTxData
@@ -118,6 +129,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               data={{
                 value: formatGasToLocaleString(block.gasLimit)
               }}
+              iconDescription={iconDescription.gasLimit}
             />
             {/* block base fee per gas */}
             {block.baseFeePerGas && (
@@ -130,6 +142,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                     BigInt(block.baseFeePerGas.toString())
                   )} Gwei)`
                 }}
+                iconDescription={iconDescription.baseFeePerGas}
               />
             )}
             {/* block burnt fees */}
@@ -138,6 +151,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
               data={{
                 value: `${getBurnedFees(block)} ETH`
               }}
+              iconDescription={iconDescription.burntFees}
             />
             {/* block extra data */}
             <BlockOrTxData
@@ -149,6 +163,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                   style: "truncate"
                 }
               }}
+              iconDescription={iconDescription.extraData}
             />
           </div>
         </>
