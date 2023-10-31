@@ -14,10 +14,10 @@ import {
   formatGwei
 } from "@/utils/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
+import { Icons } from "@/types/components";
 import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
-import HelpIcon from "@/components/icons/HelpIcon";
-import TimeIcon from "@/components/icons/TimeIcon";
+import IconController from "@/components/IconController";
 import BlockOrTxData from "@/components/web3/BlockOrTxData";
 import BlockReward from "@/components/web3/BlockReward";
 
@@ -64,7 +64,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
                 <Tooltip message={iconDescription.blockHeight}>
-                  <HelpIcon />
+                  <IconController icon={Icons.help} />
                 </Tooltip>
                 <p>Block Height:</p>
               </div>
@@ -74,12 +74,12 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
                 <Tooltip message={iconDescription.timestamp}>
-                  <HelpIcon />
+                  <IconController icon={Icons.help} />
                 </Tooltip>
                 <p>Timestamp:</p>
               </div>
               <div className="flex space-x-1 items-center">
-                <TimeIcon size="1.2em" />
+                <IconController icon={Icons.time} size="1.2em"/>
                 <p>{elapsedTime(block.timestamp)}</p>
                 <p>({unixToDate(block.timestamp)})</p>
               </div>
@@ -103,6 +103,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
                 }
               }}
               iconDescription={iconDescription.feeRecipient}
+              copy={block.miner}
             />
 
             {/* block reward */}

@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from "react";
 import type { TransactionResponse } from "alchemy-sdk";
+import { Stages } from "@/types/components";
+import { Icons } from "@/types/components";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import { useAlchemy } from "@/hooks/useAlchemy";
-import { Stages } from "@/types/components";
 import { shortAddress, getTransactionFee, formatEther } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
-import HelpIcon from "@/components/icons/HelpIcon";
-import TimeIcon from "@/components/icons/TimeIcon";
+import IconController from "@/components/IconController";
 import BlockOrTxData from "@/components/web3/BlockOrTxData";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
@@ -73,12 +73,12 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
                 <Tooltip message={iconDescription.timestamp}>
-                  <HelpIcon />
+                  <IconController icon={Icons.help} />
                 </Tooltip>
                 <p>Timestamp:</p>
               </div>
               <div className="flex space-x-1 items-center">
-                <TimeIcon size="1.2em" />
+                <IconController icon={Icons.time} size="1.2em" />
                 <p>{elapsedTime(tx.timestamp)}</p>
                 <p>({unixToDate(tx.timestamp)})</p>
               </div>
