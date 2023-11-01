@@ -167,19 +167,19 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                     tx.gasLimit
                   )}  | [usage] (%)`
                 }}
-                iconDescription={iconDescription.txFee}
+                iconDescription={iconDescription.gasLimitUsage}
               />
               {/* tx gas price */}
               <BlockOrTxData
                 title="Gas Fees"
                 data={{
-                  value: `Base: [base fee] Gwei | Max: ${formatGwei(
+                  value: `Base: [base gas] Gwei | Max: ${formatGwei(
                     BigInt(tx.maxFeePerGas?.toString() as string)
                   )} Gwei | Max Priority: ${formatGwei(
                     BigInt(tx.maxPriorityFeePerGas?.toString() as string)
                   )} Gwei`
                 }}
-                iconDescription={iconDescription.txFee}
+                iconDescription={iconDescription.gasFees}
               />
             </div>
           </Accordion>

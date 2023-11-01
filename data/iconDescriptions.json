@@ -19,6 +19,11 @@
         "from": "The sending party of the transaction.",
         "to": "The receiving party of the transaction (could be a contract address).",
         "value": "The value being transacted in Ether and fiat value. Note: You can click the fiat value (if available) to see historical value at the time of transaction.",
-        "txFee": "Amount paid to process the transaction in Ether and fiat value."
+        "txFee": "Amount paid to process the transaction in Ether and fiat value.",
+        "gasLimitUsage": "Maximum amount of gas allocated for the transaction & the amount eventually used. Normal ETH transfers involve 21,000 gas units while contracts involve higher values.",
+        "gasFees": "Base Fee refers to the network Base Fee at the time of the block, while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay for their tx & to give to the block producer respectively.",
+        "burntSavingFees": "Total amount of ETH burnt from this tx & total fees saved from the amount the user was willing to pay for this tx.",
+        "otherAttributes": "Other data related to this transaction.",
+        "inputData": "Additional data included for this transaction. Commonly used as part of contract interaction or as a message sent to the recipient."
     }
 }
