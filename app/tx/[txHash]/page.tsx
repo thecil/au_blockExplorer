@@ -15,8 +15,7 @@ import {
   formatGasToLocaleString,
   getGasUsagePercentage
 } from "@/utils/web3";
-// import { elapsedTime, unixToDate } from "@/utils/unixTime";
-// import Tooltip from "@/components/ToolTip";
+import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
@@ -60,7 +59,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
     <div className="p-4 min-h-screen">
       {/* tx hash header*/}
       <div className="py-4 border-b border-gray-500 ">
-        <h2 className="font-bold">Transaction Details</h2>
+        <h2 className="font-bold text-xl">Transaction Details</h2>
       </div>
       {stage === Stages.loading && <Loading size={64} />}
       {stage === Stages.show && tx && (
@@ -72,7 +71,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
               iconDescription={iconDescription.txHash}
             >
               <div className="flex space-x-1 items-center">
-                <p className="truncate">{params.txHash}</p>
+                <span className="truncate ">{params.txHash}</span>
                 <CopyToClipboardButton text={params.txHash} />
               </div>
             </BlockOrTxContent>
@@ -114,21 +113,20 @@ const Page = ({ params }: { params: { txHash: string } }) => {
               </div>
             </BlockOrTxContent>
             {/* tx timestamp */}
-            {/* {tx. && (
-              <div className="flex flex-col space-y-2  md:flex-row">
-                <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                  <Tooltip message={iconDescription.timestamp}>
-                    <IconController icon={Icons.help} />
-                  </Tooltip>
-                  <p>Timestamp:</p>
+            {tx.response?.timestamp && (
+              <BlockOrTxContent
+                title="Timestamp"
+                iconDescription={iconDescription.timestamp}
+              >
+                <div className="flex flex-col space-y-2  md:flex-row">
+                  <div className="flex space-x-1 items-center">
+                    <IconController icon={Icons.time} size="1.2em" />
+                    <p>{elapsedTime(tx.response.timestamp as number)}</p>
+                    <p>({unixToDate(tx.response.timestamp as number)})</p>
+                  </div>
                 </div>
-                <div className="flex space-x-1 items-center">
-                  <IconController icon={Icons.time} size="1.2em" />
-                  <p>{elapsedTime(tx.timestamp)}</p>
-                  <p>({unixToDate(tx.timestamp)})</p>
-                </div>
-              </div>
-            )} */}
+              </BlockOrTxContent>
+            )}
             {/* tx from */}
             <BlockOrTxContent
               title="From"
