@@ -13,6 +13,7 @@ interface BlockOrTxProps {
     extra?: {
       value: string | number;
       style?: string;
+      noFlex: boolean;
     };
     link?: {
       title: string;
@@ -39,14 +40,16 @@ const BlockOrTxData: React.FC<BlockOrTxProps> = ({
         <p>{title}:</p>
       </div>
       {/* data */}
-      <div className="flex flex-col">
+      <div
+        className={`flex ${data.extra && data.extra.noFlex ? "space-x-1" : "flex-col"}`}
+      >
         <div className="flex space-x-1 items-center">
           {data.link && (
             <Link className="text-blue-500" href={data.link.href}>
               {data.link.title}
             </Link>
           )}
-          <p>{data.value}</p>
+          <p className="truncate">{data.value}</p>
           {copy && <CopyToClipboardButton text={copy} />}
         </div>
         {data.extra && <p className={data.extra.style}>{data.extra.value}</p>}

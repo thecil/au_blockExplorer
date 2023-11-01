@@ -8,7 +8,9 @@ import {
   IoTimeOutline, // time icon
   IoCopyOutline, // copy icon
   IoCheckmark, // check mark icon
-  IoReaderOutline // tx icon
+  IoReaderOutline, // tx icon
+  IoAdd,
+  IoRemove
 } from "react-icons/io5";
 import { Icons } from "@/types/components";
 
@@ -36,6 +38,10 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
         );
       case Icons.transaction:
         return <IoReaderOutline />;
+      case Icons.add:
+        return <IoAdd />;
+      case Icons.remove:
+        return <IoRemove />;
       default:
         return null;
     }

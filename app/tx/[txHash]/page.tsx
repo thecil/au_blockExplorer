@@ -10,13 +10,15 @@ import {
   shortAddress,
   getTransactionFee,
   formatEther,
-  formatGwei
+  formatGwei,
+  formatGasToLocaleString
 } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockOrTxData from "@/components/web3/BlockOrTxData";
+import Accordion from "@/components/Accordion";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
@@ -52,100 +54,136 @@ const Page = ({ params }: { params: { txHash: string } }) => {
       </div>
       {stage === Stages.loading && <Loading size={64} />}
       {stage === Stages.show && tx && (
-        <div className="rounded-lg bg-slate-50 dark:bg-slate-700 p-4 mt-2 flex flex-col space-y-2">
-          {/* tx hash */}
-          <BlockOrTxData
-            title="Transaction Hash"
-            data={{
-              value: tx.hash
-            }}
-            iconDescription={iconDescription.txHash}
-          />
-          {/* tx block hash */}
-          <BlockOrTxData
-            title="Block"
-            data={{
-              value: "",
-              link: {
-                title: `${tx.blockNumber as number}`,
-                href: `/block/${tx.blockNumber as number}`
-              }
-            }}
-            iconDescription={iconDescription.block}
-          />
-          {/* tx timestamp */}
-          {tx.timestamp && (
-            <div className="flex flex-col space-y-2  md:flex-row">
-              <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <Tooltip message={iconDescription.timestamp}>
-                  <IconController icon={Icons.help} />
-                </Tooltip>
-                <p>Timestamp:</p>
-              </div>
-              <div className="flex space-x-1 items-center">
-                <IconController icon={Icons.time} size="1.2em" />
-                <p>{elapsedTime(tx.timestamp)}</p>
-                <p>({unixToDate(tx.timestamp)})</p>
-              </div>
-            </div>
-          )}
-          {/* tx from */}
-          <BlockOrTxData
-            title="From"
-            data={{
-              value: "",
-              link: {
-                title: `${shortAddress(tx.from)}`,
-                href: `/address/${tx.from}`
-              }
-            }}
-            iconDescription={iconDescription.from}
-            copy={tx.from}
-          />
-          {/* tx to */}
-          {tx.to && (
+        <>
+          <div className="rounded-lg bg-slate-100 dark:bg-black p-4 mt-2 flex flex-col space-y-2">
+            {/* tx hash */}
             <BlockOrTxData
-              title="To"
+              title="Transaction Hash"
+              data={{
+                value: tx.hash
+              }}
+              iconDescription={iconDescription.txHash}
+              copy={tx.hash}
+            />
+            {/* tx block */}
+            <BlockOrTxData
+              title="Block"
               data={{
                 value: "",
                 link: {
-                  title: `${shortAddress(tx.to)}`,
-                  href: `/address/${tx.to}`
+                  title: `${tx.blockNumber as number}`,
+                  href: `/block/${tx.blockNumber as number}`
+                },
+                extra: {
+                  value: `${tx.confirmations} Block Confirmations`,
+                  style:
+                    "px-2 border rounded-lg text-sm bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800",
+                  noFlex: true
                 }
               }}
-              iconDescription={iconDescription.to}
-              copy={tx.to}
+              iconDescription={iconDescription.block}
             />
-          )}
-          {/* tx value */}
-          <BlockOrTxData
-            title="Value"
-            data={{
-              value: `${formatEther(BigInt(tx.value.toString()))} ETH`
-            }}
-            iconDescription={iconDescription.value}
-          />
-          {/* tx fee */}
-          <BlockOrTxData
-            title="Transaction Fee"
-            data={{
-              value: `${getTransactionFee(tx)} ETH`
-            }}
-            iconDescription={iconDescription.txFee}
-          />
-          {/* tx gas price */}
-          <BlockOrTxData
-            title="Transaction Fee"
-            data={{
-              value: `${formatGwei(
-                BigInt(tx.gasPrice?.toString() as string)
-              )} Gwei (${formatEther(
-                BigInt(tx.gasPrice?.toString() as string)
-              )} ETH)`
-            }}
-            iconDescription={iconDescription.txFee}
-          />
-        </div>
+            {/* tx timestamp */}
+            {tx.timestamp && (
+              <div className="flex flex-col space-y-2  md:flex-row">
+                <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
+                  <Tooltip message={iconDescription.timestamp}>
+                    <IconController icon={Icons.help} />
+                  </Tooltip>
+                  <p>Timestamp:</p>
+                </div>
+                <div className="flex space-x-1 items-center">
+                  <IconController icon={Icons.time} size="1.2em" />
+                  <p>{elapsedTime(tx.timestamp)}</p>
+                  <p>({unixToDate(tx.timestamp)})</p>
+                </div>
+              </div>
+            )}
+            {/* tx from */}
+            <BlockOrTxData
+              title="From"
+              data={{
+                value: "",
+                link: {
+                  title: `${shortAddress(tx.from)}`,
+                  href: `/address/${tx.from}`
+                }
+              }}
+              iconDescription={iconDescription.from}
+              copy={tx.from}
+            />
+            {/* tx to */}
+            {tx.to && (
+              <BlockOrTxData
+                title="To"
+                data={{
+                  value: "",
+                  link: {
+                    title: `${shortAddress(tx.to)}`,
+                    href: `/address/${tx.to}`
+                  }
+                }}
+                iconDescription={iconDescription.to}
+                copy={tx.to}
+              />
+            )}
+            {/* tx value */}
+            <BlockOrTxData
+              title="Value"
+              data={{
+                value: `${formatEther(BigInt(tx.value.toString()))} ETH`
+              }}
+              iconDescription={iconDescription.value}
+            />
+            {/* tx fee */}
+            <BlockOrTxData
+              title="Transaction Fee"
+              data={{
+                value: `${getTransactionFee(tx)} ETH`
+              }}
+              iconDescription={iconDescription.txFee}
+            />
+            {/* tx gas price */}
+            <BlockOrTxData
+              title="Gas Price"
+              data={{
+                value: `${formatGwei(
+                  BigInt(tx.gasPrice?.toString() as string)
+                )} Gwei (${formatEther(
+                  BigInt(tx.gasPrice?.toString() as string)
+                )} ETH)`
+              }}
+              iconDescription={iconDescription.txFee}
+            />
+          </div>
+          {/* more details accordion */}
+          <Accordion title="More Details:">
+            <div className="flex flex-col space-y-2">
+              {/* tx gas price */}
+              <BlockOrTxData
+                title="Gas Limit & Usage by Txn"
+                data={{
+                  value: `${formatGasToLocaleString(
+                    tx.gasLimit
+                  )}  | [usage] (%)`
+                }}
+                iconDescription={iconDescription.txFee}
+              />
+              {/* tx gas price */}
+              <BlockOrTxData
+                title="Gas Fees"
+                data={{
+                  value: `Base: [base fee] Gwei | Max: ${formatGwei(
+                    BigInt(tx.maxFeePerGas?.toString() as string)
+                  )} Gwei | Max Priority: ${formatGwei(
+                    BigInt(tx.maxPriorityFeePerGas?.toString() as string)
+                  )} Gwei`
+                }}
+                iconDescription={iconDescription.txFee}
+              />
+            </div>
+          </Accordion>
+        </>
       )}
     </div>
   );

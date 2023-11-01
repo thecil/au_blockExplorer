@@ -50,7 +50,7 @@ const LatestTransactionsController: React.FC<
   }, [stage, latestBlockNumber, blockHashOrBlockTag, txns]);
 
   return (
-    <div className="rounded-lg bg-slate-100 dark:bg-slate-900">
+    <div className="rounded-lg bg-slate-100 dark:bg-black">
       <div className="border-1 border-b p-2">
         <h2 className="font-bold">Latest Transactions</h2>
       </div>
