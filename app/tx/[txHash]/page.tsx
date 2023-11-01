@@ -13,7 +13,7 @@ import {
   formatEther,
   formatGwei,
   formatGasToLocaleString,
-  getGasUsagePercentage,
+  getGasUsagePercentage
 } from "@/utils/web3";
 // import { elapsedTime, unixToDate } from "@/utils/unixTime";
 // import Tooltip from "@/components/ToolTip";
@@ -22,7 +22,6 @@ import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
 import CopyToClipboardButton from "@/components/CopyToClipboard";
-import BlockOrTxData from "@/components/web3/BlockOrTxData";
 import Accordion from "@/components/Accordion";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
@@ -36,7 +35,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
     const _response = await getTransaction(params.txHash);
     const _transaction: Transaction = {
       receipt: _receipt,
-      response: _response,
+      response: _response
     };
     console.log("_getTx", { _transaction });
     if (_transaction.receipt !== null || _transaction.response !== null)
