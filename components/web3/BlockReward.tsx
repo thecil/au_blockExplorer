@@ -6,7 +6,8 @@ import type {
   TransactionReceiptsResponse,
   TransactionReceipt
 } from "alchemy-sdk";
-import { Stages, BlockFees } from "@/types/components";
+import { BlockFees } from "@/types/web3";
+import { Stages } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { getBlockReward } from "@/utils/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
