@@ -13,7 +13,7 @@ interface BlockOrTxProps {
     extra?: {
       value: string | number;
       style?: string;
-      noFlex: boolean;
+      noFlex?: boolean;
     };
     link?: {
       title: string;
