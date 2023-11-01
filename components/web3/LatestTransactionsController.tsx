@@ -1,13 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+"use client";
 import React, { useEffect, useState } from "react";
-import type { BlockWithTransactions } from "alchemy-sdk";
 import Link from "next/link";
+import type { BlockWithTransactions } from "alchemy-sdk";
+import { Icons } from "@/types/components";
+import { Stages } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
-import { IconContext } from "react-icons";
-import { IoReaderOutline } from "react-icons/io5";
 import { shortAddress, formatEther } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
-import { Stages } from "@/types/components";
+import IconController from "../IconController";
 import Loading from "../Loading";
 
 interface LatestTransactionsControllerProps {
@@ -59,70 +59,68 @@ const LatestTransactionsController: React.FC<
           {txns.transactions.toReversed().map((txn, idx) => (
             <>
               {idx < MAX_TXNS_TO_SHOW && (
-                <div key={idx}>
-                  <div className="h-28 p-2 border-1 border-b md:flex md:justify-between md:items-center  md:h-24">
-                    {/* txn blockHash */}
-                    <div className="md:flex md:space-x-2 md:items-center">
-                      <div className="hidden md:inline">
-                        <IconContext.Provider value={{ size: "2em" }}>
-                          <div>
-                            <IoReaderOutline />
-                          </div>
-                        </IconContext.Provider>
-                      </div>
-                      <div className="flex md:flex-col space-x-1">
-                        <p className="md:hidden">Transaction</p>
-                        <Link
-                          className="text-blue-500 w-20 truncate"
-                          href={`/tx/${txn.hash}`}
-                        >
-                          {txn.hash}
-                        </Link>
-                        {txn.timestamp && (
-                          <p className="text-gray-400">
-                            {elapsedTime(txn.timestamp)}
-                          </p>
-                        )}
-                      </div>
+                <div
+                  key={idx}
+                  className="h-28 p-2 border-1 border-b md:flex md:justify-between md:items-center  md:h-24"
+                >
+                  {/* txn blockHash */}
+                  <div className="md:flex md:space-x-2 md:items-center">
+                    <div className="hidden md:inline">
+                      <IconController icon={Icons.transaction} size="2em" />
                     </div>
-                    {/* from/to */}
-                    <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-start">
-                      <div className="flex flex-col">
-                        {/* From */}
+                    <div className="flex md:flex-col space-x-1">
+                      <p className="md:hidden">Transaction</p>
+                      <Link
+                        className="text-blue-500 w-20 truncate"
+                        href={`/tx/${txn.hash}`}
+                      >
+                        {txn.hash}
+                      </Link>
+                      {txn.timestamp && (
+                        <p className="text-gray-400">
+                          {elapsedTime(txn.timestamp)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {/* from/to */}
+                  <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-start">
+                    <div className="flex flex-col">
+                      {/* From */}
+                      <div className="flex space-x-1 ">
+                        <p>From </p>
+                        <Link
+                          className="text-blue-500"
+                          href={`/block/${txn.from}`}
+                        >
+                          {shortAddress(txn.from)}
+                        </Link>
+                      </div>
+                      {/* To */}
+                      {txn.to && (
                         <div className="flex space-x-1 ">
-                          <p>From </p>
+                          <p>To </p>
                           <Link
                             className="text-blue-500"
-                            href={`/block/${txn.from}`}
+                            href={`/txn/${txn.to}`}
                           >
-                            {shortAddress(txn.from)}
+                            {shortAddress(txn.to)}
                           </Link>
-                        </div>
-                        {/* To */}
-                        {txn.to && (
-                          <div className="flex space-x-1 ">
-                            <p>To </p>
-                            <Link
-                              className="text-blue-500"
-                              href={`/txn/${txn.to}`}
-                            >
-                              {shortAddress(txn.to)}
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                      {txn.gasPrice && (
-                        <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                          <p>
-                            {formatEther(BigInt(txn.value.toString()))?.slice(
-                              0,
-                              7
-                            )}{" "}
-                            Eth
-                          </p>
                         </div>
                       )}
                     </div>
+                    {/* gas price */}
+                    {txn.gasPrice && (
+                      <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
+                        <p>
+                          {formatEther(BigInt(txn.value.toString()))?.slice(
+                            0,
+                            7
+                          )}{" "}
+                          Eth
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

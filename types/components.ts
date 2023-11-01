@@ -16,5 +16,6 @@ export enum Icons {
   help = "help",
   time = "time",
   copy = "copy",
-  check = "check"
+  check = "check",
+  transaction = "transaction"
 }

@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import type { BlockWithTransactions } from "alchemy-sdk";
+import { Stages } from "@/types/components";
+import { Icons } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { shortAddress } from "@/utils/web3";
 import { elapsedTime, sleep } from "@/utils/unixTime";
-import { Stages } from "@/types/components";
-import BlockIcon from "../icons/BlockIcon";
+import IconController from "../IconController";
 import BlockReward from "./BlockReward";
 import Loading from "../Loading";
 
@@ -70,7 +71,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                   {/* block number */}
                   <div className="md:flex md:space-x-2 md:items-center">
                     <div className="hidden md:inline">
-                      <BlockIcon />
+                      <IconController icon={Icons.block} />
                     </div>
                     <div className="flex md:flex-col space-x-1">
                       <p className="md:hidden">Block</p>

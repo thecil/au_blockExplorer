@@ -6,7 +6,12 @@ import { Stages } from "@/types/components";
 import { Icons } from "@/types/components";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import { useAlchemy } from "@/hooks/useAlchemy";
-import { shortAddress, getTransactionFee, formatEther } from "@/utils/web3";
+import {
+  shortAddress,
+  getTransactionFee,
+  formatEther,
+  formatGwei
+} from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
@@ -95,6 +100,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
               }
             }}
             iconDescription={iconDescription.from}
+            copy={tx.from}
           />
           {/* tx to */}
           {tx.to && (
@@ -108,6 +114,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 }
               }}
               iconDescription={iconDescription.to}
+              copy={tx.to}
             />
           )}
           {/* tx value */}
@@ -123,6 +130,18 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             title="Transaction Fee"
             data={{
               value: `${getTransactionFee(tx)} ETH`
+            }}
+            iconDescription={iconDescription.txFee}
+          />
+          {/* tx gas price */}
+          <BlockOrTxData
+            title="Transaction Fee"
+            data={{
+              value: `${formatGwei(
+                BigInt(tx.gasPrice?.toString() as string)
+              )} Gwei (${formatEther(
+                BigInt(tx.gasPrice?.toString() as string)
+              )} ETH)`
             }}
             iconDescription={iconDescription.txFee}
           />

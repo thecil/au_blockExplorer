@@ -25,7 +25,7 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
     setTimeout(() => {
       setCopySuccess(false);
       if (stage !== Stage.idle) setStage(Stage.idle);
-    }, 2000);
+    }, 1000);
     return () => {};
   }, [stage, copySuccess]);
 
@@ -49,7 +49,9 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
       )}
 
       {stage === Stage.copied && (
-        <IconController icon={Icons.check} size="14" />
+        <Tooltip message="Copied!">
+          <IconController icon={Icons.check} size="14" />
+        </Tooltip>
       )}
     </div>
   );
