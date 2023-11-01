@@ -9,13 +9,13 @@ export default function ThemeToggle() {
   return (
     <>
       <button
-        className="p-2 w-fit h-fit border border-solid  border-gray-500 rounded-full"
+        className="p-2 w-fit h-fit border border-solid  border-gray-500 rounded-full text-gray-400"
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       >
         {theme === "dark" ? (
-          <IoSunnyOutline className="text-gray-400" size={24} />
+          <IoSunnyOutline size={12} />
         ) : (
-          <IoMoonOutline className="text-gray-400" size={24} />
+          <IoMoonOutline size={12} />
         )}
       </button>
     </>

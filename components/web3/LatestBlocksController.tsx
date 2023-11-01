@@ -58,7 +58,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
 
   return (
     <>
-      <div className="rounded-lg bg-slate-50 dark:bg-slate-600">
+      <div className="rounded-lg bg-slate-100 dark:bg-slate-900">
         <div className="border-1 border-b p-2">
           <h2 className=" font-bold">Latest Blocks</h2>
         </div>

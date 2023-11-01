@@ -46,12 +46,13 @@ const LatestTransactionsController: React.FC<
       return;
     }
     return () => {};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, latestBlockNumber, blockHashOrBlockTag, txns]);
 
   return (
-    <div className="rounded-lg bg-slate-50 dark:bg-slate-600">
+    <div className="rounded-lg bg-slate-100 dark:bg-slate-900">
       <div className="border-1 border-b p-2">
-        <h2 className=" font-bold">Latest Transactions</h2>
+        <h2 className="font-bold">Latest Transactions</h2>
       </div>
       {stage === Stages.loading && <Loading size={64} />}
       {stage === Stages.show && txns && (
@@ -66,7 +67,7 @@ const LatestTransactionsController: React.FC<
                   {/* txn blockHash */}
                   <div className="md:flex md:space-x-2 md:items-center">
                     <div className="hidden md:inline">
-                      <IconController icon={Icons.transaction} size="2em" />
+                      <IconController icon={Icons.transaction} />
                     </div>
                     <div className="flex md:flex-col space-x-1">
                       <p className="md:hidden">Transaction</p>
