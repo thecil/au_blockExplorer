@@ -2,7 +2,7 @@ import {
   BigNumber,
   BlockWithTransactions,
   Block,
-  TransactionReceipt,
+  TransactionReceipt
 } from "alchemy-sdk";
 import { formatEther } from "viem";
 import { BlockFees, Transaction } from "@/types/web3";
@@ -51,7 +51,7 @@ export const getBlockReward = (
   const res: BlockFees = {
     totalTxFees: formatEther(BigInt(totalTxFees.toString())),
     burntFees: formatEther(BigInt(burntFees.toString())),
-    blockReward: formatEther(BigInt(blockReward.toString())),
+    blockReward: formatEther(BigInt(blockReward.toString()))
   };
   return res;
 };
