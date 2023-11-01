@@ -2,11 +2,10 @@ import {
   BigNumber,
   BlockWithTransactions,
   Block,
-  TransactionResponse,
-  TransactionReceipt
+  TransactionReceipt,
 } from "alchemy-sdk";
 import { formatEther } from "viem";
-import { BlockFees } from "@/types/components";
+import { BlockFees, Transaction } from "@/types/web3";
 
 export * from "viem";
 
@@ -18,10 +17,12 @@ export const shortAddress = (address: string): string =>
   )}`;
 // calculate the total fee of a transaction
 // gas price * gas limit = transaction fee
-export const getTransactionFee = (tx: TransactionResponse): string => {
-  if (tx.gasPrice) {
-    const _fee = tx.gasPrice.mul(tx.gasLimit);
-    return formatEther(BigInt(_fee.toString()));
+export const getTransactionFee = (tx: Transaction): string => {
+  if (tx.receipt && tx.response) {
+    if (tx.response.gasPrice) {
+      const _fee = tx.response.gasPrice.mul(tx.receipt.gasUsed);
+      return formatEther(BigInt(_fee.toString()));
+    }
   }
   return formatEther(BigInt(0));
 };
@@ -50,7 +51,7 @@ export const getBlockReward = (
   const res: BlockFees = {
     totalTxFees: formatEther(BigInt(totalTxFees.toString())),
     burntFees: formatEther(BigInt(burntFees.toString())),
-    blockReward: formatEther(BigInt(blockReward.toString()))
+    blockReward: formatEther(BigInt(blockReward.toString())),
   };
   return res;
 };
@@ -69,3 +70,15 @@ export const getBurnedFees = (
 // returns a number splited on decimals ex:"0,000,000"
 export const formatGasToLocaleString = (amount: BigNumber) =>
   Number(amount).toLocaleString();
+
+/**
+ * Calculate the % of gas used
+ */
+export const getGasUsagePercentage = (
+  gasLimit: BigNumber,
+  gasUsed: BigNumber
+): string => {
+  const _gasLimit = gasLimit.toNumber();
+  const _gasUsed = gasUsed.toNumber();
+  return ((_gasUsed / _gasLimit) * 100).toFixed(2);
+};

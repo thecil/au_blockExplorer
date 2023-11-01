@@ -14,6 +14,7 @@
     },
     "transaction": {
         "txHash": "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
+        "status": "The Status of the transaction",
         "block": "Number of the block in which the transaction is recorded. Block confirmations indicate how many blocks have been added since the transaction was produced.",
         "timestamp": "The date and time at which a transaction is produced.",
         "from": "The sending party of the transaction.",

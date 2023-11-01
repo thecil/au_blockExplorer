@@ -3,12 +3,6 @@ export enum Stages {
   loading = "loading",
   show = "show",
 }
-// used on utils/web3 => getBlockReward
-export interface BlockFees {
-  totalTxFees: string;
-  burntFees: string;
-  blockReward: string;
-}
 
 // used in IconController and to specify which icon to use for it
 export enum Icons {
@@ -19,5 +13,7 @@ export enum Icons {
   check = "check",
   transaction = "transaction",
   add = "add",
-  remove = "remove"
+  remove = "remove",
+  circleCheck = "circle check",
+  circleClose = "circle close"
 }

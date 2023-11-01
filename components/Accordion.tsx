@@ -1,7 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import { Icons } from "@/types/components";
 import IconController from "./IconController";
+
 interface AccordionProps {
   title: string;
   children: React.ReactNode;

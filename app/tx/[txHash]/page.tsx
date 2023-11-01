@@ -1,35 +1,46 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { TransactionResponse } from "alchemy-sdk";
-import { Stages } from "@/types/components";
-import { Icons } from "@/types/components";
+import Link from "next/link";
+import hrefs from "@/data/hrefs.json";
+import type { BigNumber } from "alchemy-sdk";
+import { Icons, Stages } from "@/types/components";
+import { Transaction } from "@/types/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
-import { useAlchemy } from "@/hooks/useAlchemy";
 import {
-  shortAddress,
+  // shortAddress,
   getTransactionFee,
   formatEther,
   formatGwei,
-  formatGasToLocaleString
+  formatGasToLocaleString,
+  getGasUsagePercentage,
 } from "@/utils/web3";
-import { elapsedTime, unixToDate } from "@/utils/unixTime";
-import Tooltip from "@/components/ToolTip";
+// import { elapsedTime, unixToDate } from "@/utils/unixTime";
+// import Tooltip from "@/components/ToolTip";
+import { useAlchemy } from "@/hooks/useAlchemy";
 import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
+import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
+import CopyToClipboardButton from "@/components/CopyToClipboard";
 import BlockOrTxData from "@/components/web3/BlockOrTxData";
 import Accordion from "@/components/Accordion";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
-  const [tx, setTx] = useState<TransactionResponse>();
-  const { getTransaction } = useAlchemy();
+  const [tx, setTx] = useState<Transaction>();
+  const { getTransactionReceipt, getTransaction } = useAlchemy();
   const { transaction: iconDescription } = iconDesciptions;
 
   const _getTx = async () => {
-    const _tx = await getTransaction(params.txHash);
-    console.log("_getTx", { _tx });
-    if (_tx) setTx(_tx);
+    const _receipt = await getTransactionReceipt(params.txHash);
+    const _response = await getTransaction(params.txHash);
+    const _transaction: Transaction = {
+      receipt: _receipt,
+      response: _response,
+    };
+    console.log("_getTx", { _transaction });
+    if (_transaction.receipt !== null || _transaction.response !== null)
+      setTx(_transaction);
     return;
   };
 
@@ -57,34 +68,54 @@ const Page = ({ params }: { params: { txHash: string } }) => {
         <>
           <div className="rounded-lg bg-slate-100 dark:bg-black p-4 mt-2 flex flex-col space-y-2">
             {/* tx hash */}
-            <BlockOrTxData
+            <BlockOrTxContent
               title="Transaction Hash"
-              data={{
-                value: tx.hash
-              }}
               iconDescription={iconDescription.txHash}
-              copy={tx.hash}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <p className="truncate">{params.txHash}</p>
+                <CopyToClipboardButton text={params.txHash} />
+              </div>
+            </BlockOrTxContent>
+            {/* tx status */}
+            <BlockOrTxContent
+              title="Status"
+              iconDescription={iconDescription.status}
+            >
+              {tx.receipt?.status === 1 ? (
+                <div className=" flex space-x-1 items-center w-fit py-1 px-2 border border-green-700 rounded-lg bg-emerald-950 text-emerald-500 text-sm">
+                  <IconController icon={Icons.circleCheck} size="16" />
+                  <p>Success</p>
+                </div>
+              ) : (
+                <div className="flex space-x-1 items-center w-fit py-1 px-2 border border-red-700 rounded-lg bg-pink-950 text-red-500 text-sm">
+                  <IconController icon={Icons.circleClose} size="16" />
+                  <p>Fail</p>
+                </div>
+              )}
+            </BlockOrTxContent>
             {/* tx block */}
-            <BlockOrTxData
+            <BlockOrTxContent
               title="Block"
-              data={{
-                value: "",
-                link: {
-                  title: `${tx.blockNumber as number}`,
-                  href: `/block/${tx.blockNumber as number}`
-                },
-                extra: {
-                  value: `${tx.confirmations} Block Confirmations`,
-                  style:
-                    "px-2 border rounded-lg text-sm bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800",
-                  noFlex: true
-                }
-              }}
               iconDescription={iconDescription.block}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <Link
+                  className="text-blue-300 truncate"
+                  href={`${hrefs.block}/${
+                    tx.receipt?.blockNumber || tx.response?.blockNumber
+                  }`}
+                >
+                  {tx.receipt?.blockNumber || tx.response?.blockNumber}
+                </Link>
+                <span className="py-1 px-2 h-full border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
+                  {tx.receipt?.confirmations || tx.response?.confirmations}{" "}
+                  Block Confirmations
+                </span>
+              </div>
+            </BlockOrTxContent>
             {/* tx timestamp */}
-            {tx.timestamp && (
+            {/* {tx. && (
               <div className="flex flex-col space-y-2  md:flex-row">
                 <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
                   <Tooltip message={iconDescription.timestamp}>
@@ -98,89 +129,120 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                   <p>({unixToDate(tx.timestamp)})</p>
                 </div>
               </div>
-            )}
+            )} */}
             {/* tx from */}
-            <BlockOrTxData
+            <BlockOrTxContent
               title="From"
-              data={{
-                value: "",
-                link: {
-                  title: `${shortAddress(tx.from)}`,
-                  href: `/address/${tx.from}`
-                }
-              }}
               iconDescription={iconDescription.from}
-              copy={tx.from}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <Link
+                  className="text-blue-300 truncate"
+                  href={`${hrefs.address}/${
+                    tx.receipt?.from || tx.response?.from
+                  }`}
+                >
+                  {tx.receipt?.from || tx.response?.from}
+                </Link>
+                <CopyToClipboardButton
+                  text={tx.receipt?.from || (tx.response?.from as string)}
+                />
+              </div>
+            </BlockOrTxContent>
             {/* tx to */}
-            {tx.to && (
-              <BlockOrTxData
-                title="To"
-                data={{
-                  value: "",
-                  link: {
-                    title: `${shortAddress(tx.to)}`,
-                    href: `/address/${tx.to}`
-                  }
-                }}
-                iconDescription={iconDescription.to}
-                copy={tx.to}
-              />
-            )}
+            <BlockOrTxContent
+              title="Interacted With (To)"
+              iconDescription={iconDescription.to}
+            >
+              <div className="flex space-x-1 items-center">
+                <Link
+                  className="text-blue-300 truncate"
+                  href={`${hrefs.address}/${tx.receipt?.to || tx.response?.to}`}
+                >
+                  {tx.receipt?.to || tx.response?.to}
+                </Link>
+                <CopyToClipboardButton
+                  text={tx.receipt?.to || (tx.response?.to as string)}
+                />
+              </div>
+            </BlockOrTxContent>
             {/* tx value */}
-            <BlockOrTxData
+            <BlockOrTxContent
               title="Value"
-              data={{
-                value: `${formatEther(BigInt(tx.value.toString()))} ETH`
-              }}
               iconDescription={iconDescription.value}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <p>
+                  {formatEther(BigInt(tx.response?.value.toString() as string))}{" "}
+                  ETH
+                </p>
+              </div>
+            </BlockOrTxContent>
             {/* tx fee */}
-            <BlockOrTxData
+            <BlockOrTxContent
               title="Transaction Fee"
-              data={{
-                value: `${getTransactionFee(tx)} ETH`
-              }}
               iconDescription={iconDescription.txFee}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <p>{getTransactionFee(tx)} ETH</p>
+              </div>
+            </BlockOrTxContent>
             {/* tx gas price */}
-            <BlockOrTxData
-              title="Gas Price"
-              data={{
-                value: `${formatGwei(
-                  BigInt(tx.gasPrice?.toString() as string)
-                )} Gwei (${formatEther(
-                  BigInt(tx.gasPrice?.toString() as string)
-                )} ETH)`
-              }}
+            <BlockOrTxContent
+              title="Effective Gas Price"
               iconDescription={iconDescription.txFee}
-            />
+            >
+              <div className="flex space-x-1 items-center">
+                <p>
+                  {formatGwei(
+                    BigInt(tx.receipt?.effectiveGasPrice?.toString() as string)
+                  )}{" "}
+                  Gwei
+                </p>
+                <p className="text-neutral-400">
+                  {`(${formatEther(
+                    BigInt(tx.receipt?.effectiveGasPrice?.toString() as string)
+                  )} ETH)`}
+                </p>
+              </div>
+            </BlockOrTxContent>
           </div>
           {/* more details accordion */}
           <Accordion title="More Details:">
             <div className="flex flex-col space-y-2">
-              {/* tx gas price */}
-              <BlockOrTxData
+              {/* tx gas limit & usage */}
+              <BlockOrTxContent
                 title="Gas Limit & Usage by Txn"
-                data={{
-                  value: `${formatGasToLocaleString(
-                    tx.gasLimit
-                  )}  | [usage] (%)`
-                }}
                 iconDescription={iconDescription.gasLimitUsage}
-              />
+              >
+                <p>{`${formatGasToLocaleString(
+                  tx.response?.gasLimit as BigNumber
+                )}  | ${formatGasToLocaleString(
+                  tx.receipt?.gasUsed as BigNumber
+                )} (${getGasUsagePercentage(
+                  tx.response?.gasLimit as BigNumber,
+                  tx.receipt?.gasUsed as BigNumber
+                )}%)`}</p>
+              </BlockOrTxContent>
               {/* tx gas price */}
-              <BlockOrTxData
+              <BlockOrTxContent
                 title="Gas Fees"
-                data={{
-                  value: `Base: [base gas] Gwei | Max: ${formatGwei(
-                    BigInt(tx.maxFeePerGas?.toString() as string)
-                  )} Gwei | Max Priority: ${formatGwei(
-                    BigInt(tx.maxPriorityFeePerGas?.toString() as string)
-                  )} Gwei`
-                }}
                 iconDescription={iconDescription.gasFees}
-              />
+              >
+                <p>{`Base: ${formatGwei(
+                  BigInt(
+                    tx.receipt?.effectiveGasPrice
+                      .sub(tx.response?.maxPriorityFeePerGas as BigNumber)
+                      .toString() as string
+                  )
+                )} Gwei | Max: ${formatGwei(
+                  BigInt(tx.response?.maxFeePerGas?.toString() as string)
+                )} Gwei | Max Priority: ${formatGwei(
+                  BigInt(
+                    tx.response?.maxPriorityFeePerGas?.toString() as string
+                  )
+                )} Gwei`}</p>
+              </BlockOrTxContent>
             </div>
           </Accordion>
         </>

@@ -10,7 +10,9 @@ import {
   IoCheckmark, // check mark icon
   IoReaderOutline, // tx icon
   IoAdd,
-  IoRemove
+  IoRemove,
+  IoCheckmarkCircle,
+  IoCloseCircle
 } from "react-icons/io5";
 import { Icons } from "@/types/components";
 
@@ -42,6 +44,10 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
         return <IoAdd />;
       case Icons.remove:
         return <IoRemove />;
+      case Icons.circleCheck:
+        return <IoCheckmarkCircle />;
+      case Icons.circleClose:
+        return <IoCloseCircle />;
       default:
         return null;
     }

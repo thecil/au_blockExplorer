@@ -1,0 +1,8 @@
+{
+    "block": "/block",
+    "blocks": "/blocks",
+    "transaction":"/tx",
+    "transactions": "/txs",
+    "address": "/address",
+    "token": "/token"
+}

@@ -3,7 +3,8 @@ import type {
   Block,
   TransactionResponse,
   BlockWithTransactions,
-  TransactionReceiptsResponse
+  TransactionReceiptsResponse,
+  TransactionReceipt
 } from "alchemy-sdk";
 // import { useMemo, useState, useEffect } from "react";
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
@@ -104,6 +105,20 @@ export const useAlchemy = () => {
     }
   };
 
+  // Returns the transaction receipt for hash or null if the transaction has not been mined.
+  const getTransactionReceipt = async (
+    transactionHash: string
+  ): Promise<TransactionReceipt | null> => {
+    try {
+      const _tx = await alchemy.core.getTransactionReceipt(transactionHash);
+      if (_logs) console.log("useAlchemy:getTransactionReceipt ", _tx);
+      return _tx;
+    } catch (error) {
+      console.log("useAlchemy:getTransactionReceipt :error", { error });
+      return null;
+    }
+  };
+
   // Gets all transaction receipts for a given block by number or block hash.
   const getTransactionReceipts = async (
     blockHash: string
@@ -155,6 +170,7 @@ export const useAlchemy = () => {
     getBlock,
     getBlockWithTransactions,
     getTransaction,
+    getTransactionReceipt,
     getTransactionReceipts
     // subscriptions
     // latestBlockNumber
