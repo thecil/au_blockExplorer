@@ -24,6 +24,7 @@ import IconController from "@/components/IconController";
 import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
 import CopyToClipboardButton from "@/components/CopyToClipboard";
 import Accordion from "@/components/Accordion";
+import Badge from "@/components/Badge";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
@@ -108,10 +109,13 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 >
                   {tx.receipt?.blockNumber || tx.response?.blockNumber}
                 </Link>
-                <span className="py-1 px-2 border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
-                  {tx.receipt?.confirmations || tx.response?.confirmations}{" "}
-                  Block Confirmations
-                </span>
+                <Badge
+                  name="Block Confirmations"
+                  value={
+                    tx.receipt?.confirmations ||
+                    (tx.response?.confirmations as number)
+                  }
+                />
               </div>
             </BlockOrTxContent>
             {/* tx timestamp */}
@@ -248,31 +252,39 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 iconDescription={iconDescription.burntSavingFees}
               >
                 <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-                  <div className="flex space-x-1 py-1 px-2  border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
-                    <IconController icon={Icons.flame} />
-                    <p className="text-neutral-400">Burnt:</p>
-                    <span>
-                      {getTxBurnedFees(
-                        tx.receipt?.gasUsed as BigNumber,
-                        tx.response?.maxPriorityFeePerGas as BigNumber,
-                        tx.receipt?.effectiveGasPrice as BigNumber
-                      )}{" "}
-                      ETH
-                    </span>
-                  </div>
-                  <div className="flex space-x-1 py-1 px-2  border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
-                    <IconController icon={Icons.leaf} />
-                    <p className="text-neutral-400">Txns Savings:</p>
-                    <span>
-                      {getTxSavingFees(
-                        tx.response?.maxFeePerGas as BigNumber,
-                        tx.response?.maxPriorityFeePerGas as BigNumber,
-                        tx.receipt?.effectiveGasPrice as BigNumber,
-                        tx.receipt?.gasUsed as BigNumber
-                      )}{" "}
-                      ETH
-                    </span>
-                  </div>
+                  <Badge
+                    name="Burnt:"
+                    value={`${getTxBurnedFees(
+                      tx.receipt?.gasUsed as BigNumber,
+                      tx.response?.maxPriorityFeePerGas as BigNumber,
+                      tx.receipt?.effectiveGasPrice as BigNumber
+                    )} ETH`}
+                    icon={Icons.flame}
+                  />
+                  <Badge
+                    name="Txns Savings:"
+                    value={`${getTxSavingFees(
+                      tx.response?.maxFeePerGas as BigNumber,
+                      tx.response?.maxPriorityFeePerGas as BigNumber,
+                      tx.receipt?.effectiveGasPrice as BigNumber,
+                      tx.receipt?.gasUsed as BigNumber
+                    )} ETH`}
+                    icon={Icons.leaf}
+                  />
+                </div>
+              </BlockOrTxContent>
+              {/* tx other attributes */}
+              <BlockOrTxContent
+                title="Other Attributes"
+                iconDescription={iconDescription.otherAttributes}
+              >
+                <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
+                  <Badge name="Txn Type:" value={tx.receipt?.type as number} />
+                  <Badge name="Nonce:" value={tx.response?.nonce as number} />
+                  <Badge
+                    name="Position in Block:"
+                    value={tx.receipt?.transactionIndex as number}
+                  />
                 </div>
               </BlockOrTxContent>
             </div>

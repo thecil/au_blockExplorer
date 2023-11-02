@@ -20,7 +20,7 @@ export default function Home() {
   }, [latestBlock]);
 
   return (
-    <main className="min-h-screen p-8">
+    <main className="min-h-screen p-4">
       <div className="grid grid-rows-1 gap-4 md:grid-cols-2 ">
         <LatestBlocksController latestBlockNumber={latestBlock} />
         <LatestTransactionController latestBlockNumber={latestBlock} />
