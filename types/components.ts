@@ -15,5 +15,7 @@ export enum Icons {
   add = "add",
   remove = "remove",
   circleCheck = "circle check",
-  circleClose = "circle close"
+  circleClose = "circle close",
+  leaf = "leaf",
+  flame = "flame"
 }

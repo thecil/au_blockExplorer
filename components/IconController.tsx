@@ -12,7 +12,9 @@ import {
   IoAdd,
   IoRemove,
   IoCheckmarkCircle,
-  IoCloseCircle
+  IoCloseCircle,
+  IoLeaf,
+  IoFlame
 } from "react-icons/io5";
 import { Icons } from "@/types/components";
 
@@ -48,6 +50,18 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
         return <IoCheckmarkCircle />;
       case Icons.circleClose:
         return <IoCloseCircle />;
+      case Icons.leaf:
+        return (
+          <div className="text-green-500">
+            <IoLeaf />
+          </div>
+        );
+      case Icons.flame:
+        return (
+          <div className="text-red-500">
+            <IoFlame />
+          </div>
+        );
       default:
         return null;
     }

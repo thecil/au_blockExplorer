@@ -27,9 +27,14 @@ export const getTransactionFee = (tx: Transaction): string => {
   return formatEther(BigInt(0));
 };
 
-// calculate the block rewards
-// block base reward + (total tx fees - burnt fees) = block reward
-// block base reward is 0
+/**
+ *  calculate the block rewards
+ * block base reward + (total tx fees - burnt fees) = block reward
+ * block base reward is 0
+ * @param block Object<BlockWithTransactions>
+ * @param txnsReceipts Array<TransactionReceipt>
+ * @returns Object<BlockFees> | undefined
+ */
 export const getBlockReward = (
   block: BlockWithTransactions,
   txnsReceipts: TransactionReceipt[]
@@ -56,8 +61,13 @@ export const getBlockReward = (
   return res;
 };
 
-// calculate the tx fee that is burnt in a block
-export const getBurnedFees = (
+/**
+ * Calculate the tx fee that is burnt in a block
+ * gas used * base fee
+ * @param block Object<Block | BlockWithTransactions>
+ * @returns string | undefined
+ */
+export const getBlockBurnedFees = (
   block: Block | BlockWithTransactions
 ): string | undefined => {
   if (block.baseFeePerGas) {
@@ -67,8 +77,32 @@ export const getBurnedFees = (
   return undefined;
 };
 
-// returns a number splited on decimals ex:"0,000,000"
-export const formatGasToLocaleString = (amount: BigNumber) =>
+/**
+ * Calculate the tx fee that is burnt in a transaction
+ * gas used * base fee
+ * @param gasUsed BigNumber
+ * @param effectiveGasPrice BigNumber
+ * @param maxPriorityFeePerGas BigNumber
+ * @returns string
+ */
+export const getTxBurnedFees = (
+  gasUsed: BigNumber,
+  effectiveGasPrice: BigNumber,
+  maxPriorityFeePerGas: BigNumber
+): string => {
+  const _baseFee = getBaseFee(effectiveGasPrice, maxPriorityFeePerGas);
+  const _burnedFees = gasUsed.mul(_baseFee);
+  if (_burnedFees.isNegative())
+    return formatEther(BigInt(_burnedFees.abs().toString()));
+  return formatEther(BigInt(_burnedFees.toString()));
+};
+/**
+ * returns a number splited on decimals
+ * ex:"0,000,000"
+ * @param amount BigNumber
+ * @returns string
+ */
+export const formatGasToLocaleString = (amount: BigNumber): string =>
   Number(amount).toLocaleString();
 
 /**
@@ -81,4 +115,33 @@ export const getGasUsagePercentage = (
   const _gasLimit = gasLimit.toNumber();
   const _gasUsed = gasUsed.toNumber();
   return ((_gasUsed / _gasLimit) * 100).toFixed(2);
+};
+
+/**
+ * Calculate the base fee for given params
+ * @param effectiveGasPrice BigNumber
+ * @param maxPriorityFeePerGas BigNumber
+ * @returns BigNumber
+ */
+export const getBaseFee = (
+  effectiveGasPrice: BigNumber,
+  maxPriorityFeePerGas: BigNumber
+) => effectiveGasPrice.sub(maxPriorityFeePerGas);
+
+/**
+ * the amount returned to your wallet after the priority tip and basefee are paid.
+ * (max fee - priority fee - basefee) * gas used
+ */
+export const getTxSavingFees = (
+  maxFeePerGas: BigNumber,
+  maxPriorityFeePerGas: BigNumber,
+  effectiveGasPrice: BigNumber,
+  gasUsed: BigNumber
+): string => {
+  const _baseFee = getBaseFee(effectiveGasPrice, maxPriorityFeePerGas);
+  // (max fee - priority fee - basefee)
+  const _sub = maxFeePerGas.sub(maxPriorityFeePerGas).sub(_baseFee);
+  // sub * gasUsed
+  const _res = _sub.mul(gasUsed);
+  return formatEther(BigInt(_res.toString()));
 };

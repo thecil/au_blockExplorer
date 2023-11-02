@@ -13,7 +13,9 @@ import {
   formatEther,
   formatGwei,
   formatGasToLocaleString,
-  getGasUsagePercentage
+  getGasUsagePercentage,
+  getTxSavingFees,
+  getTxBurnedFees
 } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import { useAlchemy } from "@/hooks/useAlchemy";
@@ -106,7 +108,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 >
                   {tx.receipt?.blockNumber || tx.response?.blockNumber}
                 </Link>
-                <span className="py-1 px-2 h-full border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
+                <span className="py-1 px-2 border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
                   {tx.receipt?.confirmations || tx.response?.confirmations}{" "}
                   Block Confirmations
                 </span>
@@ -239,6 +241,39 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                     tx.response?.maxPriorityFeePerGas?.toString() as string
                   )
                 )} Gwei`}</p>
+              </BlockOrTxContent>
+              {/* tx burnt & saving fees */}
+              <BlockOrTxContent
+                title="Burnt & Savings Fees"
+                iconDescription={iconDescription.burntSavingFees}
+              >
+                <div className="flex space-x-1 items-center">
+                  <div className="flex space-x-1 py-1 px-2  border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
+                    <IconController icon={Icons.flame} />
+                    <p className="text-neutral-400">Burnt:</p>
+                    <span>
+                      {getTxBurnedFees(
+                        tx.receipt?.gasUsed as BigNumber,
+                        tx.response?.maxPriorityFeePerGas as BigNumber,
+                        tx.receipt?.effectiveGasPrice as BigNumber
+                      )}{" "}
+                      ETH
+                    </span>
+                  </div>
+                  <div className="flex space-x-1 py-1 px-2  border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
+                    <IconController icon={Icons.leaf} />
+                    <p className="text-neutral-400">Txns Savings:</p>
+                    <span>
+                      {getTxSavingFees(
+                        tx.response?.maxFeePerGas as BigNumber,
+                        tx.response?.maxPriorityFeePerGas as BigNumber,
+                        tx.receipt?.effectiveGasPrice as BigNumber,
+                        tx.receipt?.gasUsed as BigNumber
+                      )}{" "}
+                      ETH
+                    </span>
+                  </div>
+                </div>
               </BlockOrTxContent>
             </div>
           </Accordion>
