@@ -7,7 +7,7 @@ import { Stages } from "@/types/components";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import {
   shortAddress,
-  getBurnedFees,
+  getBlockBurnedFees,
   formatGasToLocaleString,
   fromHex,
   formatEther,
@@ -150,7 +150,7 @@ const Page = ({ params }: { params: { blockNumber: string } }) => {
             <BlockOrTxData
               title="Burnt Fees"
               data={{
-                value: `${getBurnedFees(block)} ETH`
+                value: `${getBlockBurnedFees(block)} ETH`
               }}
               iconDescription={iconDescription.burntFees}
             />
