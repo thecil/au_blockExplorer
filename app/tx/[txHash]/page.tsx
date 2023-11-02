@@ -247,7 +247,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
                 title="Burnt & Savings Fees"
                 iconDescription={iconDescription.burntSavingFees}
               >
-                <div className="flex space-x-1 items-center">
+                <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
                   <div className="flex space-x-1 py-1 px-2  border rounded-lg text-xs bg-neutral-200 dark:border-neutral-700 dark:bg-neutral-800">
                     <IconController icon={Icons.flame} />
                     <p className="text-neutral-400">Burnt:</p>
