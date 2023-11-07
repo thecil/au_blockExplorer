@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import hrefs from "@/data/hrefs.json";
 import type { BlockWithTransactions } from "alchemy-sdk";
 import { Stages } from "@/types/components";
 import { Icons } from "@/types/components";
@@ -27,10 +28,10 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
   // get latests blocks data
   const _getBlockWithTransactions = async () => {
     for (let i = 0; i < MAX_BLOCKS_TO_SHOW; i++) {
-      await sleep(1000);
       const _block = await getBlockWithTransactions(lastBlock - i);
       if (_block) {
         setBlocks((prevBlocks) => [...prevBlocks, _block]);
+        await sleep(1000);
       }
     }
     return;
@@ -77,7 +78,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                       <p className="md:hidden">Block</p>
                       <Link
                         className="text-blue-500"
-                        href={`/block/${block.number}`}
+                        href={`${hrefs.block}/${block.number}`}
                       >
                         {block.number}
                       </Link>
@@ -87,7 +88,7 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                     </div>
                   </div>
                   {/* block data */}
-                  <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-start">
+                  <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-center">
                     <div className="flex flex-col">
                       {/* fee recipient */}
                       <div className="flex space-x-1 ">

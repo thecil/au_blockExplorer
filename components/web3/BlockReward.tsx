@@ -12,7 +12,7 @@ import { useAlchemy } from "@/hooks/useAlchemy";
 import { getBlockReward } from "@/utils/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import Loading from "../Loading";
-import BlockOrTxData from "./BlockOrTxData";
+import BlockOrTxContent from "./BlockOrTxContent";
 
 interface BlockRewardProps {
   block: BlockWithTransactions;
@@ -44,7 +44,8 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
       }
       if (txnsReceipts) {
         const _fees = getBlockReward(block, txnsReceipts);
-        setBlockFees(_fees);
+        // const _fees = null;
+        if (_fees) setBlockFees(_fees);
       }
       if (stage !== Stages.loading) setStage(Stages.loading);
       return;
@@ -67,13 +68,15 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
               <p>{blockFees.blockReward.slice(0, 7)} Eth</p>
             </div>
           ) : (
-            <BlockOrTxData
+            <BlockOrTxContent
               title="Block Reward"
-              data={{
-                value: `${blockFees.blockReward} ETH ( 0 + ${blockFees.totalTxFees} - ${blockFees.burntFees})`
-              }}
               iconDescription={iconDescription.blockReward}
-            />
+            >
+              <span>
+                {blockFees.blockReward} ETH (0 + {blockFees.totalTxFees} -{" "}
+                {blockFees.burntFees})
+              </span>
+            </BlockOrTxContent>
           )}
         </>
       )}

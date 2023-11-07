@@ -47,9 +47,17 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
       case Icons.remove:
         return <IoRemove />;
       case Icons.circleCheck:
-        return <IoCheckmarkCircle />;
+        return (
+          <div className="text-green-500">
+            <IoCheckmarkCircle />
+          </div>
+        );
       case Icons.circleClose:
-        return <IoCloseCircle />;
+        return (
+          <div className="text-red-500">
+            <IoCloseCircle />
+          </div>
+        );
       case Icons.leaf:
         return (
           <div className="text-green-500">

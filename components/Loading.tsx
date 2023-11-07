@@ -9,7 +9,7 @@ type LoadingProps = {
 const Loading: React.FC<LoadingProps> = ({ size = 24, className }) => {
   return (
     <div
-      className={`flex justify-center items-center my-48 ${
+      className={`flex justify-center w-full ${
         className ? className : "text-slate-500"
       }`}
     >
