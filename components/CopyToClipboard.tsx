@@ -41,7 +41,7 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   return (
     <div>
       {stage === Stage.idle && (
-        <Tooltip message="Copy to Clipboard">
+        <Tooltip message="Copy to Clipboard" direction="left">
           <button onClick={() => copyToClipboard()}>
             <IconController icon={Icons.copy} size="14" />
           </button>
@@ -49,7 +49,7 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
       )}
 
       {stage === Stage.copied && (
-        <Tooltip message="Copied!">
+        <Tooltip message="Copied!" direction="left">
           <IconController icon={Icons.check} size="14" />
         </Tooltip>
       )}

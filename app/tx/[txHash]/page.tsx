@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import hrefs from "@/data/hrefs.json";
-import type { BigNumber } from "alchemy-sdk";
 import { Icons, Stages } from "@/types/components";
 import { Transaction } from "@/types/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
@@ -11,11 +10,7 @@ import {
   // shortAddress,
   getTransactionFee,
   formatEther,
-  formatGwei,
-  formatGasToLocaleString,
-  getGasUsagePercentage,
-  getTxSavingFees,
-  getTxBurnedFees
+  formatGwei
 } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import { useAlchemy } from "@/hooks/useAlchemy";
@@ -23,8 +18,8 @@ import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
 import CopyToClipboardButton from "@/components/CopyToClipboard";
-import Accordion from "@/components/Accordion";
 import Badge from "@/components/Badge";
+import TxDetailsAccordion from "@/components/web3/transactions/TxDetailsAccordion";
 
 const Page = ({ params }: { params: { txHash: string } }) => {
   const [stage, setStage] = useState(Stages.loading);
@@ -211,84 +206,7 @@ const Page = ({ params }: { params: { txHash: string } }) => {
             </BlockOrTxContent>
           </div>
           {/* more details accordion */}
-          <Accordion title="More Details:">
-            <div className="flex flex-col space-y-2">
-              {/* tx gas limit & usage */}
-              <BlockOrTxContent
-                title="Gas Limit & Usage by Txn"
-                iconDescription={iconDescription.gasLimitUsage}
-              >
-                <p>{`${formatGasToLocaleString(
-                  tx.response?.gasLimit as BigNumber
-                )}  | ${formatGasToLocaleString(
-                  tx.receipt?.gasUsed as BigNumber
-                )} (${getGasUsagePercentage(
-                  tx.response?.gasLimit as BigNumber,
-                  tx.receipt?.gasUsed as BigNumber
-                )}%)`}</p>
-              </BlockOrTxContent>
-              {/* tx gas price */}
-              <BlockOrTxContent
-                title="Gas Fees"
-                iconDescription={iconDescription.gasFees}
-              >
-                <p>{`Base: ${formatGwei(
-                  BigInt(
-                    tx.receipt?.effectiveGasPrice
-                      .sub(tx.response?.maxPriorityFeePerGas as BigNumber)
-                      .toString() as string
-                  )
-                )} Gwei | Max: ${formatGwei(
-                  BigInt(tx.response?.maxFeePerGas?.toString() as string)
-                )} Gwei | Max Priority: ${formatGwei(
-                  BigInt(
-                    tx.response?.maxPriorityFeePerGas?.toString() as string
-                  )
-                )} Gwei`}</p>
-              </BlockOrTxContent>
-              {/* tx burnt & saving fees */}
-              <BlockOrTxContent
-                title="Burnt & Savings Fees"
-                iconDescription={iconDescription.burntSavingFees}
-              >
-                <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-                  <Badge
-                    name="Burnt:"
-                    value={`${getTxBurnedFees(
-                      tx.receipt?.gasUsed as BigNumber,
-                      tx.response?.maxPriorityFeePerGas as BigNumber,
-                      tx.receipt?.effectiveGasPrice as BigNumber
-                    )} ETH`}
-                    icon={Icons.flame}
-                  />
-                  <Badge
-                    name="Txns Savings:"
-                    value={`${getTxSavingFees(
-                      tx.response?.maxFeePerGas as BigNumber,
-                      tx.response?.maxPriorityFeePerGas as BigNumber,
-                      tx.receipt?.effectiveGasPrice as BigNumber,
-                      tx.receipt?.gasUsed as BigNumber
-                    )} ETH`}
-                    icon={Icons.leaf}
-                  />
-                </div>
-              </BlockOrTxContent>
-              {/* tx other attributes */}
-              <BlockOrTxContent
-                title="Other Attributes"
-                iconDescription={iconDescription.otherAttributes}
-              >
-                <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-                  <Badge name="Txn Type:" value={tx.receipt?.type as number} />
-                  <Badge name="Nonce:" value={tx.response?.nonce as number} />
-                  <Badge
-                    name="Position in Block:"
-                    value={tx.receipt?.transactionIndex as number}
-                  />
-                </div>
-              </BlockOrTxContent>
-            </div>
-          </Accordion>
+          <TxDetailsAccordion tx={tx} />
         </>
       )}
     </div>

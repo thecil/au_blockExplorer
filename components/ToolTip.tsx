@@ -1,20 +1,35 @@
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 
-const Tooltip = ({
-  message,
-  children
-}: {
+interface ToolTipProps {
   message: string;
   children: ReactNode;
-}) => {
+  direction?: "top" | "bottom" | "left" | "right";
+}
+
+const Tooltip: React.FC<ToolTipProps> = ({ message, children, direction }) => {
+  const toolTipDirection = useMemo(() => {
+    switch (direction) {
+      case "top":
+        return "bottom-full left-1/2";
+      case "bottom":
+        return "top-full left-1/2";
+      case "left":
+        return "right-full top-1/2";
+      case "right":
+      default:
+        return "left-full top-1/2";
+    }
+  }, [direction]);
+
   return (
     <div className="relative flex items-center group">
       {children}
-      <div className="absolute left-full flex flex-col items-start hidden ml-6 group-hover:flex">
-        <span className="w-64 relative z-10 p-4 text-sm leading-none bg-white dark:text-white whitespace-no-wrap dark:bg-neutral-900 shadow-lg rounded-md">
+      <div
+        className={`absolute ${toolTipDirection} hidden group-hover:flex`}
+      >
+        <span className="w-64 z-10 relative p-4 text-sm leading-none bg-white dark:text-white whitespace-no-wrap dark:bg-neutral-900 shadow-lg rounded-md">
           {message}
         </span>
-        <div className="absolute top-1/2 left-0 w-3 h-3 -ml-1 transform -translate-y-1/2 rotate-45 bg-white dark:bg-neutral-900"></div>
       </div>
     </div>
   );
