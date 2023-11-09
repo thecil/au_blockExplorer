@@ -1,6 +1,6 @@
 import React from "react";
 import type { BigNumber } from "alchemy-sdk";
-import { Transaction } from "@/types/web3";
+import { TxDetailsProps } from "@/types/web3";
 import { Icons } from "@/types/components";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import {
@@ -10,16 +10,11 @@ import {
   getTxSavingFees,
   getTxBurnedFees
 } from "@/utils/web3";
-
 import Accordion from "@/components/Accordion";
 import BlockOrTxContent from "../BlockOrTxContent";
 import Badge from "@/components/Badge";
 
-interface TxDetailsAccordionProps {
-  tx: Transaction;
-}
-
-const TxDetailsAccordion: React.FC<TxDetailsAccordionProps> = ({ tx }) => {
+const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
   const { transaction: iconDescription } = iconDesciptions;
 
   return (
