@@ -9,6 +9,7 @@ import { shortAddress, formatEther } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
 import IconController from "../IconController";
 import Loading from "../Loading";
+import Tooltip from "../ToolTip";
 
 interface LatestTransactionsControllerProps {
   latestBlockNumber: number;
@@ -46,7 +47,7 @@ const LatestTransactionsController: React.FC<
       return;
     }
     return () => {};
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, latestBlockNumber, blockHashOrBlockTag, txns]);
 
   return (
@@ -113,13 +114,15 @@ const LatestTransactionsController: React.FC<
                     {/* gas price */}
                     {txn.gasPrice && (
                       <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                        <p>
-                          {formatEther(BigInt(txn.value.toString()))?.slice(
-                            0,
-                            7
-                          )}{" "}
-                          Eth
-                        </p>
+                        <Tooltip message="Amount" direction="left" minWith>
+                          <p>
+                            {formatEther(BigInt(txn.value.toString()))?.slice(
+                              0,
+                              7
+                            )}{" "}
+                            Eth
+                          </p>
+                        </Tooltip>
                       </div>
                     )}
                   </div>
