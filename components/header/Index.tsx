@@ -5,9 +5,11 @@ import HeaderMenu from "./HeaderMenu";
 const Header: React.FC = () => {
   return (
     <header className="p-2 flex justify-between items-center border-b">
-      <Link className="lg:text-2xl font-bold" href="/">
-        AU - Block Explorer
-      </Link>
+      <div>
+        <Link className="lg:text-2xl font-bold" href="/">
+          thecil - Block Explorer
+        </Link>
+      </div>
       <HeaderMenu />
     </header>
   );

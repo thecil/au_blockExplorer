@@ -1,11 +1,17 @@
 import BlockNumberController from "@/components/web3/blocks/BlockNumberController";
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Block Details"
+type Props = {
+  params: { blockNumber: string };
 };
 
-const Page = ({ params }: { params: { blockNumber: string } }) => {
+export const generateMetadata = ({ params }: Props): Metadata => {
+  return {
+    title: `Block ${params.blockNumber}`
+  };
+};
+
+const Page = ({ params }: Props) => {
   return <BlockNumberController blockNumber={params.blockNumber} />;
 };
 
