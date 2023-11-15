@@ -26,3 +26,6 @@ export interface TxDetailsProps {
 export interface BlockDetailsProps {
   block: BlockWithTransactions;
 }
+
+export type Web3Address = `0x${string}`;
+export type ENS = `${string}.eth`;

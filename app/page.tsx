@@ -2,7 +2,7 @@ import HomePageController from "@/components/HomePageController";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "thecil - Block Explorer"
+  title: "thecil - Ethereum Block Explorer"
 };
 
 export default function Home() {

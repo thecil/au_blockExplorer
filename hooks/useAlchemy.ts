@@ -4,11 +4,25 @@ import type {
   TransactionResponse,
   BlockWithTransactions,
   TransactionReceiptsResponse,
-  TransactionReceipt
+  TransactionReceipt,
+  OwnedNftsResponse,
+  OwnedBaseNftsResponse
 } from "alchemy-sdk";
+import { Web3Address, ENS } from "@/types/web3";
+import { GetNftsForOwnerOptions } from "alchemy-sdk";
+import contracts from "@/data/contracts.json";
+
 // import { useMemo, useState, useEffect } from "react";
 const ALCHEMY_API_KEY = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
 const _logs = false; // show console.logs for debugging
+// alchemy sdk config
+const settings = {
+  apiKey: ALCHEMY_API_KEY,
+  network: Network.ETH_MAINNET
+};
+// alchemy instance
+const alchemy: Alchemy = new Alchemy(settings);
+if (_logs) console.log("useAlchemy:status", alchemy);
 
 /**
  * hook that provides the Alchemy sdk methods
@@ -16,16 +30,6 @@ const _logs = false; // show console.logs for debugging
  * Docs: https://docs.alchemy.com/
  */
 export const useAlchemy = () => {
-  // alchemy sdk config
-  const settings = {
-    apiKey: ALCHEMY_API_KEY,
-    network: Network.ETH_MAINNET
-  };
-
-  // alchemy instance
-  const alchemy: Alchemy = new Alchemy(settings);
-  if (_logs) console.log("useAlchemy:status", alchemy);
-
   // Returns the block number of the most recently mined block.
   const getBlockNumber = async (): Promise<number> => {
     try {
@@ -136,6 +140,45 @@ export const useAlchemy = () => {
     }
   };
 
+  /**
+   * @description Get all NFTs for an owner.
+   * @param owner The address of the owner.
+   * @param options The optional parameters to use for the request.
+   * @returns array of objects
+   */
+  const getNftsForOwner = async (
+    owner: Web3Address | ENS,
+    options: GetNftsForOwnerOptions
+  ): Promise<OwnedNftsResponse | OwnedBaseNftsResponse | null> => {
+    try {
+      const _nfts = await alchemy.nft.getNftsForOwner(owner, options);
+      if (_logs) console.log("useAlchemy:getNftsForOwner", _nfts);
+
+      return _nfts;
+    } catch (error) {
+      console.log("useAlchemy:getNftsForOwner:error", { error });
+      return null;
+    }
+  };
+
+  /**
+   * @description fetch all ENS Domain Names owned by a user.
+   * @param owner The address of the owner.
+   * @returns array of objects
+   */
+  const getEns = async (owner: Web3Address | ENS) => {
+    try {
+      const _ens = await getNftsForOwner(owner, {
+        contractAddresses: [contracts.ens]
+      });
+      if (_logs) console.log("useAlchemy:getEns", _ens);
+
+      return _ens;
+    } catch (error) {
+      console.log("useAlchemy:getEns:error", { error });
+      return null;
+    }
+  };
   // Subscription for new blocks on Eth Mainnet.
   // const [subBlockNumber, setSubBlockNumber] = useState(0);
 
@@ -164,14 +207,18 @@ export const useAlchemy = () => {
   // }, [subBlockNumber]);
 
   return {
-    // methods
+    // methods core
     getBlockNumber,
     getGasPrice,
     getBlock,
     getBlockWithTransactions,
     getTransaction,
     getTransactionReceipt,
-    getTransactionReceipts
+    getTransactionReceipts,
+    // methods nft
+    getNftsForOwner,
+    // other methods
+    getEns
     // subscriptions
     // latestBlockNumber
   };
