@@ -10,6 +10,7 @@ import Tooltip from "@/components/ToolTip";
 import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockDetails from "@/components/web3/blocks/BlockDetails";
+import BlockDetailsAccordion from "./BlockDetailsAccordion";
 
 interface BlockNumberControllerProps {
   blockNumber: string;
@@ -67,6 +68,8 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
             </div>
             <BlockDetails block={block} />
           </div>
+          {/* more details accordion */}
+          <BlockDetailsAccordion block={block} />
         </>
       )}
     </div>

@@ -7,7 +7,7 @@ type Props = {
 
 export const generateMetadata = ({ params }: Props): Metadata => {
   return {
-    title: `Block ${params.blockNumber}`
+    title: `Block #${params.blockNumber}`
   };
 };
 

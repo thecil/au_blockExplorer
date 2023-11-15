@@ -10,7 +10,12 @@
         "gasLimit": "Total gas limit provided by all transactions in the block.",
         "baseFeePerGas": "Post-London Upgrade, this represents the minimum gasUsed multiplier required for a tx to be included in a block.",
         "burntFees": "Post-London Upgrade, this represents the part of the tx fee that is burnt: baseFeePerGas * gasUsed.",
-        "extraData": "Any data that can be included by the block producer in the block."
+        "extraData": "Any data that can be included by the block producer in the block.",
+        "hash": "The hash of the block header of the current block.",
+        "parentHash": "The hash of the block from which this block was generated, also known as its parent block.",
+        "stateRoot": "The root of the state trie",
+        "withdrawalsRoot": "Block header withdrawal root hash",
+        "nonce": "Block nonce is a value used during mining to demonstrate proof of work for a block."
     },
     "transaction": {
         "txHash": "A TxHash or transaction hash is a unique 66-character identifier that is generated whenever a transaction is executed.",
