@@ -168,9 +168,10 @@ export const useAlchemy = () => {
    */
   const getEns = async (owner: Web3Address | ENS) => {
     try {
-      const _ens = await getNftsForOwner(owner, {
+      const _options = {
         contractAddresses: [contracts.ens]
-      });
+      };
+      const _ens = await getNftsForOwner(owner, _options);
       if (_logs) console.log("useAlchemy:getEns", _ens);
 
       return _ens;

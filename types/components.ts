@@ -2,6 +2,7 @@
 export enum Stages {
   loading = "loading",
   show = "show",
+  hidden = "hidden"
 }
 
 // used in IconController and to specify which icon to use for it

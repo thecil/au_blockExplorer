@@ -1,24 +1,30 @@
 import { Metadata } from "next";
 import { Web3Address } from "@/types/web3";
+import CopyToClipboardButton from "@/components/CopyToClipboard";
+import AccountController from "@/components/web3/address/AccountController";
+
 type Props = {
-  params: { address: Web3Address };
+  params: { account: Web3Address };
 };
 
-export const generateMetadata = async ({
-  params
-}: Props): Promise<Metadata> => {
+export const generateMetadata = ({ params }: Props): Metadata => {
   return {
-    title: `Transaction ${params.address}`
+    title: `Address ${params.account}`
   };
 };
 
 const Page = ({ params }: Props) => {
   return (
     <div className="p-4 min-h-screen">
-      {/* tx hash header*/}
+      {/* header*/}
       <div className="py-4 border-b border-gray-500 ">
-        <h2 className="font-bold text-xl">Address {params.address}</h2>
+        <div className="flex items-center space-x-2">
+          <h2 className="font-bold text-xl">Address</h2>
+          <p className="text-xl">{params.account}</p>
+          <CopyToClipboardButton text={params.account} />
+        </div>
       </div>
+      <AccountController account={params.account} />
     </div>
   );
 };

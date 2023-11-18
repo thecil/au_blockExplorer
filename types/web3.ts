@@ -4,6 +4,9 @@ import type {
   BlockWithTransactions
 } from "alchemy-sdk";
 
+export type Web3Address = `0x${string}`;
+export type ENS = `${string}.eth`;
+
 // used on @tx/page, utils/web3
 export interface Transaction {
   receipt: TransactionReceipt | null;
@@ -27,5 +30,6 @@ export interface BlockDetailsProps {
   block: BlockWithTransactions;
 }
 
-export type Web3Address = `0x${string}`;
-export type ENS = `${string}.eth`;
+export interface AccountProps {
+  account: Web3Address;
+}
