@@ -1,6 +1,7 @@
 import React from "react";
 
 import "@/styles/globals.css";
+import "@rainbow-me/rainbowkit/styles.css";
 import Providers from "@/components/Providers";
 import Header from "@/components/header/Index";
 import Footer from "@/components/Footer";

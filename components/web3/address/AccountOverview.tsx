@@ -1,25 +1,55 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AccountProps } from "@/types/web3";
+import { Stages } from "@/types/components";
+import { useAlchemy } from "@/hooks/useAlchemy";
+import { formatEther } from "@/utils/web3";
+import Loading from "@/components/Loading";
+const AccountOverview: React.FC<AccountProps> = ({ account }) => {
+  const [balance, setBalance] = useState<string | undefined>(undefined);
+  const [stage, setStage] = useState(Stages.loading);
+  const { getBalance } = useAlchemy();
 
-const AccountOverview:React.FC<AccountProps> = ({ account }) => {
+  const _getBalance = async () => {
+    const _balance = await getBalance(account);
+    if (_balance) setBalance(formatEther(BigInt(_balance.toString())));
+  };
+
+  useEffect(() => {
+    if (!balance) {
+      _getBalance();
+      if (stage !== Stages.loading) setStage(Stages.loading);
+      return;
+    }
+    if (balance) {
+      if (stage !== Stages.show) setStage(Stages.show);
+      return;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stage, balance]);
+
   return (
-    <div className="w-1/4 m-2 p-4 flex flex-col gap-2 border rounded-lg border-gray-500  ">
-      <h2 className="font-bold">Overview</h2>
-      <div>
-        <h2>ETH BALANCE</h2>
-        <p>eth balance here</p>
-      </div>
-      <div>
-        <h2>ETH VALUE</h2>
-        <p>$ value here</p>
-      </div>
-      <div>
-        <h2>TOKEN HOLDINGS</h2>
-        <p>tokens list here</p>
-      </div>
-    </div>
+    <>
+      {stage === Stages.loading && <Loading />}
+      {stage === Stages.show && balance && (
+        <div className="w-fit m-2 p-4 flex flex-col gap-2 border rounded-lg border-gray-500  ">
+          <h2 className="font-bold">Overview</h2>
+          <div>
+            <h2>ETH BALANCE</h2>
+            <p>{balance} ETH</p>
+          </div>
+          <div>
+            <h2>ETH VALUE</h2>
+            <p>$ value here</p>
+          </div>
+          <div>
+            <h2>TOKEN HOLDINGS</h2>
+            <p>tokens list here</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

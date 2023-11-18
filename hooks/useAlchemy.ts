@@ -180,6 +180,20 @@ export const useAlchemy = () => {
       return null;
     }
   };
+
+  const getBalance = async (
+    addressOrName: Web3Address | ENS
+  ): Promise<BigNumber | null> => {
+    try {
+      const response = await alchemy.core.getBalance(addressOrName);
+      if (_logs) console.log("useAlchemy:getEns", response);
+
+      return response;
+    } catch (error) {
+      console.log("useAlchemy:getEns:error", { error });
+      return null;
+    }
+  };
   // Subscription for new blocks on Eth Mainnet.
   // const [subBlockNumber, setSubBlockNumber] = useState(0);
 
@@ -216,6 +230,7 @@ export const useAlchemy = () => {
     getTransaction,
     getTransactionReceipt,
     getTransactionReceipts,
+    getBalance,
     // methods nft
     getNftsForOwner,
     // other methods
