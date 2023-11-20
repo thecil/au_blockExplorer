@@ -14,7 +14,8 @@ import {
   IoCheckmarkCircle,
   IoCloseCircle,
   IoLeaf,
-  IoFlame
+  IoFlame,
+  IoChevronDown
 } from "react-icons/io5";
 import { Icons } from "@/types/components";
 
@@ -70,6 +71,8 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
             <IoFlame />
           </div>
         );
+      case Icons.down:
+        return <IoChevronDown />;
       default:
         return null;
     }

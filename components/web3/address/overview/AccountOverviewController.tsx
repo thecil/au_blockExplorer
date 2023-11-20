@@ -6,7 +6,9 @@ import { Stages } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { formatEther } from "@/utils/web3";
 import Loading from "@/components/Loading";
-const AccountOverview: React.FC<AccountProps> = ({ account }) => {
+import TokenHoldings from "./TokenHoldings";
+
+const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
   const [balance, setBalance] = useState<string | undefined>(undefined);
   const [stage, setStage] = useState(Stages.loading);
   const { getBalance } = useAlchemy();
@@ -14,6 +16,7 @@ const AccountOverview: React.FC<AccountProps> = ({ account }) => {
   const _getBalance = async () => {
     const _balance = await getBalance(account);
     if (_balance) setBalance(formatEther(BigInt(_balance.toString())));
+    return;
   };
 
   useEffect(() => {
@@ -26,6 +29,7 @@ const AccountOverview: React.FC<AccountProps> = ({ account }) => {
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
+    return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, balance]);
 
@@ -43,14 +47,11 @@ const AccountOverview: React.FC<AccountProps> = ({ account }) => {
             <h2>ETH VALUE</h2>
             <p>$ value here</p>
           </div>
-          <div>
-            <h2>TOKEN HOLDINGS</h2>
-            <p>tokens list here</p>
-          </div>
+          <TokenHoldings account={account} />
         </div>
       )}
     </>
   );
 };
 
-export default AccountOverview;
+export default AccountOverviewController;

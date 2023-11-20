@@ -6,7 +6,8 @@ import type {
   TransactionReceiptsResponse,
   TransactionReceipt,
   OwnedNftsResponse,
-  OwnedBaseNftsResponse
+  OwnedBaseNftsResponse,
+  GetTokensForOwnerResponse
 } from "alchemy-sdk";
 import { Web3Address, ENS } from "@/types/web3";
 import { GetNftsForOwnerOptions } from "alchemy-sdk";
@@ -181,6 +182,14 @@ export const useAlchemy = () => {
     }
   };
 
+  /**
+   * @description Returns the balance of a given address as of the provided block.
+   * @param addressOrName The address or ENS name of the account to get the balance for.
+   * @returns This is an estimate of the balance of gas. Properties returned in this object include:
+   * 1. hex: string This is the hex.
+   * 2. type: string BigNumber.
+   *
+   */
   const getBalance = async (
     addressOrName: Web3Address | ENS
   ): Promise<BigNumber | null> => {
@@ -194,6 +203,26 @@ export const useAlchemy = () => {
       return null;
     }
   };
+
+  /**
+   * @description Returns the tokens that the specified address owns, along with the amount of each token and the relevant metadata.
+   * @param addressOrName The owner address to get the tokens with balances for.
+   * @returns Owned tokens for the provided addresses along with relevant metadata.
+   */
+  const getTokensForOwner = async (
+    addressOrName: Web3Address
+  ): Promise<GetTokensForOwnerResponse | null> => {
+    try {
+      const response = await alchemy.core.getTokensForOwner(addressOrName);
+      if (_logs) console.log("useAlchemy:getEns", response);
+
+      return response;
+    } catch (error) {
+      console.log("useAlchemy:getEns:error", { error });
+      return null;
+    }
+  };
+
   // Subscription for new blocks on Eth Mainnet.
   // const [subBlockNumber, setSubBlockNumber] = useState(0);
 
@@ -231,6 +260,7 @@ export const useAlchemy = () => {
     getTransactionReceipt,
     getTransactionReceipts,
     getBalance,
+    getTokensForOwner,
     // methods nft
     getNftsForOwner,
     // other methods

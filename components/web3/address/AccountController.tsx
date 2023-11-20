@@ -3,13 +3,13 @@
 import React from "react";
 import { AccountProps } from "@/types/web3";
 import EnsTags from "@/components/web3/address/EnsTags";
-import AccountOverview from "@/components/web3/address/AccountOverview";
+import AccountOverviewController from "@/components/web3/address/overview/AccountOverviewController";
 
 const AccountController: React.FC<AccountProps> = ({ account }) => {
   return (
     <>
       <EnsTags account={account} />
-      <AccountOverview account={account} />
+      <AccountOverviewController account={account} />
     </>
   );
 };

@@ -99,10 +99,10 @@ export const getTxBurnedFees = (
 /**
  * returns a number splited on decimals
  * ex:"0,000,000"
- * @param amount BigNumber
+ * @param amount BigNumber | string
  * @returns string
  */
-export const formatGasToLocaleString = (amount: BigNumber): string =>
+export const formatGasToLocaleString = (amount: BigNumber | string): string =>
   Number(amount).toLocaleString();
 
 /**

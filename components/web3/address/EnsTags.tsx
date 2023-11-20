@@ -13,8 +13,6 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
   const [stage, setStage] = useState(Stages.loading);
 
   useEffect(() => {
-    console.log("EnsTags", data);
-
     if (data) {
       if (stage !== Stages.show) setStage(Stages.show);
       return;

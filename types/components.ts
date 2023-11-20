@@ -5,7 +5,7 @@ export enum Stages {
   hidden = "hidden"
 }
 
-// used in IconController and to specify which icon to use for it
+// used in IconController to specify which icon to use for it
 export enum Icons {
   block = "block",
   help = "help",
@@ -18,5 +18,6 @@ export enum Icons {
   circleCheck = "circle check",
   circleClose = "circle close",
   leaf = "leaf",
-  flame = "flame"
+  flame = "flame",
+  down = "down"
 }
