@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { GetTokensForOwnerResponse } from "alchemy-sdk";
 import { AccountProps } from "@/types/web3";
 import { Stages } from "@/types/components";
@@ -14,12 +14,31 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
     useState<GetTokensForOwnerResponse | null>();
   const [stage, setStage] = useState(Stages.loading);
   const [showList, setShowList] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  const listButtonRef = useRef<HTMLButtonElement>(null);
 
   const _getTokens = async () => {
     const _tokens = await getTokensForOwner(account);
     if (_tokens) setTokensList(_tokens);
     return;
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        listRef.current &&
+        !listRef.current.contains(event.target as Node) &&
+        listButtonRef.current !== event.target
+      ) {
+        setShowList(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [listRef]);
 
   useEffect(() => {
     if (!tokensList) {
@@ -36,11 +55,12 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
 
   return (
     <div>
-      <h2>TOKEN HOLDING S</h2>
+      <h2>TOKEN HOLDINGS</h2>
       {stage === Stages.loading && <Loading size={12} />}
       {stage === Stages.show && tokensList && (
         <>
           <button
+            ref={listButtonRef}
             className="w-full p-2 flex justify-between items-center border border-gray-500 rounded-lg"
             onClick={() => setShowList(!showList)}
           >
@@ -48,31 +68,41 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
             <IconController icon={Icons.down} />
           </button>
           {showList && tokensList && (
-            <div className="w-64 h-64 absolute border border-gray-500 rounded-lg bg-neutral-900">
-              <input
-                className="rounded-lg px-2 my-2 w-full"
-                type="text"
-                placeholder="Search for token name"
-              />
-              <div className="w-full h-48 overflow-auto">
+            <div
+              ref={listRef}
+              className="mt-1 w-1/2 h-min absolute border border-gray-500 rounded-lg bg-neutral-900"
+            >
+              <div className="p-2">
+                <input
+                  className="rounded-lg px-2 my-2 w-full"
+                  type="text"
+                  placeholder="Search for token name"
+                />
+              </div>
+              <div className="w-full max-h-64 overflow-auto p-2">
                 {tokensList.tokens.map((token, idx) => (
                   <>
                     {token.name && (
-                      <div key={idx} className="p-2 border-b border-gray-500">
-                        <p>
-                          {token.name} ({token.symbol})
-                        </p>
-                        <p>
-                          {formatGasToLocaleString(token.balance as string)}{" "}
-                          {token.symbol}
-                        </p>
+                      <div key={idx}>
+                        <div className="p-2 hover:bg-gray-800 hover:rounded-lg">
+                          <p>
+                            {token.name} ({token.symbol})
+                          </p>
+                          <p>
+                            {formatGasToLocaleString(token.balance as string)}{" "}
+                            {token.symbol}
+                          </p>
+                        </div>
+
+                        <div className="my-2 border-b border-gray-500 w-full"></div>
                       </div>
                     )}
                   </>
                 ))}
               </div>
-              <div className="bg-neutral-600 rounded-b-lg">
-                View All Holdings
+              <div className="p-2 flex items-center justify-center space-x-2 bg-neutral-600 rounded-b-lg">
+                <IconController icon={Icons.wallet} />
+                <p>VIEW ALL HOLDINGS</p>
               </div>
             </div>
           )}

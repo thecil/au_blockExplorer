@@ -29,7 +29,7 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
   }, [stage, data, isError, isLoading]);
 
   return (
-    <div className="m-2">
+    <div className="mt-2">
       {stage === Stages.hidden && <></>}
       {stage === Stages.loading && (
         <div className="w-12">

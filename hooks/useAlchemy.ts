@@ -7,7 +7,10 @@ import type {
   TransactionReceipt,
   OwnedNftsResponse,
   OwnedBaseNftsResponse,
-  GetTokensForOwnerResponse
+  GetTokensForOwnerResponse,
+  AssetTransfersParams,
+  AssetTransfersCategory,
+  AssetTransfersResponse
 } from "alchemy-sdk";
 import { Web3Address, ENS } from "@/types/web3";
 import { GetNftsForOwnerOptions } from "alchemy-sdk";
@@ -223,6 +226,25 @@ export const useAlchemy = () => {
     }
   };
 
+  const getAssetTransfers = async (
+    address: Web3Address,
+    category: AssetTransfersCategory
+  ): Promise<AssetTransfersResponse | null> => {
+    const options: AssetTransfersParams = {
+      fromBlock: "0x0",
+      fromAddress: address,
+      category: [category]
+    };
+    try {
+      const response = await alchemy.core.getAssetTransfers({ ...options });
+      if (_logs) console.log("useAlchemy:getAssetTransfers", response);
+
+      return response;
+    } catch (error) {
+      console.log("useAlchemy:getAssetTransfers:error", { error });
+      return null;
+    }
+  };
   // Subscription for new blocks on Eth Mainnet.
   // const [subBlockNumber, setSubBlockNumber] = useState(0);
 
@@ -251,7 +273,7 @@ export const useAlchemy = () => {
   // }, [subBlockNumber]);
 
   return {
-    // methods core
+    // core methods
     getBlockNumber,
     getGasPrice,
     getBlock,
@@ -261,7 +283,8 @@ export const useAlchemy = () => {
     getTransactionReceipts,
     getBalance,
     getTokensForOwner,
-    // methods nft
+    getAssetTransfers,
+    // nft methods
     getNftsForOwner,
     // other methods
     getEns

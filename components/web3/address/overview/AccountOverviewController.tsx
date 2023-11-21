@@ -37,7 +37,7 @@ const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
     <>
       {stage === Stages.loading && <Loading />}
       {stage === Stages.show && balance && (
-        <div className="w-fit m-2 p-4 flex flex-col gap-2 border rounded-lg border-gray-500  ">
+        <div className="w-full p-4 flex flex-col gap-2 border rounded-lg border-gray-500  ">
           <h2 className="font-bold">Overview</h2>
           <div>
             <h2>ETH BALANCE</h2>

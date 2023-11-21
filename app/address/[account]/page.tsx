@@ -20,7 +20,7 @@ const Page = ({ params }: Props) => {
       <div className="py-4 border-b border-gray-500 ">
         <div className="flex items-center space-x-2">
           <h2 className="font-bold text-xl">Address</h2>
-          <p className="text-xl">{params.account}</p>
+          <p className="text-xl truncate">{params.account}</p>
           <CopyToClipboardButton text={params.account} />
         </div>
       </div>

@@ -5,7 +5,7 @@ import LatestBlocksController from "@/components/web3/LatestBlocksController";
 import LatestTransactionController from "@/components/web3/LatestTransactionsController";
 import { useAlchemy } from "@/hooks/useAlchemy";
 
-const HomePageController: React.FC = () => {
+const HomePage: React.FC = () => {
   const { getBlockNumber } = useAlchemy();
   const [latestBlock, setLatestBlock] = useState(0);
 
@@ -28,4 +28,4 @@ const HomePageController: React.FC = () => {
   );
 };
 
-export default HomePageController;
+export default HomePage;
