@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import hrefs from "@/data/hrefs.json";
 import type { BlockWithTransactions } from "alchemy-sdk";
 import { Icons } from "@/types/components";
 import { Stages } from "@/types/components";
@@ -74,7 +75,7 @@ const LatestTransactionsController: React.FC<
                       <p className="md:hidden">Transaction</p>
                       <Link
                         className="text-blue-500 w-20 truncate"
-                        href={`/tx/${txn.hash}`}
+                        href={`${hrefs.transaction}/${txn.hash}`}
                       >
                         {txn.hash}
                       </Link>
@@ -93,7 +94,7 @@ const LatestTransactionsController: React.FC<
                         <p>From </p>
                         <Link
                           className="text-blue-500"
-                          href={`/block/${txn.from}`}
+                          href={`${hrefs.address}/${txn.from}`}
                         >
                           {shortAddress(txn.from)}
                         </Link>
@@ -104,7 +105,7 @@ const LatestTransactionsController: React.FC<
                           <p>To </p>
                           <Link
                             className="text-blue-500"
-                            href={`/txn/${txn.to}`}
+                            href={`${hrefs.address}/${txn.to}`}
                           >
                             {shortAddress(txn.to)}
                           </Link>
@@ -131,7 +132,7 @@ const LatestTransactionsController: React.FC<
             </>
           ))}
           <div className="text-md text-gray-500 text-center py-2">
-            <Link className="" href="/txs">
+            <Link className="" href={`${hrefs.transactions}`}>
               View All Transactions
             </Link>
           </div>

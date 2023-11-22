@@ -13,7 +13,7 @@ import type {
   AssetTransfersResponse
 } from "alchemy-sdk";
 import { Web3Address, ENS } from "@/types/web3";
-import { GetNftsForOwnerOptions } from "alchemy-sdk";
+import { GetNftsForOwnerOptions, SortingOrder } from "alchemy-sdk";
 import contracts from "@/data/contracts.json";
 
 // import { useMemo, useState, useEffect } from "react";
@@ -233,7 +233,8 @@ export const useAlchemy = () => {
     const options: AssetTransfersParams = {
       fromBlock: "0x0",
       fromAddress: address,
-      category: [category]
+      category: [category],
+      order: SortingOrder.DESCENDING
     };
     try {
       const response = await alchemy.core.getAssetTransfers({ ...options });
