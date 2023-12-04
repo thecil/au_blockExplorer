@@ -17,7 +17,8 @@ import {
   IoFlame,
   IoChevronDown,
   IoWalletOutline,
-  IoEyeOutline
+  IoEyeOutline,
+  IoSearch
 } from "react-icons/io5";
 import { Icons } from "@/types/components";
 
@@ -79,6 +80,8 @@ const IconController: React.FC<IconProps> = ({ icon, size }) => {
         return <IoWalletOutline />;
       case Icons.eye:
         return <IoEyeOutline />;
+      case Icons.search:
+        return <IoSearch />;
       default:
         return null;
     }

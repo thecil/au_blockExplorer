@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useAlchemy } from "@/hooks/useAlchemy";
 import LatestBlocksController from "@/components/web3/LatestBlocksController";
 import LatestTransactionController from "@/components/web3/LatestTransactionsController";
-import { useAlchemy } from "@/hooks/useAlchemy";
+import Search from "./search/Search";
 
 const HomePage: React.FC = () => {
   const { getBlockNumber } = useAlchemy();
@@ -21,9 +22,12 @@ const HomePage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestBlock]);
   return (
-    <div className="grid grid-rows-1 gap-4 md:grid-cols-2">
-      <LatestBlocksController latestBlockNumber={latestBlock} />
-      <LatestTransactionController latestBlockNumber={latestBlock} />
+    <div>
+      <Search />
+      <div className="grid grid-rows-1 gap-4 md:grid-cols-2">
+        <LatestBlocksController latestBlockNumber={latestBlock} />
+        <LatestTransactionController latestBlockNumber={latestBlock} />
+      </div>
     </div>
   );
 };
