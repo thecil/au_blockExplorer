@@ -51,7 +51,7 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ block }) => {
         <div className="flex space-x-1 items-center">
           <Link
             className="text-blue-300 truncate"
-            href={`${hrefs.block}/${block.miner}`}
+            href={`${hrefs.address}/${block.miner}`}
           >
             {shortAddress(block.miner)}
           </Link>
