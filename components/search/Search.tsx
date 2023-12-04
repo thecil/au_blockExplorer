@@ -10,8 +10,10 @@ const Search = () => {
   const debouncedInputValue = useDebounce(inputValue, 1000);
 
   const onSearch = () => {
-    console.log("onSearch", { debouncedInputValue });
+    if (debouncedInputValue !== "")
+      console.log("onSearch", { debouncedInputValue });
   };
+
   const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
     setInputValue(target.value);
@@ -31,7 +33,10 @@ const Search = () => {
         onChange={searchHandler}
         onKeyDown={handleKeyDown}
       />
-      <button className="hover:border hover:border-gray-400 rounded-lg px-2" onClick={onSearch}>
+      <button
+        className="hover:border hover:border-gray-400 rounded-lg px-2"
+        onClick={onSearch}
+      >
         <IconController icon={Icons.search} />
       </button>
     </div>
