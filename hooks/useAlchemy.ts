@@ -72,10 +72,10 @@ export const useAlchemy = () => {
         blockHashOrBlockTag
       );
 
-      console.log("useAlchemy:getBlockWithTransactions", _blockWithTxns);
+      if (_logs) console.log("useAlchemy:getBlockWithTransactions", _blockWithTxns);
       return _blockWithTxns;
     } catch (error) {
-      console.log("useAlchemy:getBlockWithTransactions:error", { error });
+      if (_logs) console.log("useAlchemy:getBlockWithTransactions:error", { error });
       return;
     }
   };
@@ -108,7 +108,7 @@ export const useAlchemy = () => {
 
       return _tx;
     } catch (error) {
-      console.log("useAlchemy:getTransaction:error", { error });
+      if (_logs) console.log("useAlchemy:getTransaction:error", { error });
       return null;
     }
   };
@@ -122,7 +122,7 @@ export const useAlchemy = () => {
       if (_logs) console.log("useAlchemy:getTransactionReceipt ", _tx);
       return _tx;
     } catch (error) {
-      console.log("useAlchemy:getTransactionReceipt :error", { error });
+      if (_logs) console.log("useAlchemy:getTransactionReceipt :error", { error });
       return null;
     }
   };
@@ -139,7 +139,7 @@ export const useAlchemy = () => {
 
       return _tx;
     } catch (error) {
-      console.log("useAlchemy:getTransactionReceipts :error", { error });
+      if (_logs) console.log("useAlchemy:getTransactionReceipts :error", { error });
       return null;
     }
   };
@@ -160,7 +160,7 @@ export const useAlchemy = () => {
 
       return _nfts;
     } catch (error) {
-      console.log("useAlchemy:getNftsForOwner:error", { error });
+      if (_logs) console.log("useAlchemy:getNftsForOwner:error", { error });
       return null;
     }
   };
@@ -180,7 +180,7 @@ export const useAlchemy = () => {
 
       return _ens;
     } catch (error) {
-      console.log("useAlchemy:getEns:error", { error });
+      if (_logs) console.log("useAlchemy:getEns:error", { error });
       return null;
     }
   };
@@ -202,7 +202,7 @@ export const useAlchemy = () => {
 
       return response;
     } catch (error) {
-      console.log("useAlchemy:getEns:error", { error });
+      if (_logs) console.log("useAlchemy:getEns:error", { error });
       return null;
     }
   };
@@ -221,7 +221,7 @@ export const useAlchemy = () => {
 
       return response;
     } catch (error) {
-      console.log("useAlchemy:getEns:error", { error });
+      if (_logs) console.log("useAlchemy:getEns:error", { error });
       return null;
     }
   };
@@ -242,7 +242,7 @@ export const useAlchemy = () => {
 
       return response;
     } catch (error) {
-      console.log("useAlchemy:getAssetTransfers:error", { error });
+      if (_logs) console.log("useAlchemy:getAssetTransfers:error", { error });
       return null;
     }
   };
