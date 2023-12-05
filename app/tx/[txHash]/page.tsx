@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 import TransactionHashController from "@/components/web3/transactions/TransactionHashController";
+import { Hex } from "@/types/web3";
 
 type Props = {
-  params: { txHash: string };
+  params: { txHash: string | Hex };
 };
 
 export const generateMetadata = ({ params }: Props): Metadata => {
@@ -12,7 +13,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 };
 
 const Page = ({ params }: Props) => {
-  return <TransactionHashController txHash={params.txHash} />;
+  return <TransactionHashController txHash={params.txHash as Hex} />;
 };
 
 export default Page;

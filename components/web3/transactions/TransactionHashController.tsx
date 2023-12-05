@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Stages } from "@/types/components";
-import { Transaction } from "@/types/web3";
+import { Hex, Transaction } from "@/types/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import Loading from "@/components/Loading";
@@ -12,7 +12,7 @@ import TxDetailsAccordion from "@/components/web3/transactions/TxDetailsAccordio
 import TxDetails from "@/components/web3/transactions/TxDetails";
 
 interface TransactionHashControllerProps {
-  txHash: string;
+  txHash: Hex;
 }
 const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
   txHash

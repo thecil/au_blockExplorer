@@ -18,13 +18,13 @@ const schema = z.union([
       // address = 42 chars | txOrBlock = 66 char
       value.startsWith("0x") && (value.length === 42 || value.length === 66),
     {
-      message: "Hash starting with 0x should be of length 42 or 66",
+      message: "Hash starting with 0x should be of length 42 or 66"
     }
   ),
   // ens
   z.string().refine((value) => value.endsWith(".eth"), {
-    message: "Domain Name should end with .eth",
-  }),
+    message: "Domain Name should end with .eth"
+  })
 ]);
 
 const Search = () => {
