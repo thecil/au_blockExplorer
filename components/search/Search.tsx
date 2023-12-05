@@ -18,18 +18,18 @@ const schema = z.union([
       // address = 42 chars | txOrBlock = 66 char
       value.startsWith("0x") && (value.length === 42 || value.length === 66),
     {
-      message: "Hash starting with 0x should be of length 42 or 66"
+      message: "Hash starting with 0x should be of length 42 or 66",
     }
   ),
   // ens
   z.string().refine((value) => value.endsWith(".eth"), {
-    message: "Domain Name should end with .eth"
-  })
+    message: "Domain Name should end with .eth",
+  }),
 ]);
 
 const Search = () => {
-  const [inputValue, setInputValue] = useState<Hex | number | ENS >("0x");
-  const debouncedInputValue = useDebounce(inputValue, 1000);
+  const [inputValue, setInputValue] = useState<Hex | number | ENS>("0x");
+  const debouncedInputValue = useDebounce(inputValue, 500);
 
   // onChange set input
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,12 +40,14 @@ const Search = () => {
       setInputValue(Number(target.value));
     } else {
       // hash
-      setInputValue(target.value);
+      setInputValue(target.value as Hex | ENS);
     }
   };
 
   // if valid zod schema, will return true to show search results
   const validInput = useMemo(() => {
+    if (inputValue === "0x") return false;
+    if (typeof inputValue === "string" && inputValue.length === 0) return false;
     if (debouncedInputValue !== "0x") {
       try {
         const validate = schema.safeParse(debouncedInputValue);
@@ -59,7 +61,7 @@ const Search = () => {
       }
     }
     return false;
-  }, [debouncedInputValue]);
+  }, [inputValue, debouncedInputValue]);
 
   // on handleKeyDown, start routing
   const onSearch = () => {
@@ -72,8 +74,8 @@ const Search = () => {
   };
 
   return (
-    <div className="my-2 w-full">
-      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-gray-600 p-2 bg-white dark:bg-black">
+    <div className="sticky my-2 w-full">
+      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-neutral-600 p-2 bg-white dark:bg-black">
         <input
           className="px-2 w-full h-8 focus:outline-none  bg-white dark:bg-black"
           type="text"

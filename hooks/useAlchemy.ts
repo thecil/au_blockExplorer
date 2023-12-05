@@ -39,12 +39,12 @@ export const useAlchemy = () => {
   const isContractAddress = async (address: Web3Address): Promise<boolean> => {
     try {
       const _isContract = await alchemy.core.isContractAddress(address);
-      if (_logs) console.log("useAlchemy:getBlockNumber", _isContract);
-      return true;
+      console.log("useAlchemy:isContractAddress", _isContract);
+      return _isContract;
     } catch (error) {
       if (_logs) console.log("useAlchemy:getBlockNumber:error", { error });
-      return false;
     }
+    return false;
   };
 
   // Returns the block number of the most recently mined block.
@@ -209,7 +209,10 @@ export const useAlchemy = () => {
    */
   const getEnsOwner = async (ens: ENS) => {
     try {
-      return alchemy.core.resolveName(ens);
+      const _address = await alchemy.core.resolveName(ens);
+      if (_logs) console.log("useAlchemy:getEnsOwner:success", { _address });
+
+      return _address;
     } catch (error) {
       if (_logs) console.log("useAlchemy:getEnsOwner:error", { error });
       return null;
