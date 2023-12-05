@@ -35,49 +35,63 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
           )}%)`}</p>
         </BlockOrTxContent>
         {/* tx gas price */}
-        <BlockOrTxContent
-          title="Gas Fees"
-          iconDescription={iconDescription.gasFees}
-        >
-          <p>{`Base: ${formatGwei(
-            BigInt(
-              tx.receipt?.effectiveGasPrice
-                .sub(tx.response?.maxPriorityFeePerGas as BigNumber)
-                .toString() as string
-            )
-          )} Gwei | Max: ${formatGwei(
-            BigInt(tx.response?.maxFeePerGas?.toString() as string)
-          )} Gwei | Max Priority: ${formatGwei(
-            BigInt(tx.response?.maxPriorityFeePerGas?.toString() as string)
-          )} Gwei`}</p>
-        </BlockOrTxContent>
+        {tx.receipt &&
+        tx.response &&
+        tx.response.maxPriorityFeePerGas &&
+        tx.response.maxFeePerGas ? (
+            <BlockOrTxContent
+              title="Gas Fees"
+              iconDescription={iconDescription.gasFees}
+            >
+              <p>{`Base: ${formatGwei(
+                BigInt(
+                tx.receipt.effectiveGasPrice
+                  .sub(tx.response.maxPriorityFeePerGas as BigNumber)
+                  .toString() as string
+                )
+              )} Gwei | Max: ${formatGwei(
+                BigInt(tx.response.maxFeePerGas.toString() as string)
+              )} Gwei | Max Priority: ${formatGwei(
+                BigInt(tx.response.maxPriorityFeePerGas.toString() as string)
+              )} Gwei`}</p>
+            </BlockOrTxContent>
+          ) : null}
+
         {/* tx burnt & saving fees */}
-        <BlockOrTxContent
-          title="Burnt & Savings Fees"
-          iconDescription={iconDescription.burntSavingFees}
-        >
-          <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-            <Badge
-              name="Burnt:"
-              value={`${getTxBurnedFees(
-                tx.receipt?.gasUsed as BigNumber,
-                tx.response?.maxPriorityFeePerGas as BigNumber,
-                tx.receipt?.effectiveGasPrice as BigNumber
-              )} ETH`}
-              icon={Icons.flame}
-            />
-            <Badge
-              name="Txns Savings:"
-              value={`${getTxSavingFees(
-                tx.response?.maxFeePerGas as BigNumber,
-                tx.response?.maxPriorityFeePerGas as BigNumber,
-                tx.receipt?.effectiveGasPrice as BigNumber,
-                tx.receipt?.gasUsed as BigNumber
-              )} ETH`}
-              icon={Icons.leaf}
-            />
-          </div>
-        </BlockOrTxContent>
+        {tx.receipt &&
+        tx.response &&
+        tx.receipt.gasUsed &&
+        tx.response.maxPriorityFeePerGas &&
+        tx.response.maxFeePerGas &&
+        tx.receipt.effectiveGasPrice ? (
+            <BlockOrTxContent
+              title="Burnt & Savings Fees"
+              iconDescription={iconDescription.burntSavingFees}
+            >
+              <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
+                <Badge
+                  name="Burnt:"
+                  value={`${getTxBurnedFees(
+                  tx.receipt.gasUsed as BigNumber,
+                  tx.response.maxPriorityFeePerGas as BigNumber,
+                  tx.receipt.effectiveGasPrice as BigNumber
+                  )} ETH`}
+                  icon={Icons.flame}
+                />
+                <Badge
+                  name="Txns Savings:"
+                  value={`${getTxSavingFees(
+                  tx.response.maxFeePerGas as BigNumber,
+                  tx.response.maxPriorityFeePerGas as BigNumber,
+                  tx.receipt.effectiveGasPrice as BigNumber,
+                  tx.receipt.gasUsed as BigNumber
+                  )} ETH`}
+                  icon={Icons.leaf}
+                />
+              </div>
+            </BlockOrTxContent>
+          ) : null}
+
         {/* tx other attributes */}
         <BlockOrTxContent
           title="Other Attributes"
