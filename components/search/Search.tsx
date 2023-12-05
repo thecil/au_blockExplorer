@@ -1,44 +1,96 @@
 "use client";
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useMemo, useState } from "react";
+import { z } from "zod";
 import { Icons } from "@/types/components";
-import IconController from "../IconController";
 import useDebounce from "@/hooks/useDebounce";
+import IconController from "../IconController";
+import SearchResult from "./SearchResult";
+import { Hex, ENS } from "@/types/web3";
+
+// zod schema
+const schema = z.union([
+  // block number
+  z.number(),
+  // hash
+  z.string().refine(
+    (value) =>
+      // address = 42 chars | txOrBlock = 66 char
+      value.startsWith("0x") && (value.length === 42 || value.length === 66),
+    {
+      message: "Hash starting with 0x should be of length 42 or 66"
+    }
+  ),
+  // ens
+  z.string().refine((value) => value.endsWith(".eth"), {
+    message: "Domain Name should end with .eth"
+  })
+]);
 
 const Search = () => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<Hex | number | ENS >("0x");
   const debouncedInputValue = useDebounce(inputValue, 1000);
 
-  const onSearch = () => {
-    if (debouncedInputValue !== "")
-      console.log("onSearch", { debouncedInputValue });
-  };
-
-  const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  // onChange set input
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const { target } = event;
-    setInputValue(target.value);
+    // input contains only numbers
+    if (/^\d+$/.test(target.value)) {
+      // block number
+      setInputValue(Number(target.value));
+    } else {
+      // hash
+      setInputValue(target.value);
+    }
   };
 
+  // if valid zod schema, will return true to show search results
+  const validInput = useMemo(() => {
+    if (debouncedInputValue !== "0x") {
+      try {
+        const validate = schema.safeParse(debouncedInputValue);
+        if (validate.success) {
+          console.log("zod valid", { validate });
+          return true;
+        }
+      } catch (error) {
+        console.log("zod invalid", { error });
+        return false;
+      }
+    }
+    return false;
+  }, [debouncedInputValue]);
+
+  // on handleKeyDown, start routing
+  const onSearch = () => {
+    if (validInput) console.log("onSearch", { debouncedInputValue });
+  };
+
+  // on press Enter key
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") onSearch();
   };
 
   return (
-    <div className="text-gray-400 my-2 relative w-full flex space-x-1 border rounded-lg dark:border-gray-600 p-2 bg-white dark:bg-black">
-      <input
-        className="px-2 w-full h-8 focus:outline-none  bg-white dark:bg-black"
-        type="text"
-        name="search"
-        placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
-        onChange={searchHandler}
-        onKeyDown={handleKeyDown}
-      />
-      <button
-        className="hover:border hover:border-gray-400 rounded-lg px-2"
-        onClick={onSearch}
-      >
-        <IconController icon={Icons.search} />
-      </button>
+    <div className="my-2 w-full">
+      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-gray-600 p-2 bg-white dark:bg-black">
+        <input
+          className="px-2 w-full h-8 focus:outline-none  bg-white dark:bg-black"
+          type="text"
+          name="search"
+          placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
+          onChange={handleSearch}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          className="hover:border hover:border-neutral-200 rounded-lg px-2"
+          disabled={!validInput}
+          onClick={onSearch}
+        >
+          <IconController icon={Icons.search} />
+        </button>
+      </div>
+      {validInput ? <SearchResult input={debouncedInputValue} /> : null}
     </div>
   );
 };

@@ -32,6 +32,7 @@ if (_logs) console.log("useAlchemy:status", alchemy);
  * hook that provides the Alchemy sdk methods
  * ETH MAINNET ONLY FOR NOW
  * Docs: https://docs.alchemy.com/
+ * TODO: this hook will increase, compose into many EX: "useAlchemyCore, useAlchemyNFT..."
  */
 export const useAlchemy = () => {
   // Checks if the provided address is a smart contract.
@@ -202,6 +203,19 @@ export const useAlchemy = () => {
   };
 
   /**
+   * @description resolve a user's address from an ENS Domain Name owned by the user.
+   * @param ens domain name to resolve
+   * @returns Web3Address | null
+   */
+  const getEnsOwner = async (ens: ENS) => {
+    try {
+      return alchemy.core.resolveName(ens);
+    } catch (error) {
+      if (_logs) console.log("useAlchemy:getEnsOwner:error", { error });
+      return null;
+    }
+  };
+  /**
    * @description Returns the balance of a given address as of the provided block.
    * @param addressOrName The address or ENS name of the account to get the balance for.
    * @returns This is an estimate of the balance of gas. Properties returned in this object include:
@@ -305,7 +319,8 @@ export const useAlchemy = () => {
     // nft methods
     getNftsForOwner,
     // other methods
-    getEns
+    getEns,
+    getEnsOwner
     // subscriptions
     // latestBlockNumber
   };
