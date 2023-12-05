@@ -12,7 +12,7 @@ import type {
   AssetTransfersCategory,
   AssetTransfersResponse
 } from "alchemy-sdk";
-import { Web3Address, ENS } from "@/types/web3";
+import { Web3Address, ENS, Hex } from "@/types/web3";
 import { GetNftsForOwnerOptions, SortingOrder } from "alchemy-sdk";
 import contracts from "@/data/contracts.json";
 
@@ -34,6 +34,18 @@ if (_logs) console.log("useAlchemy:status", alchemy);
  * Docs: https://docs.alchemy.com/
  */
 export const useAlchemy = () => {
+  // Checks if the provided address is a smart contract.
+  const isContractAddress = async (address: Web3Address): Promise<boolean> => {
+    try {
+      const _isContract = await alchemy.core.isContractAddress(address);
+      if (_logs) console.log("useAlchemy:getBlockNumber", _isContract);
+      return true;
+    } catch (error) {
+      if (_logs) console.log("useAlchemy:getBlockNumber:error", { error });
+      return false;
+    }
+  };
+
   // Returns the block number of the most recently mined block.
   const getBlockNumber = async (): Promise<number> => {
     try {
@@ -48,7 +60,7 @@ export const useAlchemy = () => {
 
   //   Returns the block from the network based on the provided block number or hash.
   const getBlock = async (
-    hashOrBlockNumber: string | number
+    hashOrBlockNumber: Hex | number
   ): Promise<Block | undefined> => {
     try {
       const _block = await alchemy.core.getBlock(hashOrBlockNumber);
@@ -65,17 +77,19 @@ export const useAlchemy = () => {
    * In addition to the transaction hashes included in the block, it also returns the full transaction objects.
    */
   const getBlockWithTransactions = async (
-    blockHashOrBlockTag: string | number
+    blockHashOrBlockTag: Hex | number
   ): Promise<BlockWithTransactions | undefined> => {
     try {
       const _blockWithTxns = await alchemy.core.getBlockWithTransactions(
         blockHashOrBlockTag
       );
 
-      if (_logs) console.log("useAlchemy:getBlockWithTransactions", _blockWithTxns);
+      if (_logs)
+        console.log("useAlchemy:getBlockWithTransactions", _blockWithTxns);
       return _blockWithTxns;
     } catch (error) {
-      if (_logs) console.log("useAlchemy:getBlockWithTransactions:error", { error });
+      if (_logs)
+        console.log("useAlchemy:getBlockWithTransactions:error", { error });
       return;
     }
   };
@@ -100,7 +114,7 @@ export const useAlchemy = () => {
    * in which case this method may also return null.
    */
   const getTransaction = async (
-    hash: string
+    hash: Hex
   ): Promise<TransactionResponse | null> => {
     try {
       const _tx = await alchemy.core.getTransaction(hash);
@@ -115,21 +129,22 @@ export const useAlchemy = () => {
 
   // Returns the transaction receipt for hash or null if the transaction has not been mined.
   const getTransactionReceipt = async (
-    transactionHash: string
+    transactionHash: Hex
   ): Promise<TransactionReceipt | null> => {
     try {
       const _tx = await alchemy.core.getTransactionReceipt(transactionHash);
       if (_logs) console.log("useAlchemy:getTransactionReceipt ", _tx);
       return _tx;
     } catch (error) {
-      if (_logs) console.log("useAlchemy:getTransactionReceipt :error", { error });
+      if (_logs)
+        console.log("useAlchemy:getTransactionReceipt :error", { error });
       return null;
     }
   };
 
   // Gets all transaction receipts for a given block by number or block hash.
   const getTransactionReceipts = async (
-    blockHash: string
+    blockHash: Hex
   ): Promise<TransactionReceiptsResponse | null> => {
     try {
       const _tx = await alchemy.core.getTransactionReceipts({
@@ -139,7 +154,8 @@ export const useAlchemy = () => {
 
       return _tx;
     } catch (error) {
-      if (_logs) console.log("useAlchemy:getTransactionReceipts :error", { error });
+      if (_logs)
+        console.log("useAlchemy:getTransactionReceipts :error", { error });
       return null;
     }
   };
@@ -275,6 +291,7 @@ export const useAlchemy = () => {
 
   return {
     // core methods
+    isContractAddress,
     getBlockNumber,
     getGasPrice,
     getBlock,

@@ -6,7 +6,7 @@ import type {
   TransactionReceiptsResponse,
   TransactionReceipt
 } from "alchemy-sdk";
-import { BlockFees } from "@/types/web3";
+import { BlockFees, Hex } from "@/types/web3";
 import { Stages } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { getBlockReward } from "@/utils/web3";
@@ -31,7 +31,7 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
 
   const _getTransactionReceipts = async () => {
     const _txnsReceipts: TransactionReceiptsResponse | null =
-      await getTransactionReceipts(block.hash);
+      await getTransactionReceipts(block.hash as Hex);
     if (_txnsReceipts && _txnsReceipts.receipts)
       setTxnsReceipts(_txnsReceipts.receipts);
     return;

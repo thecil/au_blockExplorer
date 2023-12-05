@@ -11,6 +11,7 @@ import { elapsedTime } from "@/utils/unixTime";
 import IconController from "../IconController";
 import Loading from "../Loading";
 import Tooltip from "../ToolTip";
+import { Hex } from "@/types/web3";
 
 interface LatestTransactionsControllerProps {
   latestBlockNumber: number;
@@ -22,12 +23,12 @@ const LatestTransactionsController: React.FC<
   const MAX_TXNS_TO_SHOW = 6;
   const { getBlockWithTransactions } = useAlchemy();
   const [stage, setStage] = useState(Stages.loading);
-  const [blockHashOrBlockTag, setBlock] = useState<string | number>();
+  const [blockHashOrBlockTag, setBlock] = useState<Hex | number>();
   const [txns, setTxns] = useState<BlockWithTransactions>();
 
   const _getBlockWithTransactions = async () => {
     const _blockWithTxns = await getBlockWithTransactions(
-      blockHashOrBlockTag as number | string
+      blockHashOrBlockTag as number | Hex
     );
     if (_blockWithTxns) setTxns(_blockWithTxns);
     return;
