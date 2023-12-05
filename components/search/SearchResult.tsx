@@ -105,7 +105,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
   }, [input, ensOwner, block, isContract, txn, stage]);
 
   return (
-    <div className="absolute bg-white dark:bg-black w-full border border-neutral-600 rounded-lg p-2">
+    <div className="absolute bg-white dark:bg-black w-full border dark:border-neutral-600 rounded-lg p-2">
       {stage === SearchStages.loading ? <Loading /> : null}
       {stage === SearchStages.ens && ensOwner ? (
         <div>ENS Owner:{ensOwner}</div>
