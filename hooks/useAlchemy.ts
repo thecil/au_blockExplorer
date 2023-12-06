@@ -39,7 +39,7 @@ export const useAlchemy = () => {
   const isContractAddress = async (address: Web3Address): Promise<boolean> => {
     try {
       const _isContract = await alchemy.core.isContractAddress(address);
-      console.log("useAlchemy:isContractAddress", _isContract);
+      if (_logs) console.log("useAlchemy:isContractAddress", _isContract);
       return _isContract;
     } catch (error) {
       if (_logs) console.log("useAlchemy:getBlockNumber:error", { error });
@@ -120,7 +120,6 @@ export const useAlchemy = () => {
     try {
       const _tx = await alchemy.core.getTransaction(hash);
       if (_logs) console.log("useAlchemy:getTransaction", _tx);
-
       return _tx;
     } catch (error) {
       if (_logs) console.log("useAlchemy:getTransaction:error", { error });
