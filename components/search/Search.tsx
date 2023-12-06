@@ -15,7 +15,7 @@ const schema = z.union([
   // hash
   z.string().refine(
     (value) =>
-      // address = 42 chars | txOrBlock = 66 char
+      // address = 42 chars | txOrBlock hash = 66 char
       value.startsWith("0x") && (value.length === 42 || value.length === 66),
     {
       message: "Hash starting with 0x should be of length 42 or 66"
@@ -40,7 +40,7 @@ const Search = () => {
       setInputValue(Number(target.value));
     } else {
       // hash
-      setInputValue(target.value as Hex | ENS);
+      setInputValue(target.value.toLocaleLowerCase() as Hex | ENS);
     }
   };
 
@@ -52,11 +52,9 @@ const Search = () => {
       try {
         const validate = schema.safeParse(debouncedInputValue);
         if (validate.success) {
-          console.log("zod valid", { validate });
           return true;
         }
       } catch (error) {
-        console.log("zod invalid", { error });
         return false;
       }
     }
