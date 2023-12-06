@@ -14,7 +14,7 @@ const TransactionResult: React.FC<TransactionResultProps> = ({ txn }) => {
     <div className="hover:bg-neutral-800 rounded-lg p-2">
       <h2 className="text-lg font-bold">Transaction Hash:</h2>
       <div className="flex space-x-1 items-center">
-        <Link className="text-blue-500" href={`${hrefs.transaction}/${txn.hash}`}>
+        <Link className="text-blue-500 truncate" href={`${hrefs.transaction}/${txn.hash}`}>
           {txn.hash}
         </Link>
         <CopyToClipboardButton text={txn.hash} />
