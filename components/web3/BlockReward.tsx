@@ -66,7 +66,7 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
         <>
           {miniComp ? (
             <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-              <Tooltip message="Block Reward" minWith>
+              <Tooltip message="Block Reward" direction="top" minWith>
                 <p>{blockFees.blockReward.slice(0, 7)} Eth</p>
               </Tooltip>
             </div>

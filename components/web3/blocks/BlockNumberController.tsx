@@ -59,7 +59,7 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
             {/* block heigth */}
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <Tooltip message={iconDescription.blockHeight}>
+                <Tooltip message={iconDescription.blockHeight} direction="top">
                   <IconController icon={Icons.help} />
                 </Tooltip>
                 <p>Block Height:</p>

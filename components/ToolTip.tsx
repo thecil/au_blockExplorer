@@ -3,7 +3,7 @@ import { ReactNode, useMemo } from "react";
 interface ToolTipProps {
   message: string;
   children: ReactNode;
-  direction?: "top" | "bottom" | "left" | "right";
+  direction?: "top" | "bottom" | "right";
   minWith?: boolean;
 }
 
@@ -16,14 +16,13 @@ const Tooltip: React.FC<ToolTipProps> = ({
   const toolTipDirection = useMemo(() => {
     switch (direction) {
       case "top":
-        return "bottom-full left-1/2";
+        return "bottom-full mx-auto";
       case "bottom":
-        return "top-full left-1/2";
-      case "left":
-        return "right-full top-1/2";
+        return "top-full mx-auto";
       case "right":
+        return "right-full my-auto";
       default:
-        return "left-full top-1/2";
+        return "top-full my-auto";
     }
   }, [direction]);
 
@@ -34,7 +33,7 @@ const Tooltip: React.FC<ToolTipProps> = ({
         <span
           className={`${
             minWith ? "w-fit" : "w-64"
-          } z-10 relative p-4 text-sm leading-none bg-white dark:text-white whitespace-no-wrap dark:bg-neutral-900 shadow-lg rounded-md`}
+          } z-10 static p-2 text-sm leading-none bg-white dark:text-white whitespace-no-wrap dark:bg-neutral-900 shadow-lg rounded-md`}
         >
           {message}
         </span>

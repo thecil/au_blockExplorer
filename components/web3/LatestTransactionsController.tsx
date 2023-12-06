@@ -54,7 +54,7 @@ const LatestTransactionsController: React.FC<
 
   return (
     <div className="rounded-lg bg-slate-100 dark:bg-black">
-      <div className="border-1 border-b p-2">
+      <div className="border-1 border-b p-2 dark:border-b-neutral-800">
         <h2 className="font-bold">Latest Transactions</h2>
       </div>
       {stage === Stages.loading && <Loading size={64} />}
@@ -65,7 +65,7 @@ const LatestTransactionsController: React.FC<
               {idx < MAX_TXNS_TO_SHOW && (
                 <div
                   key={idx}
-                  className="h-28 p-2 border-1 border-b md:flex md:justify-between md:items-center  md:h-24"
+                  className="h-28 p-2 border-1 border-b dark:border-b-neutral-800 md:flex md:justify-between md:items-center  md:h-24"
                 >
                   {/* txn blockHash */}
                   <div className="md:flex md:space-x-2 md:items-center">
@@ -116,7 +116,7 @@ const LatestTransactionsController: React.FC<
                     {/* gas price */}
                     {txn.gasPrice && (
                       <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                        <Tooltip message="Amount" direction="left" minWith>
+                        <Tooltip message="Amount" direction="top" minWith>
                           <p>
                             {formatEther(BigInt(txn.value.toString()))?.slice(
                               0,
