@@ -8,6 +8,7 @@ import EnsOwner from "./results/EnsOwner";
 import BlockNumber from "./results/BlockNumber";
 import ContractOrAddress from "./results/ContractOrAddress";
 import TransactionResult from "./results/TransactionResult";
+
 enum SearchStages {
   loading = "loading",
   ens = "ens",
@@ -34,6 +35,8 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
   const _getEnsOwner = async () => {
     if (typeof input === "string" && input.includes(".eth")) {
       const _ensOwner = await getEnsOwner(input as ENS);
+      console.log("getEnsOwner", _ensOwner);
+      if (_ensOwner === null) setEnsOwner("0x");
       if (_ensOwner) setEnsOwner(_ensOwner as Web3Address);
     }
     return;
@@ -111,12 +114,14 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
     <div className="absolute bg-white dark:bg-black w-full border dark:border-neutral-600 rounded-lg p-2">
       {stage === SearchStages.loading ? <Loading /> : null}
       {stage === SearchStages.ens && ensOwner ? (
-        <EnsOwner address={ensOwner} />
+        <EnsOwner address={ensOwner} ens={input as ENS} />
       ) : null}
       {stage === SearchStages.block && block ? (
         <BlockNumber block={block} />
       ) : null}
-      {stage === SearchStages.txn && txn ? <TransactionResult txn={txn} /> : null}
+      {stage === SearchStages.txn && txn ? (
+        <TransactionResult txn={txn} />
+      ) : null}
       {stage === SearchStages.address ? (
         <ContractOrAddress address={input as Web3Address} />
       ) : null}
@@ -126,7 +131,9 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
           isContract={isContract}
         />
       ) : null}
-      {stage === SearchStages.error ? <div>Error: nothing to do here</div> : null}
+      {stage === SearchStages.error ? (
+        <div>Error: nothing to do here</div>
+      ) : null}
     </div>
   );
 };
