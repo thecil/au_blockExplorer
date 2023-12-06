@@ -21,7 +21,7 @@ const ContractOrAddress: React.FC<ContractOrAddressProps> = ({
           <>
             <h2 className="text-lg font-bold">Contract:</h2>
             <Link
-              className="text-blue-500 text-lg"
+              className="text-blue-500 text-lg truncate"
               href={`${hrefs.address}/${address}`}
             >
               {address}
@@ -31,7 +31,7 @@ const ContractOrAddress: React.FC<ContractOrAddressProps> = ({
           <>
             <h2 className="text-lg font-bold">Address:</h2>
             <Link
-              className="text-blue-500 text-lg"
+              className="text-blue-500 text-lg truncate"
               href={`${hrefs.address}/${address}`}
             >
               {address}
