@@ -4,7 +4,10 @@ import { TransactionResponse, Block } from "alchemy-sdk";
 import { Hex, ENS, Web3Address } from "@/types/web3";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import Loading from "../Loading";
-
+import EnsOwner from "./results/EnsOwner";
+import BlockNumber from "./results/BlockNumber";
+import ContractOrAddress from "./results/ContractOrAddress";
+import TransactionResult from "./results/TransactionResult";
 enum SearchStages {
   loading = "loading",
   ens = "ens",
@@ -108,13 +111,22 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
     <div className="absolute bg-white dark:bg-black w-full border dark:border-neutral-600 rounded-lg p-2">
       {stage === SearchStages.loading ? <Loading /> : null}
       {stage === SearchStages.ens && ensOwner ? (
-        <div>ENS Owner:{ensOwner}</div>
+        <EnsOwner address={ensOwner} />
       ) : null}
-      {stage === SearchStages.block ? <div>Show block</div> : null}
-      {stage === SearchStages.txn ? <div>Show txn</div> : null}
-      {stage === SearchStages.address ? <div>Show address</div> : null}
-      {stage === SearchStages.contract ? <div>Show contract</div> : null}
-      {stage === SearchStages.error ? <div>Show error</div> : null}
+      {stage === SearchStages.block && block ? (
+        <BlockNumber block={block} />
+      ) : null}
+      {stage === SearchStages.txn && txn ? <TransactionResult txn={txn} /> : null}
+      {stage === SearchStages.address ? (
+        <ContractOrAddress address={input as Web3Address} />
+      ) : null}
+      {stage === SearchStages.contract ? (
+        <ContractOrAddress
+          address={input as Web3Address}
+          isContract={isContract}
+        />
+      ) : null}
+      {stage === SearchStages.error ? <div>Error: nothing to do here</div> : null}
     </div>
   );
 };
