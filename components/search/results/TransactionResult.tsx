@@ -11,7 +11,7 @@ interface TransactionResultProps {
 }
 const TransactionResult: React.FC<TransactionResultProps> = ({ txn }) => {
   return (
-    <div className="hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg p-2">
+    <div className="hover:bg-slate-200 dark:hover:bg-neutral-800 rounded-lg p-2">
       <h2 className="text-lg font-bold">Transaction Hash:</h2>
       <div className="flex space-x-1 items-center">
         <Link className="text-blue-500 truncate" href={`${hrefs.transaction}/${txn.hash}`}>

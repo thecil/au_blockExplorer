@@ -10,7 +10,7 @@ interface BlockNumberProps {
 }
 const BlockNumber: React.FC<BlockNumberProps> = ({ block }) => {
   return (
-    <div className="hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg p-2">
+    <div className="hover:bg-slate-200 dark:hover:bg-neutral-800 rounded-lg p-2">
       <div className="flex space-x-1 items-center">
         <h2 className="text-lg font-bold">Block #</h2>
         <Link

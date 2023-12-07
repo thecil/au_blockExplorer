@@ -73,9 +73,9 @@ const Search = () => {
 
   return (
     <div className="sticky my-2 w-full">
-      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-neutral-600 p-2 bg-white dark:bg-black">
+      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-neutral-600 p-2 bg-slate-100 dark:bg-black">
         <input
-          className="px-2 w-full h-8 focus:outline-none  bg-white dark:bg-black"
+          className="px-2 w-full h-8 focus:outline-none bg-slate-100 dark:bg-black"
           type="text"
           name="search"
           placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"

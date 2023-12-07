@@ -15,7 +15,7 @@ const ContractOrAddress: React.FC<ContractOrAddressProps> = ({
   isContract
 }) => {
   return (
-    <div className="hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg p-2">
+    <div className="hover:bg-slate-200 dark:hover:bg-neutral-800 rounded-lg p-2">
       <div className="flex space-x-1 items-center">
         {isContract ? (
           <>

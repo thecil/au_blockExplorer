@@ -61,7 +61,7 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
         <>
           <button
             ref={listButtonRef}
-            className="w-full p-2 flex justify-between items-center border border-gray-500 rounded-lg"
+            className="w-full p-2 flex justify-between items-center border  border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg"
             onClick={() => setShowList(!showList)}
           >
             <p>({tokensList.tokens.length}) tokens</p>
@@ -70,7 +70,7 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
           {showList && tokensList && (
             <div
               ref={listRef}
-              className="mt-1 w-1/2 h-min absolute border border-gray-500 rounded-lg bg-neutral-900"
+              className="mt-1 w-1/2 h-min absolute border  border-neutral-2 00 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg "
             >
               <div className="p-2">
                 <input
@@ -84,7 +84,7 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
                   <>
                     {token.name && (
                       <div key={idx}>
-                        <div className="p-2 hover:bg-gray-800 hover:rounded-lg">
+                        <div className="p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:rounded-lg">
                           <p>
                             {token.name} ({token.symbol})
                           </p>
@@ -94,13 +94,13 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
                           </p>
                         </div>
 
-                        <div className="my-2 border-b border-gray-500 w-full"></div>
+                        <div className="my-2 border-b dark:border-neutral-500 w-full"></div>
                       </div>
                     )}
                   </>
                 ))}
               </div>
-              <div className="p-2 flex items-center justify-center space-x-2 bg-neutral-600 rounded-b-lg">
+              <div className="p-2 flex items-center justify-center space-x-2 bg-neutral-200 dark:bg-neutral-600 rounded-b-lg">
                 <IconController icon={Icons.wallet} />
                 <p>VIEW ALL HOLDINGS</p>
               </div>
