@@ -20,19 +20,19 @@ const TxTagsFilter: React.FC<TxTagsFilterProps> = ({
   setTagFilter
 }) => {
   return (
-    <div className="flex flex-row flex-wrap overflow-x-auto gap-2">
+    <div className="min-w-full flex flex-row flex-nowrap overflow-x-auto gap-2">
       {typesOftx.map((type, idx) => (
         <button
           key={idx}
-          className={`w-84 px-2 h-8 rounded-lg text-center ${
+          className={`min-w-fit px-2 h-8 rounded-lg text-center ${
             tagFilter === type.value
-              ? "bg-blue-600"
+              ? "bg-slate-300 dark:bg-neutral-600"
               : "border border-gray-500 hover:bg-gray-500"
           }`}
           disabled={tagFilter === type.value}
           onClick={() => setTagFilter(type.value)}
         >
-          {`${type.name}`}
+          {type.name}
         </button>
       ))}
     </div>

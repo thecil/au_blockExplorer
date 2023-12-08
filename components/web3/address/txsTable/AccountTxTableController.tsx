@@ -32,7 +32,7 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
   return (
     <div className="grid gap-2 w-full">
       <TxTagsFilter tagFilter={tagFilter} setTagFilter={setTagFilter} />
-      <div className="w-full overflow-auto border border-gray-500 rounded-lg p-2">
+      <div className="w-full overflow-auto borde rounded-lg p-2 border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black">
         {getTable}
       </div>
     </div>

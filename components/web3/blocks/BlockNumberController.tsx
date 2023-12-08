@@ -44,7 +44,7 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, block]);
   return (
-    <div className="p-4 min-h-screen">
+    <div className="p-4 min-h-screen md:mx-auto md:w-9/12">
       {/* block number header*/}
       <div className="py-4 border-b border-gray-500 ">
         <div className="flex space-x-2">

@@ -61,7 +61,7 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
         <>
           <button
             ref={listButtonRef}
-            className="w-full p-2 flex justify-between items-center border  border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg"
+            className="w-full p-2 flex justify-between items-center border border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg"
             onClick={() => setShowList(!showList)}
           >
             <p>({tokensList.tokens.length}) tokens</p>
@@ -70,7 +70,7 @@ const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
           {showList && tokensList && (
             <div
               ref={listRef}
-              className="mt-1 w-1/2 h-min absolute border  border-neutral-2 00 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg "
+              className="mt-1 w-3/4 md:w-1/3 h-min absolute border border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg "
             >
               <div className="p-2">
                 <input

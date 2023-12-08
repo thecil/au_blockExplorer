@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-    @apply  text-black bg-white dark:text-white dark:bg-neutral-900 mx-auto w-9/12;
+html,body{
+    @apply dark:text-white dark:bg-neutral-900;
+}
+main {
+    @apply text-black bg-white dark:text-white dark:bg-neutral-900 md:mx-auto md:w-9/12;
 }

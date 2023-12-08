@@ -37,7 +37,7 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
         </div>
       )}
       {stage === Stages.show && (
-        <div className="w-fit flex space-x-1 items-center px-2 border rounded-full border-gray-500">
+        <div className="w-fit flex space-x-1 items-center px-2 border rounded-full dark:border-neutral-500 bg-slate-200 dark:bg-neutral-500">
           <p>{data}</p>
         </div>
       )}
