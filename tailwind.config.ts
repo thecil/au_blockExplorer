@@ -16,6 +16,9 @@ const config: Config = {
     //   },
     // },
   },
+  color: {
+    myblue : "#0E76FD"
+  },
   variants: {
     extend: {
       visibility: ["group-hover"]

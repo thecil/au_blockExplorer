@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoMenu } from "react-icons/io5";
 import ThemeToggle from "../ThemeToggle";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { UserSignButton } from "../UserSignButton";
 
 // import LatestBlockNumber from "../web3/LatestBlockNumber";
 
@@ -41,6 +42,9 @@ const HeaderMenu = () => {
           ref={menuRef}
           className="absolute top-12 right-4  z-50 p-4 w-fit rounded-md divide-y divide-gray-400 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-200 dark:divide-neutral-900 dark:ring-neutral-900 dark:bg-neutral-950"
         >
+          <div>
+            <UserSignButton />
+          </div>
           <div>
             <ConnectButton />
           </div>

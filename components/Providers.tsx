@@ -5,9 +5,10 @@ import { ThemeProvider } from "next-themes";
 import { WagmiConfig } from "wagmi";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { wagmiConfig, chains } from "@/utils/wagmiConfig";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const appInfo = {
-  appName: "thecil - Block Explorer"
+  appName: "thecil - Block Explorer",
 };
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -16,9 +17,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains} appInfo={appInfo}>
-        <ThemeProvider enableSystem={false} attribute="class">
-          {mounted && children}
-        </ThemeProvider>
+        <ClerkProvider>
+          <ThemeProvider enableSystem={false} attribute="class">
+            {mounted && children}
+          </ThemeProvider>
+        </ClerkProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

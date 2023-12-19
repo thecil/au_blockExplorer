@@ -5,7 +5,7 @@ import { useAlchemy } from "@/hooks/useAlchemy";
 import LatestBlocksController from "@/components/web3/LatestBlocksController";
 import LatestTransactionController from "@/components/web3/LatestTransactionsController";
 import Search from "./search/Search";
-
+''
 const HomePage: React.FC = () => {
   const { getBlockNumber } = useAlchemy();
   const [latestBlock, setLatestBlock] = useState(0);
