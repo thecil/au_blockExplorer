@@ -10,7 +10,7 @@ import { shortAddress, formatEther } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
 import IconController from "../IconController";
 import Loading from "../Loading";
-import Tooltip from "../ToolTip";
+import ToolTipController from "../ToolTipController";
 import { Hex } from "@/types/web3";
 
 interface LatestTransactionsControllerProps {
@@ -116,7 +116,7 @@ const LatestTransactionsController: React.FC<
                     {/* gas price */}
                     {txn.gasPrice && (
                       <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                        <Tooltip message="Amount" direction="top" minWith>
+                        <ToolTipController content="Amount" side="top">
                           <p>
                             {formatEther(BigInt(txn.value.toString()))?.slice(
                               0,
@@ -124,7 +124,7 @@ const LatestTransactionsController: React.FC<
                             )}{" "}
                             Eth
                           </p>
-                        </Tooltip>
+                        </ToolTipController>
                       </div>
                     )}
                   </div>

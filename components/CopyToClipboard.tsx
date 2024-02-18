@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Tooltip from "./ToolTip";
+import ToolTipController from "./ToolTipController";
 import { Icons } from "@/types/components";
 import IconController from "./IconController";
 
@@ -41,17 +41,17 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   return (
     <div>
       {stage === Stage.idle && (
-        <Tooltip message="Copy to Clipboard" direction="top">
+        <ToolTipController content="Copy to Clipboard" side="top">
           <button onClick={() => copyToClipboard()}>
             <IconController icon={Icons.copy} size="14" />
           </button>
-        </Tooltip>
+        </ToolTipController>
       )}
 
       {stage === Stage.copied && (
-        <Tooltip message="Copied!" direction="top">
+        <ToolTipController content="Copied!" side="top">
           <IconController icon={Icons.check} size="14" />
-        </Tooltip>
+        </ToolTipController>
       )}
     </div>
   );

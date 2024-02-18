@@ -6,7 +6,7 @@ import { Stages } from "@/types/components";
 import { Icons } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import iconDesciptions from "@/data/iconDescriptions.json";
-import Tooltip from "@/components/ToolTip";
+import ToolTipController from "@/components/ToolTipController";
 import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockDetails from "@/components/web3/blocks/BlockDetails";
@@ -44,7 +44,7 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, block]);
   return (
-    <div className="p-4 min-h-screen md:mx-auto md:w-9/12">
+    <div className="p-4 min-h-screen md:container">
       {/* block number header*/}
       <div className="py-4 border-b border-gray-500 ">
         <div className="flex space-x-2">
@@ -59,9 +59,9 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
             {/* block heigth */}
             <div className="flex flex-col space-y-2  md:flex-row">
               <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <Tooltip message={iconDescription.blockHeight} direction="top">
+                <ToolTipController content={iconDescription.blockHeight} side="top">
                   <IconController icon={Icons.help} />
-                </Tooltip>
+                </ToolTipController>
                 <p>Block Height:</p>
               </div>
               <p>{block.number}</p>

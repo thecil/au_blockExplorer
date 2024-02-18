@@ -48,7 +48,7 @@ const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, tx]);
   return (
-    <div className="p-4 min-h-screen md:mx-auto md:w-9/12">
+    <div className="p-4 min-h-screen md:container">
       {/* tx hash header*/}
       <div className="py-4 border-b border-gray-500 ">
         <h2 className="font-bold text-xl">Transaction Details</h2>

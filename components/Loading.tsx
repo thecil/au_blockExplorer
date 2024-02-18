@@ -1,5 +1,5 @@
 "use client";
-import { IoSync } from "react-icons/io5";
+import { Loader2 } from "lucide-react";
 
 type LoadingProps = {
   size?: number;
@@ -13,7 +13,7 @@ const Loading: React.FC<LoadingProps> = ({ size = 24, className }) => {
         className ? className : "text-slate-500"
       }`}
     >
-      <IoSync className="animate-spin" size={size} aria-label="Loading" />
+      <Loader2 className="animate-spin" size={size} aria-label="Loading" />
     </div>
   );
 };
