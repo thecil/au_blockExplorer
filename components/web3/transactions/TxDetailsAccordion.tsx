@@ -12,7 +12,7 @@ import {
 } from "@/utils/web3";
 import Accordion from "@/components/Accordion";
 import BlockOrTxContent from "../BlockOrTxContent";
-import Badge from "@/components/Badge";
+import BadgeController from "@/components/BadgeController";
 
 const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
   const { transaction: iconDescription } = iconDesciptions;
@@ -69,7 +69,7 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
               iconDescription={iconDescription.burntSavingFees}
             >
               <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-                <Badge
+                <BadgeController
                   name="Burnt:"
                   value={`${getTxBurnedFees(
                   tx.receipt.gasUsed as BigNumber,
@@ -77,8 +77,9 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
                   tx.receipt.effectiveGasPrice as BigNumber
                   )} ETH`}
                   icon={Icons.flame}
+                  variant="secondary"
                 />
-                <Badge
+                <BadgeController
                   name="Txns Savings:"
                   value={`${getTxSavingFees(
                   tx.response.maxFeePerGas as BigNumber,
@@ -87,6 +88,7 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
                   tx.receipt.gasUsed as BigNumber
                   )} ETH`}
                   icon={Icons.leaf}
+                  variant="secondary"
                 />
               </div>
             </BlockOrTxContent>
@@ -98,11 +100,20 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
           iconDescription={iconDescription.otherAttributes}
         >
           <div className="flex flex-col space-y-1 items-start md:flex-row md:space-x-1 md:space-y-0">
-            <Badge name="Txn Type:" value={tx.receipt?.type as number} />
-            <Badge name="Nonce:" value={tx.response?.nonce as number} />
-            <Badge
+            <BadgeController
+              name="Txn Type:"
+              value={tx.receipt?.type as number}
+              variant="secondary"
+            />
+            <BadgeController
+              name="Nonce:"
+              value={tx.response?.nonce as number}
+              variant="secondary"
+            />
+            <BadgeController
               name="Position in Block:"
               value={tx.receipt?.transactionIndex as number}
+              variant="secondary"
             />
           </div>
         </BlockOrTxContent>

@@ -10,7 +10,7 @@ import { getTransactionFee, formatEther, formatGwei } from "@/utils/web3";
 import { elapsedTime, unixToDate } from "@/utils/unixTime";
 import CopyToClipboardButton from "@/components/CopyToClipboard";
 import IconController from "@/components/IconController";
-import Badge from "@/components/Badge";
+import BadgeController from "@/components/BadgeController";
 import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
 
 const TxDetails: React.FC<TxDetailsProps> = ({ tx }) => {
@@ -43,12 +43,13 @@ const TxDetails: React.FC<TxDetailsProps> = ({ tx }) => {
           >
             {tx.receipt?.blockNumber || tx.response?.blockNumber}
           </Link>
-          <Badge
+          <BadgeController
             name="Block Confirmations"
             value={
               tx.receipt?.confirmations ||
               (tx.response?.confirmations as number)
             }
+            variant="secondary"
           />
         </div>
       </BlockOrTxContent>
