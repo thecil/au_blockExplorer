@@ -4,6 +4,7 @@ import HeaderMenu from "./HeaderMenu";
 import Search from "../search/Search";
 import { Separator } from "@/components/ui/separator";
 
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 const Header: React.FC = () => {
   return (
     <header className="p-2 flex justify-between items-center border-b">
@@ -14,7 +15,9 @@ const Header: React.FC = () => {
       </div>
       <div className="flex space-x-2 items-center">
         <Search />
-        <Separator className="h-10" orientation="vertical"/>
+        <Separator className="h-10" orientation="vertical" />
+        <ConnectButton />
+        <Separator className="h-10" orientation="vertical" />
         <HeaderMenu />
       </div>
     </header>
