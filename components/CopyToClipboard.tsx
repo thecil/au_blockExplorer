@@ -9,25 +9,17 @@ interface CopyProps {
   text: string;
 }
 
-enum Stage {
-  idle = "idle",
-  copied = "copied",
-}
-
 const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
-  const [stage, setStage] = useState(Stage.idle);
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
     if (copySuccess) {
-      if (stage !== Stage.copied) setStage(Stage.copied);
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 1000);
     }
-    setTimeout(() => {
-      setCopySuccess(false);
-      if (stage !== Stage.idle) setStage(Stage.idle);
-    }, 1000);
     return () => {};
-  }, [stage, copySuccess]);
+  }, [copySuccess]);
 
   const copyToClipboard = async () => {
     try {
@@ -39,21 +31,17 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   };
 
   return (
-    <div>
-      {stage === Stage.idle && (
-        <ToolTipController content="Copy to Clipboard" side="top">
-          <button onClick={() => copyToClipboard()}>
-            <IconController icon={Icons.copy} size="14" />
-          </button>
-        </ToolTipController>
-      )}
-
-      {stage === Stage.copied && (
-        <ToolTipController content="Copied!" side="top">
-          <IconController icon={Icons.check} size="14" />
-        </ToolTipController>
-      )}
-    </div>
+    <ToolTipController
+      content={copySuccess ? "Copied!" : "Copy to Clipboard"}
+      side="top"
+    >
+      <button disabled={copySuccess} onClick={() => copyToClipboard()}>
+        <IconController
+          icon={copySuccess ? Icons.check : Icons.copy}
+          size="14"
+        />
+      </button>
+    </ToolTipController>
   );
 };
 

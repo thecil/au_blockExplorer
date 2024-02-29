@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import HeaderMenu from "./HeaderMenu";
+import Search from "../search/Search";
+import { Separator } from "@/components/ui/separator";
 
 const Header: React.FC = () => {
   return (
@@ -10,7 +12,11 @@ const Header: React.FC = () => {
           thecil - Block Explorer
         </Link>
       </div>
-      <HeaderMenu />
+      <div className="flex space-x-2 items-center">
+        <Search />
+        <Separator className="h-10" orientation="vertical"/>
+        <HeaderMenu />
+      </div>
     </header>
   );
 };

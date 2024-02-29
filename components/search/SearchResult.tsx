@@ -111,7 +111,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
   }, [input, ensOwner, block, isContract, txn, stage]);
 
   return (
-    <div className="absolute bg-slate-100 dark:bg-black w-full border dark:border-neutral-600 rounded-lg p-2">
+    <>
       {stage === SearchStages.loading ? <Loading /> : null}
       {stage === SearchStages.ens && ensOwner ? (
         <EnsOwner address={ensOwner} ens={input as ENS} />
@@ -122,19 +122,13 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
       {stage === SearchStages.txn && txn ? (
         <TransactionResult txn={txn} />
       ) : null}
-      {stage === SearchStages.address ? (
-        <ContractOrAddress address={input as Web3Address} />
-      ) : null}
-      {stage === SearchStages.contract ? (
-        <ContractOrAddress
-          address={input as Web3Address}
-          isContract={isContract}
-        />
+      {stage === SearchStages.address || stage === SearchStages.contract ? (
+        <ContractOrAddress address={input as Web3Address} isContract={isContract} />
       ) : null}
       {stage === SearchStages.error ? (
         <div>Error: nothing to do here</div>
       ) : null}
-    </div>
+    </>
   );
 };
 

@@ -15,6 +15,7 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
 
   useEffect(() => {
     if (data) {
+      console.log("EnsTags:data:", { data });
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
@@ -39,7 +40,7 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
       )}
       {stage === Stages.show && data && (
         <>
-          <BadgeController name={data} variant="secondary"/>
+          <BadgeController name={data} variant="secondary" />
         </>
       )}
     </div>
