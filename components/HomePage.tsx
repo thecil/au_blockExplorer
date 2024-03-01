@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latestBlock]);
   return (
-    <div className="md:container">
+    <div className="container grid grid-cols-1 gap-4">
       <Search />
       <div className="grid grid-rows-1 gap-4 md:grid-cols-2">
         <LatestBlocksController latestBlockNumber={latestBlock} />

@@ -89,25 +89,23 @@ const Search = () => {
 
   return (
     <Popover open={isOpen}>
-      <PopoverTrigger>
-        <div className="text-gray-400 w-full flex space-x-1 border rounded-lg dark:border-neutral-600 p-2 bg-slate-200 dark:bg-black">
-          <input
-            className="px-2 w-full focus:outline-none"
-            type="text"
-            name="search"
-            placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
-            onChange={handleSearch}
-            onKeyDown={handleKeyDown}
-          />
-          <Button
-            variant="outline"
-            size="icon"
-            disabled={!validInput}
-            onClick={onSearch}
-          >
-            <IconController icon={Icons.search} />
-          </Button>
-        </div>
+      <PopoverTrigger className="text-gray-400 min-w-max flex items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black">
+        <input
+          className="px-2 focus:outline-none w-full dark:bg-black"
+          type="text"
+          name="search"
+          placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
+          onChange={handleSearch}
+          onKeyDown={handleKeyDown}
+        />
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={!validInput}
+          onClick={onSearch}
+        >
+          <IconController icon={Icons.search} />
+        </Button>
       </PopoverTrigger>
       <PopoverContent onInteractOutside={() => setIsOpen(false)}>
         <SearchResult input={debouncedInputValue} />
