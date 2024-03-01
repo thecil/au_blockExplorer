@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { Icons } from "@/types/components";
 import useDebounce from "@/hooks/useDebounce";
@@ -33,7 +34,7 @@ const schema = z.union([
   })
 ]);
 
-const Search = () => {
+const Search = ({ className }: { className?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState<Hex | number | ENS>("0x");
   const debouncedInputValue = useDebounce(inputValue, 500);
@@ -89,9 +90,14 @@ const Search = () => {
 
   return (
     <Popover open={isOpen}>
-      <PopoverTrigger className="text-gray-400 min-w-max flex items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black">
+      <PopoverTrigger
+        className={cn(
+          "inline-flex text-gray-400  items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black",
+          className
+        )}
+      >
         <input
-          className="px-2 focus:outline-none w-full dark:bg-black"
+          className="px-2 focus:outline-none w-full bg-slate-200 dark:bg-black"
           type="text"
           name="search"
           placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
@@ -107,7 +113,10 @@ const Search = () => {
           <IconController icon={Icons.search} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent onInteractOutside={() => setIsOpen(false)}>
+      <PopoverContent
+        className="w-full"
+        onInteractOutside={() => setIsOpen(false)}
+      >
         <SearchResult input={debouncedInputValue} />
       </PopoverContent>
     </Popover>
