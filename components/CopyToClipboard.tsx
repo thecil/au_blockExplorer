@@ -6,7 +6,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@/components/ui/tooltip";
 import { Button } from "./ui/button";
 import IconController from "./IconController";
