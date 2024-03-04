@@ -1,8 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ToolTipController from "./ToolTipController";
 import { Icons } from "@/types/components";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "./ui/button";
 import IconController from "./IconController";
 
 interface CopyProps {
@@ -11,7 +17,7 @@ interface CopyProps {
 
 const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   const [copySuccess, setCopySuccess] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   useEffect(() => {
     if (copySuccess) {
       setTimeout(() => {
@@ -31,17 +37,28 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   };
 
   return (
-    <ToolTipController
-      content={copySuccess ? "Copied!" : "Copy to Clipboard"}
-      side="top"
-    >
-      <button disabled={copySuccess} onClick={() => copyToClipboard()}>
-        <IconController
-          icon={copySuccess ? Icons.check : Icons.copy}
-          size="14"
-        />
-      </button>
-    </ToolTipController>
+    <TooltipProvider>
+      <Tooltip open={isHovered || copySuccess}>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            disabled={copySuccess}
+            onClick={() => copyToClipboard()}
+            size="icon"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <IconController
+              icon={copySuccess ? Icons.check : Icons.copy}
+              size="14"
+            />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p>{copySuccess ? "Copied!" : "Copy to Clipboard"}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 
