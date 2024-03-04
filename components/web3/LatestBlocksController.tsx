@@ -11,6 +11,7 @@ import { elapsedTime, sleep } from "@/utils/unixTime";
 import IconController from "../IconController";
 import BlockReward from "./BlockReward";
 import Loading from "../Loading";
+import { Separator } from "../ui/separator";
 
 interface LatestBlocksControllerProps {
   latestBlockNumber: number;
@@ -59,39 +60,41 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
 
   return (
     <>
-      <div className="rounded-lg bg-slate-100 dark:bg-black ">
-        <div className="border-1 border-b p-2 dark:border-b-neutral-800">
-          <h2 className=" font-bold">Latest Blocks</h2>
+      <div className="rounded-lg bg-slate-100 dark:bg-black">
+        <div className="p-4">
+          <h2 className=" font-bold text-xl">Latest Blocks</h2>
         </div>
-        {stage === Stages.loading && <Loading size={64} />}
+        <Separator orientation="horizontal" />
+        {stage === Stages.loading && (
+          <Loading size={64} text="Loading Latest Blocks" />
+        )}
         {stage === Stages.show && (
-          <div className="flex flex-col">
-            {blocks.map((block, idx) => (
-              <div key={idx}>
-                <div className="p-2 border-1 border-b dark:border-b-neutral-800 md:flex md:justify-between md:items-center h-28 md:h-24">
-                  {/* block number */}
-                  <div className="md:flex md:space-x-2 md:items-center">
-                    <div className="hidden md:inline">
-                      <IconController icon={Icons.block} />
-                    </div>
-                    <div className="flex md:flex-col space-x-1">
-                      <p className="md:hidden">Block</p>
-                      <Link
-                        className="text-blue-500"
-                        href={`${hrefs.block}/${block.number}`}
-                      >
-                        {block.number}
-                      </Link>
-                      <p className="text-gray-500">
-                        {elapsedTime(block.timestamp)}
-                      </p>
-                    </div>
-                  </div>
-                  {/* block data */}
-                  <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-center">
-                    <div className="flex flex-col">
+          <>
+            <div className="grid">
+              {blocks.map((block, idx) => (
+                <>
+                  <div key={idx}>
+                    <div className="p-4 grid gap-4 md:grid-flow-col ">
+                      {/* block number */}
+                      <div className="md:flex md:space-x-2 md:items-center">
+                        <div className="hidden md:inline">
+                          <IconController icon={Icons.block} />
+                        </div>
+                        <div className="flex md:flex-col space-x-1">
+                          <p className="md:hidden">Block</p>
+                          <Link
+                            className="text-blue-500"
+                            href={`${hrefs.block}/${block.number}`}
+                          >
+                            {block.number}
+                          </Link>
+                          <p className="text-gray-500 text-xs">
+                            {elapsedTime(block.timestamp)}
+                          </p>
+                        </div>
+                      </div>
                       {/* fee recipient */}
-                      <div className="flex space-x-1 ">
+                      <div className="flex space-x-1 items-center">
                         <p>Fee recipient</p>
                         <Link
                           className="text-blue-500"
@@ -101,22 +104,29 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
                         </Link>
                       </div>
                       {/* total transactions on block */}
-                      <div className="flex space-x-1">
+                      <div className="flex space-x-1 items-center">
                         <p>{block.transactions.length} txns</p>
-                        <p className="text-gray-500">in 12 secs</p>
+                        <p className="text-gray-500 text-sm">in 12 secs</p>
+                      </div>
+                      {/* block reward */}
+                      <div className="place-content-start self-center">
+                        <BlockReward block={block} miniComp={true} />
                       </div>
                     </div>
-                    <BlockReward block={block} miniComp={true} />
                   </div>
-                </div>
-              </div>
-            ))}
+                  {idx < MAX_BLOCKS_TO_SHOW - 1 && (
+                    <Separator orientation="horizontal" />
+                  )}
+                </>
+              ))}
+            </div>
+            <Separator orientation="horizontal" />
             <div className="text-md text-gray-500 text-center py-2">
               <Link className="" href="/blocks">
                 View All Blocks
               </Link>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>
