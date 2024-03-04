@@ -49,7 +49,7 @@ const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, tx]);
   return (
-    <div className="grid gap-4 w-full">
+    <div className="container grid gap-4 w-full">
       {/* tx hash header*/}
       <h2 className="font-bold text-xl">Transaction Details</h2>
       <Separator orientation="horizontal" />

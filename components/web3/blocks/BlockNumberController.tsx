@@ -43,7 +43,7 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, block]);
   return (
-    <div className="p-4 grid gap-4 w-full">
+    <div className="container grid gap-4 w-full">
       {/* block number header*/}
       <div>
         <div className="flex space-x-2 text-2xl">

@@ -73,45 +73,43 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
             <div className="grid">
               {blocks.map((block, idx) => (
                 <>
-                  <div key={idx}>
-                    <div className="p-4 grid gap-4 md:grid-flow-col ">
-                      {/* block number */}
-                      <div className="md:flex md:space-x-2 md:items-center">
-                        <div className="hidden md:inline">
-                          <IconController icon={Icons.block} />
-                        </div>
-                        <div className="flex md:flex-col space-x-1">
-                          <p className="md:hidden">Block</p>
-                          <Link
-                            className="text-blue-500"
-                            href={`${hrefs.block}/${block.number}`}
-                          >
-                            {block.number}
-                          </Link>
-                          <p className="text-gray-500 text-xs">
-                            {elapsedTime(block.timestamp)}
-                          </p>
-                        </div>
+                  <div key={idx} className="md:h-28 p-4 grid gap-4 md:grid-flow-col ">
+                    {/* block number */}
+                    <div className="md:flex md:space-x-2 md:items-center">
+                      <div className="hidden md:inline">
+                        <IconController icon={Icons.block} />
                       </div>
-                      {/* fee recipient */}
-                      <div className="flex space-x-1 items-center">
-                        <p>Fee recipient</p>
+                      <div className="flex md:flex-col space-x-1 items-center">
+                        <p className="md:hidden">Block</p>
                         <Link
                           className="text-blue-500"
-                          href={`/address/${block.miner}`}
+                          href={`${hrefs.block}/${block.number}`}
                         >
-                          {shortAddress(block.miner)}
+                          {block.number}
                         </Link>
+                        <p className="text-gray-500 text-xs">
+                          {elapsedTime(block.timestamp)}
+                        </p>
                       </div>
-                      {/* total transactions on block */}
-                      <div className="flex space-x-1 items-center">
-                        <p>{block.transactions.length} txns</p>
-                        <p className="text-gray-500 text-sm">in 12 secs</p>
-                      </div>
-                      {/* block reward */}
-                      <div className="place-content-start self-center">
-                        <BlockReward block={block} miniComp={true} />
-                      </div>
+                    </div>
+                    {/* fee recipient */}
+                    <div className="flex space-x-1 items-center">
+                      <p>Fee recipient</p>
+                      <Link
+                        className="text-blue-500"
+                        href={`/address/${block.miner}`}
+                      >
+                        {shortAddress(block.miner)}
+                      </Link>
+                    </div>
+                    {/* total transactions on block */}
+                    <div className="flex space-x-1 items-center">
+                      <p>{block.transactions.length} txns</p>
+                      <p className="text-gray-500 text-sm">in 12 secs</p>
+                    </div>
+                    {/* block reward */}
+                    <div className="place-content-start self-center">
+                      <BlockReward block={block} miniComp={true} />
                     </div>
                   </div>
                   {idx < MAX_BLOCKS_TO_SHOW - 1 && (
