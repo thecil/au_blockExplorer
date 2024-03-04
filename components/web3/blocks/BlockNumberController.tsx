@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from "react";
 import type { BlockWithTransactions } from "alchemy-sdk";
 import { Stages } from "@/types/components";
-import { Icons } from "@/types/components";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import iconDesciptions from "@/data/iconDescriptions.json";
-import ToolTipController from "@/components/ToolTipController";
 import Loading from "@/components/Loading";
-import IconController from "@/components/IconController";
 import BlockDetails from "@/components/web3/blocks/BlockDetails";
 import BlockDetailsAccordion from "./BlockDetailsAccordion";
+import { Separator } from "@/components/ui/separator";
+import BlockOrTxContent from "../BlockOrTxContent";
 
 interface BlockNumberControllerProps {
   blockNumber: string;
@@ -44,28 +43,28 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, block]);
   return (
-    <div className="p-4 min-h-screen md:container">
+    <div className="p-4 grid gap-4 w-full">
       {/* block number header*/}
-      <div className="py-4 border-b border-gray-500 ">
-        <div className="flex space-x-2">
+      <div>
+        <div className="flex space-x-2 text-2xl">
           <h2 className="font-bold">Block</h2>
           <p className="text-gray-400">#{blockNumber}</p>
         </div>
       </div>
-      {stage === Stages.loading && <Loading size={64} />}
+      <Separator orientation="horizontal" />
+      {stage === Stages.loading && (
+        <Loading size={64} text="Loading Block Details" />
+      )}
       {stage === Stages.show && block && (
         <>
-          <div className="rounded-lg bg-slate-100 dark:bg-black p-4 mt-2 flex flex-col space-y-2">
+          <div className="p-4 grid gap-4 rounded-lg bg-slate-100 dark:bg-black">
             {/* block heigth */}
-            <div className="flex flex-col space-y-2  md:flex-row">
-              <div className="md:w-96 flex space-x-4 items-center font-semibold dark:text-gray-400">
-                <ToolTipController content={iconDescription.blockHeight} side="top">
-                  <IconController icon={Icons.help} />
-                </ToolTipController>
-                <p>Block Height:</p>
-              </div>
+            <BlockOrTxContent
+              title="Block Heigh"
+              iconDescription={iconDescription.blockHeight}
+            >
               <p>{block.number}</p>
-            </div>
+            </BlockOrTxContent>
             <BlockDetails block={block} />
           </div>
           {/* more details accordion */}
