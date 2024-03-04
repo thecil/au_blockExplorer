@@ -30,7 +30,6 @@ const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
       receipt: _receipt,
       response: _response
     };
-    console.log("_getTx", { _transaction });
     if (_transaction.receipt !== null || _transaction.response !== null)
       setTx(_transaction);
     return;
