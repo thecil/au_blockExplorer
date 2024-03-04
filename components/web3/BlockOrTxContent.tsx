@@ -17,16 +17,16 @@ const BlockOrTxContent: React.FC<BlockOrTxProps> = ({
   children
 }) => {
   return (
-    <div className="flex flex-col space-y-2 md:flex-row justify-start">
+    <div className="grid md:grid-flow-col justify-items-start ">
       {/* title */}
-      <div className=" md:w-96 flex space-x-4 items-center font-semibold dark:text-neutral-400">
-        <ToolTipController content={iconDescription} side="top">
+      <div className="place-self-start flex space-x-2 items-center font-semibold dark:text-neutral-400">
+        <ToolTipController content={iconDescription} side="right">
           <IconController icon={Icons.help} />
         </ToolTipController>
         <p>{title}:</p>
       </div>
       {/* children */}
-      {children}
+      <div className="md:place-self-end">{children}</div>
     </div>
   );
 };

@@ -21,12 +21,12 @@ const TxDetails: React.FC<TxDetailsProps> = ({ tx }) => {
       {/* tx status */}
       <BlockOrTxContent title="Status" iconDescription={iconDescription.status}>
         {tx.receipt?.status === 1 ? (
-          <div className=" flex space-x-1 items-center w-fit py-1 px-2 border border-green-700 rounded-lg bg-emerald-950 text-emerald-500 text-sm">
+          <div className=" flex space-x-1 items-center w-fit p-1 px-2 border border-green-700 rounded-lg bg-emerald-950 text-emerald-500 text-sm">
             <IconController icon={Icons.circleCheck} size="16" />
             <p>Success</p>
           </div>
         ) : (
-          <div className="flex space-x-1 items-center w-fit py-1 px-2 border border-red-700 rounded-lg bg-pink-950 text-red-500 text-sm">
+          <div className="flex space-x-1 items-center w-fit p-1 px-2 border border-red-700 rounded-lg bg-pink-950 text-red-500 text-sm">
             <IconController icon={Icons.circleClose} size="16" />
             <p>Fail</p>
           </div>

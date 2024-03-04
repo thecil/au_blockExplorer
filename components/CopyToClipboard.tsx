@@ -50,7 +50,6 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
           >
             <IconController
               icon={copySuccess ? Icons.check : Icons.copy}
-              size="14"
             />
           </Button>
         </TooltipTrigger>

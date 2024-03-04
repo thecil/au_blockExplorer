@@ -20,7 +20,7 @@ const BadgeController: React.FC<BadgeProps> = ({
 }) => {
   return (
     <Badge variant={variant ? variant : "default"}>
-      <div className="w-fit flex space-x-1 px-1 text-xs">
+      <div className="w-fit flex space-x-1 px-1 text-xs items-center">
         {icon && <IconController icon={icon} />}
         <p className="text-neutral-400">{name}</p>
         {value && <span>{value}</span>}

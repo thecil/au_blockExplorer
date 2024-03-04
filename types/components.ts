@@ -23,5 +23,5 @@ export enum Icons {
   wallet = "wallet",
   eye = "eye",
   search = "search",
-  open = "open"
+  link = "link"
 }

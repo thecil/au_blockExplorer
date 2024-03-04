@@ -27,7 +27,7 @@ const TxDetailsAccordion: React.FC<TxDetailsProps> = ({ tx }) => {
       <AccordionItem value="item-1">
         <AccordionTrigger>More Details:</AccordionTrigger>
         <AccordionContent>
-          <div className="flex flex-col space-y-2 p-2 bg-slate-100 dark:bg-black rounded-lg">
+          <div className="p-4 grid gap-4 bg-slate-100 dark:bg-black rounded-lg">
             {/* tx gas limit & usage */}
             <BlockOrTxContent
               title="Gas Limit & Usage by Txn"
