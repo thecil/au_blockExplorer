@@ -15,7 +15,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 
 const Page = ({ params }: Props) => {
   return (
-    <div className="p-4 min-h-screen md:mx-auto md:w-9/12">
+    <div className="p-4 min-h-screen md:container">
       {/* header*/}
       <div className="py-4 border-b border-gray-500 ">
         <div className="flex items-center space-x-2">

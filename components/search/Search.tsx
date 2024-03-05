@@ -1,17 +1,24 @@
 "use client";
 
-import React, { ChangeEvent, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { Icons } from "@/types/components";
 import useDebounce from "@/hooks/useDebounce";
 import IconController from "../IconController";
 import SearchResult from "./SearchResult";
 import { Hex, ENS } from "@/types/web3";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 
 // zod schema
 const schema = z.union([
   // block number
-  z.number(),
+  z.number().positive(),
   // hash
   z.string().refine(
     (value) =>
@@ -27,9 +34,20 @@ const schema = z.union([
   })
 ]);
 
-const Search = () => {
+const Search = ({ className }: { className?: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState<Hex | number | ENS>("0x");
   const debouncedInputValue = useDebounce(inputValue, 500);
+
+  // on handleKeyDown, start routing
+  const onSearch = () => {
+    if (validInput) setIsOpen(true);
+  };
+
+  // on press Enter key
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") onSearch();
+  };
 
   // onChange set input
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,37 +79,47 @@ const Search = () => {
     return false;
   }, [inputValue, debouncedInputValue]);
 
-  // on handleKeyDown, start routing
-  const onSearch = () => {
-    if (validInput) console.log("onSearch", { debouncedInputValue });
-  };
-
-  // on press Enter key
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") onSearch();
-  };
+  useEffect(() => {
+    if (validInput) {
+      if (isOpen === false) setIsOpen(true);
+      return;
+    }
+    return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [validInput]);
 
   return (
-    <div className="sticky my-2 w-full">
-      <div className="text-gray-400 relative w-full flex space-x-1 border rounded-lg dark:border-neutral-600 p-2 bg-slate-100 dark:bg-black">
+    <Popover open={isOpen}>
+      <PopoverTrigger
+        className={cn(
+          "inline-flex text-gray-400  items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black",
+          className
+        )}
+      >
         <input
-          className="px-2 w-full h-8 focus:outline-none bg-slate-100 dark:bg-black"
+          className="px-2 focus:outline-none w-full bg-slate-200 dark:bg-black"
           type="text"
           name="search"
           placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
           onChange={handleSearch}
           onKeyDown={handleKeyDown}
         />
-        <button
-          className="hover:border hover:border-neutral-200 rounded-lg px-2"
+        <Button
+          variant="outline"
+          size="icon"
           disabled={!validInput}
           onClick={onSearch}
         >
           <IconController icon={Icons.search} />
-        </button>
-      </div>
-      {validInput ? <SearchResult input={debouncedInputValue} /> : null}
-    </div>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-full"
+        onInteractOutside={() => setIsOpen(false)}
+      >
+        <SearchResult input={debouncedInputValue} />
+      </PopoverContent>
+    </Popover>
   );
 };
 

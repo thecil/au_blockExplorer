@@ -1,33 +1,31 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Tooltip from "./ToolTip";
 import { Icons } from "@/types/components";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
+import { Button } from "./ui/button";
 import IconController from "./IconController";
 
 interface CopyProps {
   text: string;
 }
 
-enum Stage {
-  idle = "idle",
-  copied = "copied",
-}
-
 const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
-  const [stage, setStage] = useState(Stage.idle);
   const [copySuccess, setCopySuccess] = useState(false);
-
+  const [isHovered, setIsHovered] = useState(false);
   useEffect(() => {
     if (copySuccess) {
-      if (stage !== Stage.copied) setStage(Stage.copied);
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 1000);
     }
-    setTimeout(() => {
-      setCopySuccess(false);
-      if (stage !== Stage.idle) setStage(Stage.idle);
-    }, 1000);
     return () => {};
-  }, [stage, copySuccess]);
+  }, [copySuccess]);
 
   const copyToClipboard = async () => {
     try {
@@ -39,21 +37,27 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
   };
 
   return (
-    <div>
-      {stage === Stage.idle && (
-        <Tooltip message="Copy to Clipboard" direction="top">
-          <button onClick={() => copyToClipboard()}>
-            <IconController icon={Icons.copy} size="14" />
-          </button>
-        </Tooltip>
-      )}
-
-      {stage === Stage.copied && (
-        <Tooltip message="Copied!" direction="top">
-          <IconController icon={Icons.check} size="14" />
-        </Tooltip>
-      )}
-    </div>
+    <TooltipProvider>
+      <Tooltip open={isHovered || copySuccess}>
+        <TooltipTrigger asChild>
+          <Button
+            variant="ghost"
+            disabled={copySuccess}
+            onClick={() => copyToClipboard()}
+            size="icon"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <IconController
+              icon={copySuccess ? Icons.check : Icons.copy}
+            />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="top">
+          <p>{copySuccess ? "Copied!" : "Copy to Clipboard"}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

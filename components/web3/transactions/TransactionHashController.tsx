@@ -10,6 +10,7 @@ import BlockOrTxContent from "@/components/web3/BlockOrTxContent";
 import CopyToClipboardButton from "@/components/CopyToClipboard";
 import TxDetailsAccordion from "@/components/web3/transactions/TxDetailsAccordion";
 import TxDetails from "@/components/web3/transactions/TxDetails";
+import { Separator } from "@/components/ui/separator";
 
 interface TransactionHashControllerProps {
   txHash: Hex;
@@ -29,7 +30,6 @@ const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
       receipt: _receipt,
       response: _response
     };
-    console.log("_getTx", { _transaction });
     if (_transaction.receipt !== null || _transaction.response !== null)
       setTx(_transaction);
     return;
@@ -48,22 +48,21 @@ const TransactionHashController: React.FC<TransactionHashControllerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage, tx]);
   return (
-    <div className="p-4 min-h-screen md:mx-auto md:w-9/12">
+    <div className="container grid gap-4 w-full">
       {/* tx hash header*/}
-      <div className="py-4 border-b border-gray-500 ">
-        <h2 className="font-bold text-xl">Transaction Details</h2>
-      </div>
-      {stage === Stages.loading && <Loading size={64} />}
+      <h2 className="font-bold text-xl">Transaction Details</h2>
+      <Separator orientation="horizontal" />
+      {stage === Stages.loading && <Loading size={64} text="Loading Tx Details"/>}
       {stage === Stages.show && tx && (
         <>
-          <div className="rounded-lg bg-slate-100 dark:bg-black p-4 mt-2 flex flex-col space-y-2">
+          <div className="p-4 grid gap-4 rounded-lg bg-slate-100 dark:bg-black">
             {/* tx hash */}
             <BlockOrTxContent
               title="Transaction Hash"
               iconDescription={iconDescription.txHash}
             >
               <div className="flex space-x-1 items-center">
-                <span className="truncate ">{txHash}</span>
+                <p className="truncate">{txHash}</p>
                 <CopyToClipboardButton text={txHash} />
               </div>
             </BlockOrTxContent>

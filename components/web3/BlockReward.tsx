@@ -13,7 +13,7 @@ import { getBlockReward } from "@/utils/web3";
 import iconDesciptions from "@/data/iconDescriptions.json";
 import Loading from "../Loading";
 import BlockOrTxContent from "./BlockOrTxContent";
-import Tooltip from "../ToolTip";
+import TooltipController from "../ToolTipController";
 
 interface BlockRewardProps {
   block: BlockWithTransactions;
@@ -66,9 +66,9 @@ const BlockReward: React.FC<BlockRewardProps> = ({ block, miniComp }) => {
         <>
           {miniComp ? (
             <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-              <Tooltip message="Block Reward" direction="top" minWith>
+              <TooltipController content="Block Reward" side="top">
                 <p>{blockFees.blockReward.slice(0, 7)} Eth</p>
-              </Tooltip>
+              </TooltipController>
             </div>
           ) : (
             <BlockOrTxContent
