@@ -31,7 +31,7 @@ const BlockDetails: React.FC<BlockDetailsProps> = ({ block }) => {
         iconDescription={iconDescription.timestamp}
       >
         <div className="flex space-x-1 items-center">
-          <IconController icon={Icons.time} size="1.2em" />
+          <IconController icon={Icons.time}  />
           <p>{elapsedTime(block.timestamp)}</p>
           <p>({unixToDate(block.timestamp)})</p>
         </div>

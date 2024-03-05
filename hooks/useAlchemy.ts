@@ -278,32 +278,6 @@ export const useAlchemy = () => {
       return null;
     }
   };
-  // Subscription for new blocks on Eth Mainnet.
-  // const [subBlockNumber, setSubBlockNumber] = useState(0);
-
-  // useEffect(() => {
-  //   const eventHandler = (_blockNumber: any) => {
-  //     console.log("latest block", _blockNumber);
-
-  //     setSubBlockNumber(_blockNumber);
-  //   };
-
-  //   alchemy.ws.on("block", eventHandler);
-
-  //   return () => {
-  //     console.log("subs off");
-
-  //     alchemy.ws.off("block", eventHandler);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // // store the latest block number fetched from subscription "block"
-  // const latestBlockNumber = useMemo(() => {
-  //   if (_logs) console.log("latestBlockNumber", subBlockNumber);
-  //   if (subBlockNumber !== 0) return subBlockNumber;
-  //   return;
-  // }, [subBlockNumber]);
 
   return {
     // core methods

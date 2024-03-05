@@ -27,7 +27,7 @@ const EnsOwner: React.FC<EnsOwnerProps> = ({ address, ens }) => {
             >
               <div className="flex space-x-1 items-center">
                 <p>Register</p>
-                <IconController icon={Icons.open} size="16"/>
+                <IconController icon={Icons.link}/>
               </div>
             </Link>
           </>

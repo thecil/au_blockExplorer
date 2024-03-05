@@ -5,6 +5,7 @@ import { Stages } from "@/types/components";
 import { AccountProps } from "@/types/web3";
 import { useEnsName } from "wagmi";
 import Loading from "@/components/Loading";
+import BadgeController from "@/components/BadgeController";
 
 const EnsTags: React.FC<AccountProps> = ({ account }) => {
   const { data, isError, isLoading } = useEnsName({
@@ -14,6 +15,7 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
 
   useEffect(() => {
     if (data) {
+      console.log("EnsTags:data:", { data });
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
@@ -36,10 +38,10 @@ const EnsTags: React.FC<AccountProps> = ({ account }) => {
           <Loading size={12} />
         </div>
       )}
-      {stage === Stages.show && (
-        <div className="w-fit flex space-x-1 items-center px-2 border rounded-full dark:border-neutral-500 bg-slate-200 dark:bg-neutral-500">
-          <p>{data}</p>
-        </div>
+      {stage === Stages.show && data && (
+        <>
+          <BadgeController name={data} variant="secondary" />
+        </>
       )}
     </div>
   );

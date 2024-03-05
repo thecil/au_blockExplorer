@@ -16,7 +16,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <main>{children}</main>
+          <main className="min-h-screen p-4">{children}</main>
           <Footer />
         </Providers>
       </body>

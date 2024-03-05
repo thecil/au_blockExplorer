@@ -10,8 +10,9 @@ import { shortAddress, formatEther } from "@/utils/web3";
 import { elapsedTime } from "@/utils/unixTime";
 import IconController from "../IconController";
 import Loading from "../Loading";
-import Tooltip from "../ToolTip";
+import ToolTipController from "../ToolTipController";
 import { Hex } from "@/types/web3";
+import { Separator } from "../ui/separator";
 
 interface LatestTransactionsControllerProps {
   latestBlockNumber: number;
@@ -54,44 +55,46 @@ const LatestTransactionsController: React.FC<
 
   return (
     <div className="rounded-lg bg-slate-100 dark:bg-black">
-      <div className="border-1 border-b p-2 dark:border-b-neutral-800">
-        <h2 className="font-bold">Latest Transactions</h2>
+      <div className="p-4">
+        <h2 className="font-bold text-xl">Latest Transactions</h2>
       </div>
-      {stage === Stages.loading && <Loading size={64} />}
+      <Separator orientation="horizontal" />
+      {stage === Stages.loading && (
+        <Loading size={64} text="Loading Latest Transactions" className="p-8"/>
+      )}
       {stage === Stages.show && txns && (
-        <div className="flex flex-col">
+        <div className="grid">
           {txns.transactions.toReversed().map((txn, idx) => (
             <>
               {idx < MAX_TXNS_TO_SHOW && (
-                <div
-                  key={idx}
-                  className="h-28 p-2 border-1 border-b dark:border-b-neutral-800 md:flex md:justify-between md:items-center  md:h-24"
-                >
-                  {/* txn blockHash */}
-                  <div className="md:flex md:space-x-2 md:items-center">
-                    <div className="hidden md:inline">
-                      <IconController icon={Icons.transaction} />
+                <>
+                  <div
+                    key={idx}
+                    className="md:h-28 p-4 grid gap-4 md:grid-flow-col "
+                  >
+                    {/* txn blockHash */}
+                    <div className="md:flex md:space-x-2 md:items-center">
+                      <div className="hidden md:inline">
+                        <IconController icon={Icons.transaction} />
+                      </div>
+                      <div className="md:grid">
+                        <p className="md:hidden">Transaction</p>
+                        <Link href={`${hrefs.transaction}/${txn.hash}`}>
+                          <p className="text-blue-500 w-20 truncate">
+                            {txn.hash}
+                          </p>
+                        </Link>
+                        {txn.timestamp && (
+                          <p className="text-gray-400">
+                            {elapsedTime(txn.timestamp)}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex md:flex-col space-x-1">
-                      <p className="md:hidden">Transaction</p>
-                      <Link
-                        className="text-blue-500 w-20 truncate"
-                        href={`${hrefs.transaction}/${txn.hash}`}
-                      >
-                        {txn.hash}
-                      </Link>
-                      {txn.timestamp && (
-                        <p className="text-gray-400">
-                          {elapsedTime(txn.timestamp)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  {/* from/to */}
-                  <div className="md:grid md:grid-cols-2 md:gap-2 md:w-2/3 md:justify-items-start">
-                    <div className="flex flex-col">
+                    {/* from/to */}
+                    <div className="self-center">
                       {/* From */}
-                      <div className="flex space-x-1 ">
+                      <div className="flex space-x-1 items-center">
                         <p>From </p>
                         <Link
                           className="text-blue-500"
@@ -102,7 +105,7 @@ const LatestTransactionsController: React.FC<
                       </div>
                       {/* To */}
                       {txn.to && (
-                        <div className="flex space-x-1 ">
+                        <div className="flex space-x-1 items-center">
                           <p>To </p>
                           <Link
                             className="text-blue-500"
@@ -115,23 +118,29 @@ const LatestTransactionsController: React.FC<
                     </div>
                     {/* gas price */}
                     {txn.gasPrice && (
-                      <div className="px-2 border rounded-lg w-fit h-fit font-medium place-self-center">
-                        <Tooltip message="Amount" direction="top" minWith>
-                          <p>
-                            {formatEther(BigInt(txn.value.toString()))?.slice(
-                              0,
-                              7
-                            )}{" "}
-                            Eth
-                          </p>
-                        </Tooltip>
+                      <div className="place-self-start md:place-self-center">
+                        <ToolTipController content="Amount" side="top">
+                          <div className="px-2 border rounded-lg w-fit h-fit font-medium">
+                            <p>
+                              {formatEther(BigInt(txn.value.toString()))?.slice(
+                                0,
+                                5
+                              )}{" "}
+                              Eth
+                            </p>
+                          </div>
+                        </ToolTipController>
                       </div>
                     )}
                   </div>
-                </div>
+                  {idx < MAX_TXNS_TO_SHOW - 1 && (
+                    <Separator orientation="horizontal" />
+                  )}
+                </>
               )}
             </>
           ))}
+          <Separator orientation="horizontal" />
           <div className="text-md text-gray-500 text-center py-2">
             <Link className="" href={`${hrefs.transactions}`}>
               View All Transactions

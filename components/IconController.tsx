@@ -1,26 +1,25 @@
 "use client";
 
 import React from "react";
-import { IconContext } from "react-icons";
 import {
-  IoCubeOutline, // block icon
-  IoHelpCircleOutline, // help icon
-  IoTimeOutline, // time icon
-  IoCopyOutline, // copy icon
-  IoCheckmark, // check mark icon
-  IoReaderOutline, // tx icon
-  IoAdd,
-  IoRemove,
-  IoCheckmarkCircle,
-  IoCloseCircle,
-  IoLeaf,
-  IoFlame,
-  IoChevronDown,
-  IoWalletOutline,
-  IoEyeOutline,
-  IoSearch,
-  IoOpenOutline
-} from "react-icons/io5";
+  Box, // block icon
+  HelpCircle, //help icon
+  Clock, // time icon
+  Copy, // copy icon
+  Check, // check icon
+  FileText, // tx icon
+  Plus,
+  Minus,
+  CheckCircle2,
+  XCircle,
+  Leaf,
+  Flame,
+  ChevronDown,
+  Wallet,
+  Eye,
+  Search,
+  ExternalLink // external links
+} from "lucide-react";
 import { Icons } from "@/types/components";
 
 interface IconProps {
@@ -29,76 +28,51 @@ interface IconProps {
 }
 
 const IconController: React.FC<IconProps> = ({ icon, size }) => {
+  const _size = `${size ? `w-${size}` : "w-4"}`;
+
   const getIcon = (icon: Icons) => {
     switch (icon) {
       case Icons.block:
-        return <IoCubeOutline />;
+        return <Box className={_size} />;
       case Icons.help:
-        return <IoHelpCircleOutline />;
+        return <HelpCircle className={_size} />;
       case Icons.time:
-        return <IoTimeOutline />;
+        return <Clock className={_size} />;
       case Icons.copy:
-        return <IoCopyOutline />;
+        return <Copy className={_size} />;
       case Icons.check:
-        return (
-          <div className="text-green-500">
-            <IoCheckmark />
-          </div>
-        );
+        return <Check className={`${_size} text-green-500`} />;
       case Icons.transaction:
-        return <IoReaderOutline />;
+        return <FileText className={_size} />;
       case Icons.add:
-        return <IoAdd />;
+        return <Plus className={_size} />;
       case Icons.remove:
-        return <IoRemove />;
+        return <Minus className={_size} />;
       case Icons.circleCheck:
-        return (
-          <div className="text-green-500">
-            <IoCheckmarkCircle />
-          </div>
-        );
+        return <CheckCircle2 className={`${_size} text-green-500`} />;
       case Icons.circleClose:
-        return (
-          <div className="text-red-500">
-            <IoCloseCircle />
-          </div>
-        );
+        <CheckCircle2 className={`${_size} text-green-500`} />;
+        return <XCircle className={`${_size} text-red-500`} />;
       case Icons.leaf:
-        return (
-          <div className="text-green-500">
-            <IoLeaf />
-          </div>
-        );
+        return <Leaf className={`${_size} text-green-500`} />;
       case Icons.flame:
-        return (
-          <div className="text-red-500">
-            <IoFlame />
-          </div>
-        );
+        return <Flame className={`${_size} text-red-500`} />;
       case Icons.down:
-        return <IoChevronDown />;
+        return <ChevronDown className={_size} />;
       case Icons.wallet:
-        return <IoWalletOutline />;
+        return <Wallet className={_size} />;
       case Icons.eye:
-        return <IoEyeOutline />;
+        return <Eye className={_size} />;
       case Icons.search:
-        return <IoSearch />;
-      case Icons.open:
-        return (
-          <div className="text-blue-500">
-            <IoOpenOutline  />
-          </div>
-        );
+        return <Search className={_size} />;
+      case Icons.link:
+        return <ExternalLink className={`${_size} text-blue-500`} />;
       default:
         return null;
     }
   };
 
-  return (
-    <IconContext.Provider value={{ size: size ? size : "1.3em" }}>
-      <div>{getIcon(icon)}</div>
-    </IconContext.Provider>
-  );
+  return <>{getIcon(icon)}</>;
 };
 
 export default IconController;

@@ -10,7 +10,10 @@ export default function ThemeToggle() {
     <>
       <button
         className="p-2 w-fit h-fit border border-solid  border-gray-500 rounded-full text-gray-400"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+        onClick={(e) => {
+          e.preventDefault();
+          setTheme(theme === "dark" ? "light" : "dark");
+        }}
       >
         {theme === "dark" ? (
           <IoSunnyOutline size={12} />
