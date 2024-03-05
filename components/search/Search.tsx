@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 // zod schema
 const schema = z.union([
   // block number
-  z.number(),
+  z.number().positive(),
   // hash
   z.string().refine(
     (value) =>
