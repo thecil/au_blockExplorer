@@ -60,13 +60,13 @@ const LatestBlocksController: React.FC<LatestBlocksControllerProps> = ({
 
   return (
     <>
-      <div className="rounded-lg bg-slate-100 dark:bg-black">
+      <div className="rounded-lg bg-slate-100 dark:bg-black h-fit">
         <div className="p-4">
           <h2 className=" font-bold text-xl">Latest Blocks</h2>
         </div>
         <Separator orientation="horizontal" />
         {stage === Stages.loading && (
-          <Loading size={64} text="Loading Latest Blocks" />
+          <Loading size={64} text="Loading Latest Blocks" className="p-8"/>
         )}
         {stage === Stages.show && (
           <>

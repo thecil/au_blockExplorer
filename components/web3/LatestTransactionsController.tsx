@@ -60,7 +60,7 @@ const LatestTransactionsController: React.FC<
       </div>
       <Separator orientation="horizontal" />
       {stage === Stages.loading && (
-        <Loading size={64} text="Loading Latest Transactions" />
+        <Loading size={64} text="Loading Latest Transactions" className="p-8"/>
       )}
       {stage === Stages.show && txns && (
         <div className="grid">
