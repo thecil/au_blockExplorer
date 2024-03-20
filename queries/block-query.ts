@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAlchemy } from "@/hooks/useAlchemy";
 
 export const useBlockQuery = () => {
@@ -10,11 +10,11 @@ export const useBlockQuery = () => {
     queryKey: ["latestBlockQuery"],
     queryFn: () => getBlockNumber(),
     refetchInterval: 12 * 1000, // every 12 seconds
-    staleTime: 12 * 1000, // every 12 seconds
+    staleTime: 11 * 1000 // every 12 seconds
   });
 
   return {
-    latestBlockQuery,
+    latestBlockQuery
   };
 };
 
