@@ -1,9 +1,10 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAlchemy } from "@/hooks/useAlchemy";
 
+// queries related to blocks (number, block txs or data...)
 export const useBlockQuery = () => {
   const { getBlockNumber } = useAlchemy();
-  const queryClient = useQueryClient();
+//   const queryClient = useQueryClient();
 
   // get latest block mined
   const latestBlockQuery = useQuery({
