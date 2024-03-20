@@ -6,6 +6,8 @@ import Search from "../search/Search";
 import { Separator } from "@/components/ui/separator";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import LatestBlockNumber from "../web3/LatestBlockNumber";
+
 const Header: React.FC = () => {
   const pathname = usePathname();
   return (
@@ -17,6 +19,7 @@ const Header: React.FC = () => {
         {pathname !== "/" ? <Search className="w-1/3" /> : null}
         <div className="flex space-x-2 items-center">
           <ConnectButton />
+          <LatestBlockNumber />
           <Separator className="h-10" orientation="vertical" />
           <HeaderMenu />
         </div>
