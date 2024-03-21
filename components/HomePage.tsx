@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import LatestBlocksController from "@/components/web3/LatestBlocksController";
+import { useLatestBlockQuery } from "@/queries/block-query";
+import LatestBlocksController from "@/components/web3/blocks/latest-blocks";
 import LatestTransactionController from "@/components/web3/LatestTransactionsController";
 import Search from "./search/Search";
 
-import { useLatestBlockQuery } from "@/queries/block-query";
 const HomePage: React.FC = () => {
   const { latestBlockQuery } = useLatestBlockQuery();
   const { data } = latestBlockQuery;

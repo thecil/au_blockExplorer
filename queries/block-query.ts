@@ -24,7 +24,8 @@ export const useBlockQuery = (blockHashOrBlockTag: number | Hex) => {
   // get block data
   const blockQuery = useQuery({
     queryKey: ["blockQuery", blockHashOrBlockTag],
-    queryFn: () => getBlock(blockHashOrBlockTag)
+    queryFn: () => getBlock(blockHashOrBlockTag),
+    enabled: false
   });
   // get block data with transactions
   const blockWithTxsQuery = useQuery({
