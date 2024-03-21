@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAlchemy } from "@/hooks/useAlchemy";
+import type { Hex } from "@/types/web3";
 
-// queries related to blocks (number, block txs or data...)
-export const useBlockQuery = () => {
+// get and track latest block mined
+export const useLatestBlockQuery = () => {
   const { getBlockNumber } = useAlchemy();
-//   const queryClient = useQueryClient();
-
   // get latest block mined
   const latestBlockQuery = useQuery({
     queryKey: ["latestBlockQuery"],
@@ -19,3 +18,21 @@ export const useBlockQuery = () => {
   };
 };
 
+// get block data
+export const useBlockQuery = (blockHashOrBlockTag: number | Hex) => {
+  const { getBlock, getBlockWithTransactions } = useAlchemy();
+  // get block data
+  const blockQuery = useQuery({
+    queryKey: ["blockQuery", blockHashOrBlockTag],
+    queryFn: () => getBlock(blockHashOrBlockTag)
+  });
+  // get block data with transactions
+  const blockWithTxsQuery = useQuery({
+    queryKey: ["blockWithTxsQuery", blockHashOrBlockTag],
+    queryFn: () => getBlockWithTransactions(blockHashOrBlockTag)
+  });
+  return {
+    blockQuery,
+    blockWithTxsQuery
+  };
+};

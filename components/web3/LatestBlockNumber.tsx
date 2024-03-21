@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useBlockQuery } from "@/queries/block-query";
+import { useLatestBlockQuery } from "@/queries/block-query";
 import Loading from "../Loading";
 import TooltipController from "../ToolTipController";
 import { Stages } from "@/types/components";
+
 const LatestBlockNumber: React.FC = () => {
   const [stage, setStage] = useState(Stages.loading);
-  const { latestBlockQuery } = useBlockQuery();
+  const { latestBlockQuery } = useLatestBlockQuery();
   const {
     data: blockNumber,
     isLoading,

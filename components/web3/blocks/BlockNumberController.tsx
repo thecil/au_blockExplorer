@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import type { BlockWithTransactions } from "alchemy-sdk";
+import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Stages } from "@/types/components";
-import { useAlchemy } from "@/hooks/useAlchemy";
-import iconDesciptions from "@/data/iconDescriptions.json";
+import { useBlockQuery, useLatestBlockQuery } from "@/queries/block-query";
+import iconDescriptions from "@/data/iconDescriptions.json";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import Loading from "@/components/Loading";
 import BlockDetails from "@/components/web3/blocks/BlockDetails";
 import BlockDetailsAccordion from "./BlockDetailsAccordion";
-import { Separator } from "@/components/ui/separator";
 import BlockOrTxContent from "../BlockOrTxContent";
 
 interface BlockNumberControllerProps {
@@ -18,21 +20,21 @@ interface BlockNumberControllerProps {
 const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
   blockNumber
 }) => {
+  const router = useRouter();
+  const { block: iconDescription } = iconDescriptions;
   const [stage, setStage] = useState(Stages.loading);
-  const [block, setBlock] = useState<BlockWithTransactions>();
-  const { getBlockWithTransactions } = useAlchemy();
-  const { block: iconDescription } = iconDesciptions;
+  const { latestBlockQuery } = useLatestBlockQuery();
+  const { blockWithTxsQuery } = useBlockQuery(parseInt(blockNumber));
+  const { data: block, isLoading } = blockWithTxsQuery;
+  const { data: latestBlockNumber } = latestBlockQuery;
 
-  const _getBlock = async () => {
-    const _block = await getBlockWithTransactions(parseInt(blockNumber));
-    console.log("_getBlock", { _block });
-    if (_block) setBlock(_block);
-    return;
+  const uncleBlocks = {
+    prev: parseInt(blockNumber) - 1,
+    next: parseInt(blockNumber) + 1
   };
 
   useEffect(() => {
-    if (!block) {
-      _getBlock();
+    if (isLoading) {
       if (stage !== Stages.loading) setStage(Stages.loading);
       return;
     }
@@ -40,15 +42,37 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, block]);
+  }, [stage, block, isLoading]);
   return (
     <div className="container grid gap-4 w-full">
       {/* block number header*/}
       <div>
         <div className="flex space-x-2 text-2xl">
-          <h2 className="font-bold">Block</h2>
-          <p className="text-gray-400">#{blockNumber}</p>
+          <h2 className="font-bold ">Block</h2>
+          {/* block number & prev/next buttons */}
+          <div className="flex space-x-1 items-end">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-6 h-6"
+              onClick={() => router.push(`/block/${uncleBlocks.prev}`)}
+            >
+              <ChevronLeft />
+            </Button>
+            <p className="text-gray-400">#{blockNumber}</p>
+            {latestBlockNumber && uncleBlocks.next <= latestBlockNumber ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="w-6 h-6"
+                onClick={() => router.push(`/block/${uncleBlocks.next}`)}
+              >
+                <ChevronRight />
+              </Button>
+            ) : null}
+          </div>
         </div>
       </div>
       <Separator orientation="horizontal" />
@@ -58,7 +82,7 @@ const BlockNumberController: React.FC<BlockNumberControllerProps> = ({
       {stage === Stages.show && block && (
         <>
           <div className="p-4 grid gap-4 rounded-lg bg-slate-100 dark:bg-black">
-            {/* block heigth */}
+            {/* block height */}
             <BlockOrTxContent
               title="Block Heigh"
               iconDescription={iconDescription.blockHeight}
