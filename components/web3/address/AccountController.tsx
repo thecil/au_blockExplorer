@@ -3,7 +3,7 @@
 import React from "react";
 import { AccountProps } from "@/types/web3";
 import EnsTags from "@/components/web3/address/EnsTags";
-import AccountOverviewController from "@/components/web3/address/overview/AccountOverviewController";
+import AccountOverviewController from "@/components/web3/address/overview";
 import AccountTxTableController from "./txsTable/AccountTxTableController";
 
 const AccountController: React.FC<AccountProps> = ({ account }) => {
