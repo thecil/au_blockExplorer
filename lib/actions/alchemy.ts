@@ -1,4 +1,3 @@
-"use server";
 /**
  * Alchemy sdk methods
  * ETH MAINNET ONLY FOR NOW
@@ -242,7 +241,7 @@ export const getBalance = async (
  * @returns Owned tokens for the provided addresses along with relevant metadata.
  */
 export const getTokensForOwner = async (
-  addressOrName: Web3Address
+  addressOrName: Web3Address | ENS
 ): Promise<GetTokensForOwnerResponse | null> => {
   try {
     const response = await alchemy.core.getTokensForOwner(addressOrName);

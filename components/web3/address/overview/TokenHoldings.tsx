@@ -3,10 +3,11 @@ import { GetTokensForOwnerResponse } from "alchemy-sdk";
 import { AccountProps } from "@/types/web3";
 import { Stages } from "@/types/components";
 import { Icons } from "@/types/components";
-import Loading from "@/components/Loading";
-import IconController from "@/components/IconController";
 import { formatGasToLocaleString } from "@/utils/web3";
 import { useAccountQuery } from "@/queries/account-query";
+import Loading from "@/components/Loading";
+import IconController from "@/components/IconController";
+
 
 const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
   const { tokensQuery } = useAccountQuery(account);
