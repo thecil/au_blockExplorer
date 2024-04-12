@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import HeaderMenu from "./HeaderMenu";
@@ -7,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import LatestBlockNumber from "../web3/LatestBlockNumber";
+import EtherPrice from "../web3/ether-price";
 
 const Header: React.FC = () => {
   const pathname = usePathname();
@@ -19,7 +21,9 @@ const Header: React.FC = () => {
         {pathname !== "/" ? <Search className="w-1/3" /> : null}
         <div className="flex space-x-2 items-center">
           <ConnectButton />
+          <Separator className="h-10" orientation="vertical" />
           <LatestBlockNumber />
+          <EtherPrice />
           <Separator className="h-10" orientation="vertical" />
           <HeaderMenu />
         </div>
