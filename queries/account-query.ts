@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Web3Address, ENS } from "@/types/web3";
+import type { Web3Address, ENS, AccountBalance } from "@/types/web3";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { formatEther } from "@/utils/web3";
+
 
 export const useAccountQuery = (account: Web3Address | ENS) => {
   const { getBalance, getTokensForOwner } = useAlchemy();
@@ -11,10 +12,11 @@ export const useAccountQuery = (account: Web3Address | ENS) => {
     queryFn: async () => {
       const _balance = await getBalance(account);
       if (_balance) {
-        return {
+        const _result: AccountBalance = {
           inEth: formatEther(BigInt(_balance.toString())),
-          bigNum: _balance
+          bigInt: BigInt(_balance.toString())
         };
+        return _result;
       }
       return null;
     }
