@@ -260,12 +260,12 @@ export const useAlchemy = () => {
 
   const getAssetTransfers = async (
     address: Web3Address,
-    category: AssetTransfersCategory
+    category: AssetTransfersCategory[]
   ): Promise<AssetTransfersResponse | null> => {
     const options: AssetTransfersParams = {
       fromBlock: "0x0",
       fromAddress: address,
-      category: [category],
+      category: category,
       order: SortingOrder.DESCENDING
     };
     try {

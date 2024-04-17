@@ -27,19 +27,23 @@ export const useAccountQuery = (account: Web3Address | ENS) => {
     queryFn: () => getTokensForOwner(account)
   });
 
-  // get account external transactions
-  const externalTxsQuery = useQuery({
-    queryKey: ["externalTxsQuery", account],
+  // get account assets transactions
+  const assetsTxsQuery = useQuery({
+    queryKey: ["assetsTxsQuery", account],
     queryFn: () =>
-      getAssetTransfers(
-        account as Web3Address,
-        AssetTransfersCategory.EXTERNAL
-      )
+      getAssetTransfers(account as Web3Address, [
+        AssetTransfersCategory.EXTERNAL,
+        AssetTransfersCategory.INTERNAL,
+        AssetTransfersCategory.ERC20,
+        AssetTransfersCategory.ERC721,
+        AssetTransfersCategory.ERC1155,
+        AssetTransfersCategory.SPECIALNFT
+      ])
   });
 
   return {
     balanceQuery,
     tokensQuery,
-    externalTxsQuery
+    assetsTxsQuery
   };
 };
