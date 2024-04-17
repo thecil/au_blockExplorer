@@ -35,3 +35,9 @@ export interface BlockDetailsProps {
 export interface AccountProps {
   account: Web3Address;
 }
+
+// used on @queries/account-query & @/components/web3/address/overview
+export interface AccountBalance {
+  inEth: string;
+  bigInt: bigint;
+}

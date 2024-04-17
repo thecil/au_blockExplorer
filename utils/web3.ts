@@ -145,3 +145,20 @@ export const getTxSavingFees = (
   const _res = _sub.mul(gasUsed);
   return formatEther(BigInt(_res.toString()));
 };
+
+/**
+ * Calculate the USD value for given ether balance
+ * @param ethPriceInUSD actual price of 1 ether in usd value
+ * @param ethBalance ether balance
+ * @returns
+ */
+export const userBalanceInUsd = (ethPriceInUSD: string, ethBalance: bigint) => {
+  // Convert the balance to Ether from Wei (smallest unit of Ethereum)
+  const balanceInEther = formatEther(ethBalance);
+  // Convert string to number
+  const ethPrice = Number(ethPriceInUSD);
+  const balance = Number(balanceInEther);
+  // Calculate the USD value
+  const usdValue = balance * ethPrice;
+  return usdValue.toLocaleString("en-US");
+};

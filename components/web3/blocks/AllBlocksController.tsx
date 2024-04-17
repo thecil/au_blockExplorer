@@ -1,36 +1,34 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useAlchemy } from "@/hooks/useAlchemy";
 import { Stages } from "@/types/components";
 import Loading from "@/components/Loading";
-import { sleep } from "@/utils/unixTime";
 import { Separator } from "@/components/ui/separator";
+import { useLatestBlockQuery } from "@/queries/block-query";
 
 const AllBlocksController = () => {
   const [stage, setStage] = useState(Stages.loading);
   const [latestBlockNumber, setLatestBlockNumber] = useState(0);
-  const { getBlockNumber } = useAlchemy();
-
-  const _getLastBlockNumber = async () => {
-    try {
-      await sleep(1000);
-      const _latest = await getBlockNumber();
-      if (_latest) {
-        setLatestBlockNumber(_latest);
-        if (stage !== Stages.show) setStage(Stages.show);
-        return;
-      }
-    } catch (error) {
-      console.log("AllBlocksController:error", { error });
-    }
-  };
+  const { latestBlockQuery } = useLatestBlockQuery();
+  const { data: blockNumber, isLoading } = latestBlockQuery;
 
   useEffect(() => {
-    if (latestBlockNumber === 0) _getLastBlockNumber();
+    if (latestBlockNumber === 0 && isLoading) {
+      if (stage !== Stages.loading) {
+        setStage(Stages.loading);
+        return;
+      }
+    }
+    if (latestBlockNumber === 0 && blockNumber) {
+      setLatestBlockNumber(blockNumber);
+      if (stage !== Stages.show) {
+        setStage(Stages.show);
+        return;
+      }
+    }
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [latestBlockNumber]);
+  }, [stage, blockNumber, isLoading]);
 
   return (
     <>

@@ -1,114 +1,108 @@
-import React, { useEffect, useState, useRef } from "react";
-import { GetTokensForOwnerResponse } from "alchemy-sdk";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { OwnedToken } from "alchemy-sdk";
 import { AccountProps } from "@/types/web3";
 import { Stages } from "@/types/components";
-import { Icons } from "@/types/components";
-import { useAlchemy } from "@/hooks/useAlchemy";
-import Loading from "@/components/Loading";
-import IconController from "@/components/IconController";
 import { formatGasToLocaleString } from "@/utils/web3";
+import { useAccountQuery } from "@/queries/account-query";
+import Loading from "@/components/Loading";
+
+import { ChevronsUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from "@/components/ui/popover";
 
 const TokenHoldings: React.FC<AccountProps> = ({ account }) => {
-  const { getTokensForOwner } = useAlchemy();
-  const [tokensList, setTokensList] =
-    useState<GetTokensForOwnerResponse | null>();
+  const { tokensQuery } = useAccountQuery(account);
+  const { data: tokens, isLoading } = tokensQuery;
   const [stage, setStage] = useState(Stages.loading);
-  const [showList, setShowList] = useState(false);
-  const listRef = useRef<HTMLDivElement>(null);
-  const listButtonRef = useRef<HTMLButtonElement>(null);
-
-  const _getTokens = async () => {
-    const _tokens = await getTokensForOwner(account);
-    if (_tokens) setTokensList(_tokens);
-    return;
-  };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        listRef.current &&
-        !listRef.current.contains(event.target as Node) &&
-        listButtonRef.current !== event.target
-      ) {
-        setShowList(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [listRef]);
-
-  useEffect(() => {
-    if (!tokensList) {
-      _getTokens();
+    if (isLoading) {
       if (stage !== Stages.loading) setStage(Stages.loading);
       return;
     }
-    if (tokensList) {
+    if (tokens) {
       if (stage !== Stages.show) setStage(Stages.show);
       return;
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, tokensList]);
+  }, [stage, tokens, isLoading]);
 
   return (
     <div>
       <h2>TOKEN HOLDINGS</h2>
       {stage === Stages.loading && <Loading size={12} />}
-      {stage === Stages.show && tokensList && (
-        <>
-          <button
-            ref={listButtonRef}
-            className="w-full p-2 flex justify-between items-center border border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg"
-            onClick={() => setShowList(!showList)}
-          >
-            <p>({tokensList.tokens.length}) tokens</p>
-            <IconController icon={Icons.down} />
-          </button>
-          {showList && tokensList && (
-            <div
-              ref={listRef}
-              className="mt-1 w-3/4 md:w-1/3 h-min absolute border border-neutral-200 bg-slate-100 dark:border-neutral-800 dark:bg-black rounded-lg "
-            >
-              <div className="p-2">
-                <input
-                  className="rounded-lg px-2 my-2 w-full"
-                  type="text"
-                  placeholder="Search for token name"
-                />
-              </div>
-              <div className="w-full max-h-64 overflow-auto p-2">
-                {tokensList.tokens.map((token, idx) => (
-                  <>
-                    {token.name && (
-                      <div key={idx}>
-                        <div className="p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:rounded-lg">
-                          <p>
-                            {token.name} ({token.symbol})
-                          </p>
-                          <p>
-                            {formatGasToLocaleString(token.balance as string)}{" "}
-                            {token.symbol}
-                          </p>
-                        </div>
-
-                        <div className="my-2 border-b dark:border-neutral-500 w-full"></div>
-                      </div>
-                    )}
-                  </>
-                ))}
-              </div>
-              <div className="p-2 flex items-center justify-center space-x-2 bg-neutral-200 dark:bg-neutral-600 rounded-b-lg">
-                <IconController icon={Icons.wallet} />
-                <p>VIEW ALL HOLDINGS</p>
-              </div>
-            </div>
-          )}
-        </>
+      {stage === Stages.show && tokens?.tokens && (
+        <ComboboxDemo tokens={tokens.tokens} />
       )}
     </div>
+  );
+};
+
+const ComboboxDemo = ({ tokens }: { tokens: Array<OwnedToken> }) => {
+  const [open, setOpen] = React.useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-[300px] justify-between"
+        >
+          {`(${tokens.length}) tokens`}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[300px] p-0">
+        <Command
+          filter={(value, search) => {
+            console.log(`currentValue => ${value}, search: ${search}`);
+            if (value.toLocaleLowerCase().includes(search)) return 1;
+            return 0;
+          }}
+        >
+          <CommandInput placeholder="Search token..." />
+          <CommandList>
+            <CommandEmpty>No token found.</CommandEmpty>
+            <CommandGroup>
+              {tokens.map((token) => (
+                <CommandItem
+                  key={token.contractAddress}
+                  onSelect={() =>
+                    console.log(
+                      "should redirect to token contract address",
+                      token.contractAddress
+                    )
+                  }
+                  value={token.symbol}
+                >
+                  <div className="w-full flex items-center justify-between">
+                    <p>{token.symbol}</p>
+                    <p>{formatGasToLocaleString(token.balance as string)}</p>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

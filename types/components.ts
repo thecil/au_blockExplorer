@@ -2,7 +2,8 @@
 export enum Stages {
   loading = "loading",
   show = "show",
-  hidden = "hidden"
+  hidden = "hidden",
+  error = "error"
 }
 
 // used in/for IconController Comp to specify available icons

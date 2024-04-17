@@ -61,10 +61,10 @@ export const useAlchemy = () => {
 
   //   Returns the block from the network based on the provided block number or hash.
   const getBlock = async (
-    hashOrBlockNumber: Hex | number
+    blockHashOrBlockTag: Hex | number
   ): Promise<Block | undefined> => {
     try {
-      const _block = await alchemy.core.getBlock(hashOrBlockNumber);
+      const _block = await alchemy.core.getBlock(blockHashOrBlockTag);
       if (_logs) console.log("useAlchemy:getBlock", _block);
       return _block;
     } catch (error) {
@@ -245,7 +245,7 @@ export const useAlchemy = () => {
    * @returns Owned tokens for the provided addresses along with relevant metadata.
    */
   const getTokensForOwner = async (
-    addressOrName: Web3Address
+    addressOrName: Web3Address | ENS
   ): Promise<GetTokensForOwnerResponse | null> => {
     try {
       const response = await alchemy.core.getTokensForOwner(addressOrName);

@@ -1,27 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { AccountProps } from "@/types/web3";
+import React, { useEffect, useMemo, useState } from "react";
+import { AccountProps, AccountBalance } from "@/types/web3";
 import { Stages } from "@/types/components";
-import { useAlchemy } from "@/hooks/useAlchemy";
-import { formatEther } from "@/utils/web3";
+import { useAccountQuery } from "@/queries/account-query";
 import Loading from "@/components/Loading";
 import TokenHoldings from "./TokenHoldings";
+import { useEtherscanQuery } from "@/queries/etherscan-query";
+import { userBalanceInUsd } from "@/utils/web3";
 
 const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
-  const [balance, setBalance] = useState<string | undefined>(undefined);
+  const { balanceQuery } = useAccountQuery(account);
+  const { data: balance, isLoading } = balanceQuery;
   const [stage, setStage] = useState(Stages.loading);
-  const { getBalance } = useAlchemy();
-
-  const _getBalance = async () => {
-    const _balance = await getBalance(account);
-    if (_balance) setBalance(formatEther(BigInt(_balance.toString())));
-    return;
-  };
 
   useEffect(() => {
-    if (!balance) {
-      _getBalance();
+    if (isLoading) {
       if (stage !== Stages.loading) setStage(Stages.loading);
       return;
     }
@@ -31,7 +25,7 @@ const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
     }
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stage, balance]);
+  }, [stage, balance, isLoading]);
 
   return (
     <>
@@ -41,11 +35,11 @@ const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
           <h2 className="font-bold">Overview</h2>
           <div>
             <h2>ETH BALANCE</h2>
-            <p>{balance} ETH</p>
+            <p>{Number(balance.inEth).toFixed(3)} ETH</p>
           </div>
           <div>
             <h2>ETH VALUE</h2>
-            <p>$ value here</p>
+            <EthUsdValue balance={balance} />
           </div>
           <TokenHoldings account={account} />
         </div>
@@ -54,4 +48,13 @@ const AccountOverviewController: React.FC<AccountProps> = ({ account }) => {
   );
 };
 
+const EthUsdValue: React.FC<{ balance: AccountBalance }> = ({ balance }) => {
+  const { etherPriceQuery } = useEtherscanQuery();
+  const { data: ethPrice } = etherPriceQuery;
+  const usdValue = useMemo(() => {
+    if (ethPrice) return userBalanceInUsd(ethPrice, balance.bigInt);
+    return undefined;
+  }, [ethPrice, balance]);
+  return <p>$ {usdValue}</p>;
+};
 export default AccountOverviewController;

@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-// import LatestBlockNumber from "../web3/LatestBlockNumber";
 
 const HeaderMenu = () => {
   return (

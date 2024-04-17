@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { AssetTransfersCategory } from "alchemy-sdk";
 import { AccountProps } from "@/types/web3";
 import TxTagsFilter from "./TxTagsFilter";
-import ExternalTxTable from "./tables/ExternalTxTable";
+import ExternalTxsTable from "@/components/tables/external-transactions";
 
 const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
   const [tagFilter, setTagFilter] = useState(AssetTransfersCategory.EXTERNAL);
@@ -12,7 +12,7 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
   const getTable = useMemo(() => {
     switch (tagFilter) {
       case AssetTransfersCategory.EXTERNAL:
-        return <ExternalTxTable account={account} />;
+        return <ExternalTxsTable account={account} />;
       case AssetTransfersCategory.INTERNAL:
         return <>{tagFilter}</>;
       case AssetTransfersCategory.ERC20:
