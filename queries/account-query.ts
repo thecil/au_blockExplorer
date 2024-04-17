@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import type { Web3Address, ENS, AccountBalance } from "@/types/web3";
 import { useAlchemy } from "@/hooks/useAlchemy";
 import { formatEther } from "@/utils/web3";
-
+import { AssetTransfersCategory } from "alchemy-sdk";
 
 export const useAccountQuery = (account: Web3Address | ENS) => {
-  const { getBalance, getTokensForOwner } = useAlchemy();
+  const { getBalance, getTokensForOwner, getAssetTransfers } = useAlchemy();
   // get account balance
   const balanceQuery = useQuery({
     queryKey: ["balanceQuery", account],
@@ -27,9 +27,19 @@ export const useAccountQuery = (account: Web3Address | ENS) => {
     queryFn: () => getTokensForOwner(account)
   });
 
+  // get account external transactions
+  const externalTxsQuery = useQuery({
+    queryKey: ["externalTxsQuery", account],
+    queryFn: () =>
+      getAssetTransfers(
+        account as Web3Address,
+        AssetTransfersCategory.EXTERNAL
+      )
+  });
+
   return {
     balanceQuery,
-    tokensQuery
+    tokensQuery,
+    externalTxsQuery
   };
 };
-
