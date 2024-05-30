@@ -14,8 +14,8 @@ export const useEtherscanQuery = () => {
       }
       return undefined;
     },
-    refetchInterval: 30 * 1000, // every 30 seconds
-    staleTime: 29 * 1000 // every 29 seconds
+    refetchInterval: 10 * 60 * 1000, // every 10 minutes
+    staleTime: 9 * 60 * 1000 // every 9 minutes
   });
 
   return {
