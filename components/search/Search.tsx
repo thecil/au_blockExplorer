@@ -90,14 +90,13 @@ const Search = ({ className }: { className?: string }) => {
 
   return (
     <Popover open={isOpen}>
-      <PopoverTrigger
-        className={cn(
-          "inline-flex text-gray-400  items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black",
-          className
-        )}
-        asChild
-      >
-        <>
+      <PopoverTrigger asChild>
+        <div
+          className={cn(
+            "inline-flex text-gray-400  items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black",
+            className
+          )}
+        >
           <input
             className="px-2 focus:outline-none w-full bg-slate-200 dark:bg-black"
             type="text"
@@ -114,10 +113,11 @@ const Search = ({ className }: { className?: string }) => {
           >
             <IconController icon={Icons.search} />
           </Button>
-        </>
+        </div>
       </PopoverTrigger>
       <PopoverContent
-        className="w-full"
+        align="start"
+        className="w-full lg:w-[1200px]"
         onInteractOutside={() => setIsOpen(false)}
       >
         <SearchResult input={debouncedInputValue} />
