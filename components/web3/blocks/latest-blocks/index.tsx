@@ -62,12 +62,12 @@ const LatestBlocksController = ({
         <>
           <div className="grid">
             {blocks.map((blockNumber, idx) => (
-              <>
-                <BlockItem blockNumber={blockNumber} key={idx} />
+              <div key={idx}>
+                <BlockItem blockNumber={blockNumber} />
                 {idx < MAX_BLOCKS_TO_SHOW - 1 && (
                   <Separator orientation="horizontal" />
                 )}
-              </>
+              </div>
             ))}
           </div>
           <Separator orientation="horizontal" />

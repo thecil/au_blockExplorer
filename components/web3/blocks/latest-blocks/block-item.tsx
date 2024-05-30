@@ -9,13 +9,13 @@ import Loading from "@/components/Loading";
 import IconController from "@/components/IconController";
 import BlockReward from "@/components/web3/BlockReward";
 
-const BlockItem = ({ blockNumber, key }: { blockNumber: number, key: number }) => {
+const BlockItem = ({ blockNumber }: { blockNumber: number }) => {
   const { blockWithTxsQuery } = useBlockQuery(blockNumber);
   const { data: block, isLoading } = blockWithTxsQuery;
   if (isLoading) return <Loading size={24} className="my-8"/>;
   if (block)
     return (
-      <div key={key} className="md:h-28 p-4 grid gap-4 md:grid-flow-col ">
+      <div className="md:h-28 p-4 grid gap-4 md:grid-flow-col ">
         {/* block number */}
         <div className="md:flex md:space-x-2 md:items-center">
           <div className="hidden md:inline">

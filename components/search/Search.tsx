@@ -95,23 +95,26 @@ const Search = ({ className }: { className?: string }) => {
           "inline-flex text-gray-400  items-center space-x-1 rounded-lg p-2 bg-slate-200 dark:bg-black",
           className
         )}
+        asChild
       >
-        <input
-          className="px-2 focus:outline-none w-full bg-slate-200 dark:bg-black"
-          type="text"
-          name="search"
-          placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
-          onChange={handleSearch}
-          onKeyDown={handleKeyDown}
-        />
-        <Button
-          variant="outline"
-          size="icon"
-          disabled={!validInput}
-          onClick={onSearch}
-        >
-          <IconController icon={Icons.search} />
-        </Button>
+        <>
+          <input
+            className="px-2 focus:outline-none w-full bg-slate-200 dark:bg-black"
+            type="text"
+            name="search"
+            placeholder="Search by Address / Txn Hash/ Block / Token / Domain Name"
+            onChange={handleSearch}
+            onKeyDown={handleKeyDown}
+          />
+          <Button
+            variant="outline"
+            size="icon"
+            disabled={!validInput}
+            onClick={onSearch}
+          >
+            <IconController icon={Icons.search} />
+          </Button>
+        </>
       </PopoverTrigger>
       <PopoverContent
         className="w-full"
