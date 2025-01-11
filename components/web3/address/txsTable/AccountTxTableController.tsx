@@ -10,7 +10,10 @@ import { useAccountQuery } from "@/queries/account-query";
 import { Stages } from "@/types/components";
 import Loading from "@/components/Loading";
 import { Button } from "@/components/ui/button";
-import Erc20TxsTable from "@/components/tables/erc20-transactions";
+import Erc20TxsTable from "@/components/tables/erc-tables/erc20-txs-table";
+import Erc721TxsTable from "@/components/tables/erc-tables/erc721-txs-table";
+import Erc1155TxsTable from "@/components/tables/erc-tables/erc1155-txs-table";
+import SpecialNftTxsTable from "@/components/tables/erc-tables/special-nft-table";
 
 const typesOftx = [
   { name: "Transactions", value: AssetTransfersCategory.EXTERNAL },
@@ -71,13 +74,13 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
             <Erc20TxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[3].value}>
-            <p>nft transfer 721</p>
+            <Erc721TxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[4].value}>
-            <p>nft transfer 1155</p>
+            <Erc1155TxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[5].value}>
-            <p>special nft</p>
+            <SpecialNftTxsTable data={data.transfers} />
           </TabsContent>
         </Tabs>
       )}
