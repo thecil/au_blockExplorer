@@ -49,6 +49,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ input }) => {
     if (_block) setBlock(_block);
     return;
   };
+
   const _getTxn = async () => {
     const _txn = await getTransaction(input as Hex);
     console.log("SearchResult:_getTxn", _txn);

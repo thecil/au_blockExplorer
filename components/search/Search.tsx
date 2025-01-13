@@ -117,7 +117,7 @@ const Search = ({ className }: { className?: string }) => {
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="w-full lg:w-[1200px]"
+        className="w-full lg:min-w-[400px]"
         onInteractOutside={() => setIsOpen(false)}
       >
         <SearchResult input={debouncedInputValue} />
