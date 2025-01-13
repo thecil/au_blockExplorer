@@ -61,7 +61,7 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
         <Loading size={48} text="Loading Transactions" />
       )}
       {stage === Stages.show && data && (
-        <Tabs defaultValue={typesOftx[0].value}>
+        <Tabs defaultValue={typesOftx[_isContract ? 0 : 1].value}>
           <TabsList className="min-w-full flex flex-row flex-nowrap overflow-x-auto justify-around">
             {typesOftx.map((type, idx) => (
               <>
