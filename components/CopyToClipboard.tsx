@@ -13,9 +13,10 @@ import IconController from "./IconController";
 
 interface CopyProps {
   text: string;
+  hoverText?: string;
 }
 
-const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
+const CopyToClipboardButton: React.FC<CopyProps> = ({ text, hoverText }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   useEffect(() => {
@@ -48,13 +49,17 @@ const CopyToClipboardButton: React.FC<CopyProps> = ({ text }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <IconController
-              icon={copySuccess ? Icons.check : Icons.copy}
-            />
+            <IconController icon={copySuccess ? Icons.check : Icons.copy} />
           </Button>
         </TooltipTrigger>
         <TooltipContent side="top">
-          <p>{copySuccess ? "Copied!" : "Copy to Clipboard"}</p>
+          <p>
+            {copySuccess
+              ? "Copied!"
+              : hoverText
+                ? hoverText
+                : "Copy to Clipboard"}
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
