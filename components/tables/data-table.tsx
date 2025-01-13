@@ -31,6 +31,9 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { DataTablePagination } from "@/components/tables/data-table-pagination";
+import { Hex } from "@/types/web3";
+import { useEffect, useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -44,6 +47,9 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [inputValue, setInputValue] = useState<Hex>("" as Hex);
+  const debouncedInputValue = useDebounce(inputValue, 10);
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
 
@@ -64,6 +70,24 @@ export function DataTable<TData, TValue>({
     }
   });
 
+  useEffect(() => {
+    if (debouncedInputValue.length === 0) {
+      table.getColumn("to")?.setFilterValue("");
+      table.getColumn("hash")?.setFilterValue("");
+      return;
+    }
+    //is address
+    if (debouncedInputValue.length <= 42) {
+      table.getColumn("to")?.setFilterValue(debouncedInputValue);
+      return;
+    }
+    // is hash
+    if (debouncedInputValue.length > 42) {
+      table.getColumn("hash")?.setFilterValue(debouncedInputValue);
+      return;
+    }
+  }, [table, debouncedInputValue]);
+
   return (
     <div className="grid gap-2">
       {/* filters */}
@@ -71,10 +95,8 @@ export function DataTable<TData, TValue>({
         {/* to address filter */}
         <Input
           placeholder="To Address..."
-          value={(table.getColumn("to")?.getFilterValue() as string) ?? ""}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            table.getColumn("to")?.setFilterValue(e.target.value)
-          }
+          value={debouncedInputValue}
+          onChange={(e) => setInputValue(e.target.value as Hex)}
           className="max-w-sm"
         />
         {/* columns filter */}

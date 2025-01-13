@@ -9,14 +9,12 @@ import { elapsedTime } from "@/utils/unixTime";
 import IconController from "@/components/IconController";
 import ToolTipController from "@/components/ToolTipController";
 const TransactionItem = ({
-  key,
   txn
 }: {
-  key: number;
   txn: TransactionResponse;
 }) => {
   return (
-    <div key={key} className="md:h-28 p-4 grid gap-4 md:grid-flow-col ">
+    <div className="md:h-28 p-4 grid gap-4 md:grid-flow-col ">
       {/* txn blockHash */}
       <div className="md:flex md:space-x-2 md:items-center">
         <div className="hidden md:inline">

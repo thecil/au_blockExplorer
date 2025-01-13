@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 const HeaderMenu = () => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger >
+      <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
           <Menu />
         </Button>

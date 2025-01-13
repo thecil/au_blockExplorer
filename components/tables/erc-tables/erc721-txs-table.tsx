@@ -5,11 +5,11 @@ import { externalTableColumns } from "../columns";
 import { DataTable } from "../data-table";
 import { AssetTransfersCategory, AssetTransfersResult } from "alchemy-sdk";
 
-const ExternalTxsTable: React.FC<{ data: AssetTransfersResult[] }> = ({
+const Erc721TxsTable: React.FC<{ data: AssetTransfersResult[] }> = ({
   data
 }) => {
-  const externalTxs = data.reduce((accumulator: AssetTransfersResult[], tx) => {
-    if (tx.category === AssetTransfersCategory.EXTERNAL) {
+  const erc721Txs = data.reduce((accumulator: AssetTransfersResult[], tx) => {
+    if (tx.category === AssetTransfersCategory.ERC721) {
       accumulator.push(tx);
     }
     return accumulator;
@@ -17,9 +17,9 @@ const ExternalTxsTable: React.FC<{ data: AssetTransfersResult[] }> = ({
 
   return (
     <>
-      <DataTable columns={externalTableColumns} data={externalTxs} />
+      <DataTable columns={externalTableColumns} data={erc721Txs} />
     </>
   );
 };
 
-export default ExternalTxsTable;
+export default Erc721TxsTable;

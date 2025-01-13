@@ -46,16 +46,16 @@ const LatestBlockTxnsController = ({
       {stage === Stages.show && block && (
         <div className="grid">
           {block.transactions.toReversed().map((txn, idx) => (
-            <>
+            <div key={idx}>
               {idx < MAX_TXNS_TO_SHOW && (
                 <>
-                  <TransactionItem key={idx} txn={txn} />
+                  <TransactionItem txn={txn} />
                   {idx < MAX_TXNS_TO_SHOW - 1 && (
                     <Separator orientation="horizontal" />
                   )}
                 </>
               )}
-            </>
+            </div>
           ))}
           <Separator orientation="horizontal" />
           <div className="text-md text-gray-500 text-center py-2">
