@@ -14,8 +14,11 @@ import Erc20TxsTable from "@/components/tables/erc-tables/erc20-txs-table";
 import Erc721TxsTable from "@/components/tables/erc-tables/erc721-txs-table";
 import Erc1155TxsTable from "@/components/tables/erc-tables/erc1155-txs-table";
 import SpecialNftTxsTable from "@/components/tables/erc-tables/special-nft-table";
+import { useContractQuery } from "@/queries/contract-query";
+import ContractTabContent from "../../contracts/contract-tab-content";
 
 const typesOftx = [
+  { name: "Contract", value: "contract" },
   { name: "Transactions", value: AssetTransfersCategory.EXTERNAL },
   { name: "Internal Transactions", value: AssetTransfersCategory.INTERNAL },
   { name: "Token Transfers (ERC-20)", value: AssetTransfersCategory.ERC20 },
@@ -28,6 +31,8 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
   const [stage, setStage] = useState(Stages.loading);
   const { assetsTxsQuery } = useAccountQuery(account);
   const { data, isLoading, isRefetching, error, refetch } = assetsTxsQuery;
+  const { isContract } = useContractQuery(account);
+  const { data: _isContract } = isContract;
 
   useEffect(() => {
     if (isLoading || isRefetching) {
@@ -59,27 +64,40 @@ const AccountTxTableController: React.FC<AccountProps> = ({ account }) => {
         <Tabs defaultValue={typesOftx[0].value}>
           <TabsList className="min-w-full flex flex-row flex-nowrap overflow-x-auto justify-around">
             {typesOftx.map((type, idx) => (
-              <TabsTrigger key={idx} value={type.value}>
-                {type.name}
-              </TabsTrigger>
+              <>
+                {type.name === "Contract" && _isContract ? (
+                  <TabsTrigger key={idx} value={type.value}>
+                    {type.name}
+                  </TabsTrigger>
+                ) : (
+                  type.name !== "Contract" && (
+                    <TabsTrigger key={idx} value={type.value}>
+                      {type.name}
+                    </TabsTrigger>
+                  )
+                )}
+              </>
             ))}
           </TabsList>
           <TabsContent value={typesOftx[0].value}>
-            <ExternalTxsTable data={data.transfers} />
+            <ContractTabContent address={account} />
           </TabsContent>
           <TabsContent value={typesOftx[1].value}>
-            <InternalTxsTable data={data.transfers} />
+            <ExternalTxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[2].value}>
-            <Erc20TxsTable data={data.transfers} />
+            <InternalTxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[3].value}>
-            <Erc721TxsTable data={data.transfers} />
+            <Erc20TxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[4].value}>
-            <Erc1155TxsTable data={data.transfers} />
+            <Erc721TxsTable data={data.transfers} />
           </TabsContent>
           <TabsContent value={typesOftx[5].value}>
+            <Erc1155TxsTable data={data.transfers} />
+          </TabsContent>
+          <TabsContent value={typesOftx[6].value}>
             <SpecialNftTxsTable data={data.transfers} />
           </TabsContent>
         </Tabs>
